@@ -18,8 +18,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
-      <body className={cn(inter.className, "min-h-screen")}>
-        <div></div>
+      <body className={cn(inter.className, "min-h-screen ")}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {children}
         </ThemeProvider>
