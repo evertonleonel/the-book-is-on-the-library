@@ -1,4 +1,4 @@
-import { homeNavProps } from "@/types";
+import { HomeNavProps, MainNavProps } from "@/types";
 
 export const homeNav = [
   {
@@ -9,11 +9,39 @@ export const homeNav = [
   {
     title: "Biblioteca",
     path: "library",
-    icon: "album",
+    icon: "library",
   },
   {
     title: "Histórico de empréstimos",
     path: "loan-history",
-    icon: "fileClock",
+    icon: "fileStack",
   },
-] satisfies homeNavProps[];
+] satisfies HomeNavProps[];
+
+export const mainNav = [
+  {
+    title: "Home",
+    href: "/home",
+    icon: "home",
+  },
+  {
+    title: "Novo livro",
+    href: "/create-new-book",
+    icon: "bookPlus",
+  },
+  {
+    title: "Library",
+    href: "/library",
+    icon: "library",
+  },
+  {
+    title: "Empréstimos",
+    href: "/home",
+    icon: "fileStack",
+  },
+  {
+    title: "Sair",
+    href: "/",
+    icon: "close",
+  },
+] satisfies MainNavProps[];

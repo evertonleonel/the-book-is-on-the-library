@@ -8,11 +8,15 @@ import {
   EyeOff,
   Filter,
   FileClock,
+  FileStack,
   Lock,
+  Library,
   Mail,
   UserCircle2,
   MoonIcon,
   SunIcon,
+  X,
+  Home,
 } from "lucide-react";
 
 export const Icons = {
@@ -25,9 +29,13 @@ export const Icons = {
   view: EyeOff,
   filter: Filter,
   fileClock: FileClock,
+  fileStack: FileStack,
   lock: Lock,
+  library: Library,
   mail: Mail,
   moon: MoonIcon,
   sun: SunIcon,
   userCircle: UserCircle2,
+  close: X,
+  home: Home,
 };

@@ -12,8 +12,8 @@ export default function HomePage() {
   const IconComponent = (icon: IconComponent) => {
     const iconComponent = {
       bookPlus: <Icons.bookPlus className="h-10 w-10 stroke-slate-500" />,
-      fileClock: <Icons.fileClock className="h-10 w-10 stroke-slate-500" />,
-      album: <Icons.album className="h-10 w-10 stroke-slate-500" />,
+      library: <Icons.library className="h-10 w-10 stroke-slate-500" />,
+      fileStack: <Icons.fileStack className="h-10 w-10 stroke-slate-500" />,
     };
     return iconComponent[icon] ?? "";
   };
