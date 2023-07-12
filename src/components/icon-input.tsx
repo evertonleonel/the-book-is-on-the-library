@@ -13,11 +13,11 @@ type IconInputProps = {
 const IconInput = forwardRef<HTMLInputElement, InputProps & IconInputProps>(
   ({ className, icon: Icon, ...props }, ref) => {
     return (
-      <div className="flex rounded-md border border-input bg-[#ffffff33] backdrop-blur-[10px] px-2 focus-within:ring-2">
+      <div className="flex rounded-md border border-input px-2 focus-within:ring-2">
         <Input
           type={"text"}
           className={cn(
-            " bg-transparent border-none ring-0  ring-transparent  focus-visible:outline-none focus-visible:ring-none focus-visible:ring-none focus-visible:ring-offset-0",
+            "bg-transparent border-none ring-0  ring-transparent  focus-visible:outline-none focus-visible:ring-none focus-visible:ring-none focus-visible:ring-offset-0",
             className
           )}
           ref={ref}

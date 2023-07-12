@@ -36,7 +36,7 @@ export const mainNav = [
   },
   {
     title: "Empréstimos",
-    href: "/home",
+    href: "/loan-history",
     icon: "fileStack",
   },
   {

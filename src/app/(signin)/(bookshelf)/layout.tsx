@@ -1,12 +1,7 @@
 import { MainNav } from "@/components/layouts/main-nav";
 import { Logo } from "@/components/logo";
-import { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Home Library",
-};
-
-export default function HomeLayout({
+export default function BookShelfLayout({
   children,
 }: {
   children: React.ReactNode;
