@@ -1,20 +1,21 @@
 "use client";
 
-import { forwardRef, useState } from "react";
+import { ElementType, forwardRef } from "react";
 
-import { cn } from "@/lib/utils";
-import { Icons } from "./icons";
 import { Button } from "./ui/button";
+import { cn } from "@/lib/utils";
 import { Input, InputProps } from "./ui/input";
 
-const PasswordInput = forwardRef<HTMLInputElement, InputProps>(
-  ({ className, ...props }, ref) => {
-    const [showPassword, setShowPassword] = useState(false);
+type IconInputProps = {
+  icon: ElementType;
+};
 
+const IconInput = forwardRef<HTMLInputElement, InputProps & IconInputProps>(
+  ({ className, icon: Icon, ...props }, ref) => {
     return (
       <div className="flex rounded-md border border-input bg-[#ffffff33] backdrop-blur-[10px] px-2 focus-within:ring-2">
         <Input
-          type={showPassword ? "text" : "password"}
+          type={"text"}
           className={cn(
             " bg-transparent border-none ring-0  ring-transparent  focus-visible:outline-none focus-visible:ring-none focus-visible:ring-none focus-visible:ring-offset-0",
             className
@@ -25,20 +26,21 @@ const PasswordInput = forwardRef<HTMLInputElement, InputProps>(
         <Button
           type="button"
           variant={"ghost"}
-          onClick={() => setShowPassword((prev) => !prev)}
           disabled={props.value === "" || props.disabled}
         >
-          {showPassword ? (
-            <Icons.hide className="stroke-slate-400" aria-hidden="true" />
+          {props.children ? (
+            props.children
           ) : (
-            <Icons.view className="stroke-slate-400" />
+            <Icon
+              {...props}
+              className={cn("stroke-slate-400 h-5 w-5 ", className)}
+            />
           )}
         </Button>
       </div>
     );
   }
 );
+IconInput.displayName = "IconInput";
 
-PasswordInput.displayName = "PasswordInput";
-
-export { PasswordInput };
+export { IconInput };
