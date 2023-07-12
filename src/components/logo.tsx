@@ -8,10 +8,11 @@ type LogoProps = {
 const Logo = ({ className, ...props }: LogoProps) => {
   return (
     <Image
-      className={cn(className)}
+      className={cn("w-12 h-fit", className)}
       src="/images/icon-book.png"
-      width={48}
-      height={48}
+      height="0"
+      width="0"
+      sizes="100vw"
       alt="Logo library"
       {...props}
     />

@@ -8,12 +8,13 @@ import {
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
+import { Icons } from "../icons";
 
 interface HomeCardProps {
   title?: string;
   className?: string;
   description?: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   footer?: React.ReactNode;
   onClick: () => void;
 }
@@ -24,6 +25,7 @@ export function HomeCard({
   children,
   footer,
   className,
+
   onClick,
 }: HomeCardProps) {
   return (
