@@ -1,14 +1,6 @@
 "use client";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import React from "react";
 import { AspectRatio } from "../ui/aspect-ratio";
 import Image from "next/image";
@@ -21,7 +13,7 @@ export const BookModal = ({ children }: { children: React.ReactNode }) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>{children}</DialogTrigger>
-      <DialogContent className="max-w-[1400px] max-h-[975px] w-full overflow-auto">
+      <DialogContent className="max-w-[1400px] max-h-screen w-full overflow-auto">
         <div className=" h-full w-full  flex flex-col lg:flex-row overflow-auto m-4">
           <section className="w-full flex flex-col sm:flex-row gap-4 m-auto mt-4">
             <div className="grid gap-4 mx-auto w-4/5">
@@ -44,7 +36,7 @@ export const BookModal = ({ children }: { children: React.ReactNode }) => {
               <div className="flex flex-col flex-1 justify-between mb-6">
                 <div className="text-accent-foreground font-semibold">
                   <h3 className="text-secondary-foreground">Sinopse</h3>
-                  <p className="font-normal text-sm">
+                  <p className="font-normal text-sm max-h-40 text-ellipsis overflow-hidden">
                     Napoleon Hill revela que quebrou o código mental do diabo e
                     o forçou a confessar os seus segredos. O manuscrito que
                     resultou deste feito...
@@ -82,9 +74,7 @@ export const BookModal = ({ children }: { children: React.ReactNode }) => {
               <h2 className="text-lg  lg:text-xl font-bold">
                 Motivo da inativação
               </h2>
-              <p className="text-xs md:text-sm">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              <p className="text-xs md:text-sm max-h-40 overflow-auto">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua.
               </p>

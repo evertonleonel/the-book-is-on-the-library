@@ -19,7 +19,7 @@ const TableLoan = () => {
       <Table className=" shadow-md rounded bg-background px-4 mb-2">
         <TableCaption>Lista de todos os livros no acervo.</TableCaption>
         <TableHeader>
-          <TableRow className="bg-indigo-950">
+          <TableRow className="bg-indigo-950  hover:bg-indigo-900  dark:hover:bg-indigo-950/80">
             <TableHead className="font-bold">Aluno</TableHead>
             <TableHead className="font-bold">Turma</TableHead>
             <TableHead className="font-bold">Livro</TableHead>
