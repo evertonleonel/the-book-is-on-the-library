@@ -1,16 +1,16 @@
-import Container from "@/components/container/container";
-import LinkBackHome from "@/components/link-back-home";
 import React from "react";
+
+import LinkBackHome from "@/components/link-back-home";
 import TableLoan from "./table";
 
 const LoanPage = () => {
   return (
-    <Container>
+    <div className="flex flex-col overflow-hidden bg-slate-500">
       <LinkBackHome>Empréstimos</LinkBackHome>
-      <section className="flex-1 overflow-hidden ">
+      <section className="mx-1">
         <TableLoan />
       </section>
-    </Container>
+    </div>
   );
 };
 

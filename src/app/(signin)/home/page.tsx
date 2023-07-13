@@ -1,6 +1,5 @@
 "use client";
 import { HomeCard } from "@/components/cards/home-card";
-import Container from "@/components/container/container";
 import { Icons } from "@/components/icons";
 import { homeNav } from "@/config/site";
 import { IconComponent } from "@/types";
@@ -19,8 +18,8 @@ export default function HomePage() {
   };
 
   return (
-    <Container>
-      <nav className="flex flex-col sm:flex-row flex-wrap justify-center items-center gap-4 group ">
+    <div className="flex-1 flex flex-col justify-center items-center">
+      <nav className="flex flex-col sm:flex-row flex-wrap justify-center items-center gap-4 group">
         {homeNav.map(({ path, icon, title }) => {
           return (
             <li key={icon} className="list-none">
@@ -35,6 +34,6 @@ export default function HomePage() {
           );
         })}
       </nav>
-    </Container>
+    </div>
   );
 }

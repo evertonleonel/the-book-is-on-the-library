@@ -31,7 +31,7 @@ export function HomeCard({
     <Button
       onClick={onClick}
       variant={"ghost"}
-      className="h-40 w-40 md:h-72 md:w-72 p-0 z-10 card"
+      className="h-48 w-48 sm:h-60 sm:w-60 md:h-72 md:w-72 p-0 z-10 card"
     >
       <Card
         className={cn(

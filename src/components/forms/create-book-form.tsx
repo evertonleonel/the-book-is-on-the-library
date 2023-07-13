@@ -45,7 +45,7 @@ export const CreateBookForm = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex-1 flex flex-col md:flex-row w-full container justify-center items-center gap-4 m-2 md:m-4"
+        className="flex flex-col md:flex-row  max-w-[1400px] w-full justify-center items-center gap-4 m-auto"
       >
         <div className="flex justify-center items-center w-full sm:w-1/4 ">
           <FileInputImage />

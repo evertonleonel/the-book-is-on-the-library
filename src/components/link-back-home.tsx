@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const LinkBackHome = ({ children }: { children: React.ReactNode }) => {
   return (
-    <header className="flex flex-col flex-wrap gap-2 self-start m-4">
+    <header className="flex flex-col flex-wrap gap-2  m-4">
       <h1 className="text-lg sm:text-2xl break-words font-bold text-indigo-900 dark:text-indigo-400">
         {children}
       </h1>

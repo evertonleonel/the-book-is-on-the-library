@@ -1,3 +1,4 @@
+import Container from "@/components/container/container";
 import { MainNav } from "@/components/layouts/main-nav";
 import { Logo } from "@/components/logo";
 
@@ -7,12 +8,12 @@ export default function BookShelfLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="min-h-screen flex flex-col">
-      <header className="h-20 bg-secondary flex justify-between items-center p-6  shadow-xl">
+    <div className="min-h-screen flex flex-col">
+      <header className="h-20 bg-secondary flex justify-between items-center p-6  shadow-xl  overflow-hidden">
         <Logo className="hidden sm:block mix-blend-multiply dark:mix-blend-color-dodge" />
         <MainNav user={""} />
       </header>
-      {children}
-    </main>
+      <Container>{children}</Container>
+    </div>
   );
 }

@@ -1,11 +1,11 @@
-import BookCard from "@/components/cards/book-card";
-import Container from "@/components/container/container";
+import React from "react";
+
+import { Metadata } from "next";
 import { Icons } from "@/components/icons";
+import BookCard from "@/components/cards/book-card";
 import LinkBackHome from "@/components/link-back-home";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Metadata } from "next";
-import React from "react";
 
 export const metadata: Metadata = {
   title: "Library - Archive",
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 const LibraryPage = () => {
   return (
-    <Container>
+    <>
       <LinkBackHome>Biblioteca</LinkBackHome>
       <section className="flex-1 grid gap-4 justify-center items-center w-full mb-4">
         <div className="container flex items-center justify-center w-full gap-4 h-14">
@@ -38,7 +38,7 @@ const LibraryPage = () => {
           <BookCard />
         </ul>
       </section>
-    </Container>
+    </>
   );
 };
 

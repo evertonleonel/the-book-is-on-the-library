@@ -1,8 +1,8 @@
 import React from "react";
-import LinkBackHome from "@/components/link-back-home";
-import Container from "@/components/container/container";
-import { CreateBookForm } from "@/components/forms/create-book-form";
+
 import { Metadata } from "next";
+import LinkBackHome from "@/components/link-back-home";
+import { CreateBookForm } from "@/components/forms/create-book-form";
 
 export const metadata: Metadata = {
   title: "Library - Create Book",
@@ -10,10 +10,12 @@ export const metadata: Metadata = {
 
 const CreateNewBookPage = () => {
   return (
-    <Container>
+    <>
       <LinkBackHome>Cadastrar livro</LinkBackHome>
-      <CreateBookForm />
-    </Container>
+      <div className="flex-1 flex p-2">
+        <CreateBookForm />
+      </div>
+    </>
   );
 };
 
