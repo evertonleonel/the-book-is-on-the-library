@@ -16,7 +16,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../ui/button";
 import { loanModalSchema } from "@/lib/validations/modals";
 import { Input } from "../ui/input";
-import { Icons } from "../icons";
 
 type Inputs = z.infer<typeof loanModalSchema>;
 

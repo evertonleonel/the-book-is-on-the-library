@@ -1,7 +1,7 @@
 import React from "react";
 
 import LinkBackHome from "@/components/link-back-home";
-import TableLoan from "./table";
+import TableLoan from "../../../../components/tables/table-loan";
 
 const LoanPage = () => {
   return (

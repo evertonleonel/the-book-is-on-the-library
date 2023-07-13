@@ -10,9 +10,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import React from "react";
-import { LockBookModalForm } from "../forms/lock-book-modal-form";
+import { LockBookModalForm } from "../forms/lock-modal-form";
 
-export const LockBookModal = ({ children }: { children: React.ReactNode }) => {
+export const LockModal = ({ children }: { children: React.ReactNode }) => {
   const [open, setOpen] = React.useState(false);
   return (
     <Dialog open={open} onOpenChange={setOpen}>

@@ -12,13 +12,13 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Textarea } from "../ui/textarea";
-import { createNewBookSchema } from "@/lib/validations/auth";
 
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { createNewBookSchema } from "@/lib/validations/modals";
 
 type Inputs = z.infer<typeof createNewBookSchema>;
 

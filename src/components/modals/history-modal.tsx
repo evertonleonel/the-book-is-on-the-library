@@ -1,15 +1,16 @@
 "use client";
 
+import React from "react";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import React from "react";
+
+import TableLoanModal from "../tables/table-loan-modal";
 
 export const HistoryModal = ({ children }: { children: React.ReactNode }) => {
   const [open, setOpen] = React.useState(false);
@@ -17,13 +18,12 @@ export const HistoryModal = ({ children }: { children: React.ReactNode }) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-2xl">
+      <DialogContent className="max-w-[1400px]">
         <DialogHeader className="flex flex-col gap-4">
           <DialogTitle className="text-base sm:text-lg md:text-xl text-left mt-2">
             Histórico de empréstimos do livro
           </DialogTitle>
-          <DialogDescription></DialogDescription>
-          <DialogFooter></DialogFooter>
+          <TableLoanModal />
         </DialogHeader>
       </DialogContent>
     </Dialog>
