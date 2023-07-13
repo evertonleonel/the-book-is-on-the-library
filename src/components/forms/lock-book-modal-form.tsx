@@ -9,12 +9,12 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Textarea } from "../ui/textarea";
-import { lockBookModalSchema } from "@/lib/validations/auth";
 
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../ui/button";
+import { lockBookModalSchema } from "@/lib/validations/modals";
 
 type Inputs = z.infer<typeof lockBookModalSchema>;
 
