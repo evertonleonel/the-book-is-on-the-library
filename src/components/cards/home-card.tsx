@@ -25,7 +25,6 @@ export function HomeCard({
   children,
   footer,
   className,
-
   onClick,
 }: HomeCardProps) {
   return (

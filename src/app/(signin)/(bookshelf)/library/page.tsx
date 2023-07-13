@@ -15,9 +15,9 @@ const LibraryPage = () => {
   return (
     <Container>
       <LinkBackHome>Biblioteca</LinkBackHome>
-      <section className="flex-1 grid gap-4 justify-center items-center w-full">
+      <section className="flex-1 grid gap-4 justify-center items-center w-full mb-4">
         <div className="container flex items-center justify-center w-full gap-4 h-14">
-          <div className="w-full flex justify-center items-center rounded-md border border-input bg-background  p-2 focus-within:ring-2 ring-offset-background ring-slate-400">
+          <div className="w-full flex justify-center items-center rounded-md border border-input bg-background  p-2 focus-within:ring-2 ring-offset-background ring-slate-400 dark:ring-slate-950">
             <Icons.search />
             <Input
               className=" bg-transparent border-none ring-0  ring-transparent  focus-visible:outline-none focus-visible:ring-none focus-visible:ring-none focus-visible:ring-offset-0"
@@ -28,7 +28,7 @@ const LibraryPage = () => {
           <Input className="w-2/5 h-full" placeholder="filtrar" />
         </div>
         <ul className="container grid sm:grid-auto-fit-xs  place-items-center gap-8">
-          <BookCard />
+          <BookCard title="Testando 1 2" />
           <BookCard />
           <BookCard />
           <BookCard />
