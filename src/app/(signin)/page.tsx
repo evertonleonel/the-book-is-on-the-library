@@ -1,11 +1,11 @@
 "use client";
 
+import Image from "next/image";
 import Highlight from "@/components/effects/hightlight";
 import { SignInForm } from "@/components/forms/signin-form";
 import { Logo } from "@/components/logo";
 import { ModeToggle } from "@/components/ui/toggle-button";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
-import Image from "next/image";
 
 export default function SigninPage() {
   return (

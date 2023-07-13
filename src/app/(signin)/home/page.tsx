@@ -1,9 +1,10 @@
 "use client";
-import { HomeCard } from "@/components/cards/home-card";
-import { Icons } from "@/components/icons";
-import { homeNav } from "@/config/site";
-import { IconComponent } from "@/types";
+
 import { useRouter } from "next/navigation";
+import { IconComponent } from "@/types";
+import { homeNav } from "@/config/site";
+import { Icons } from "@/components/icons";
+import { HomeCard } from "@/components/cards/home-card";
 
 export default function HomePage() {
   const router = useRouter();

@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
-import { Icons } from "../icons";
 
 interface HomeCardProps {
   title?: string;

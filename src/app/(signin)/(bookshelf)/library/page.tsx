@@ -6,6 +6,7 @@ import BookCard from "@/components/cards/book-card";
 import LinkBackHome from "@/components/link-back-home";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { LockBookModal } from "@/components/modals/lock-book-modal";
 
 export const metadata: Metadata = {
   title: "Library - Archive",
@@ -27,6 +28,7 @@ const LibraryPage = () => {
           </div>
           <Input className="w-2/5 h-full" placeholder="filtrar" />
         </div>
+        <LockBookModal>Abrir modal</LockBookModal>
         <ul className="container grid sm:grid-auto-fit-xs  place-items-center gap-8">
           <BookCard title="Testando 1 2" />
           <BookCard />

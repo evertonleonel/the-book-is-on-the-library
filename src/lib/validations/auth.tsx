@@ -26,3 +26,9 @@ export const createNewBookSchema = z.object({
     message: "O campo author deve ter pelo menos 3 caracteres",
   }),
 });
+
+export const lockBookModalSchema = z.object({
+  description: z.string().min(5, {
+    message: "Deve ter pelo menos 5 caracteres",
+  }),
+});

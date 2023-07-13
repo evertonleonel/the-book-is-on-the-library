@@ -5,7 +5,7 @@ import TableLoan from "./table";
 
 const LoanPage = () => {
   return (
-    <div className="flex flex-col overflow-hidden bg-slate-500">
+    <div className="flex flex-col overflow-hidden">
       <LinkBackHome>Empréstimos</LinkBackHome>
       <section className="mx-1">
         <TableLoan />
