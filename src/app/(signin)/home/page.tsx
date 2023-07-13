@@ -20,7 +20,7 @@ export default function HomePage() {
 
   return (
     <Container>
-      <nav className="flex flex-col sm:flex-row flex-wrap justify-center items-center gap-4 group w-full">
+      <nav className="flex flex-col sm:flex-row flex-wrap justify-center items-center gap-4 group ">
         {homeNav.map(({ path, icon, title }) => {
           return (
             <li key={icon} className="list-none">

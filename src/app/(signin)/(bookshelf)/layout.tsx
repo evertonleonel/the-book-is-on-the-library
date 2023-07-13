@@ -9,7 +9,7 @@ export default function BookShelfLayout({
   return (
     <main className="min-h-screen flex flex-col">
       <header className="h-20 bg-secondary flex justify-between items-center p-6  shadow-xl">
-        <Logo className="mix-blend-multiply dark:mix-blend-color-dodge" />
+        <Logo className="hidden sm:block mix-blend-multiply dark:mix-blend-color-dodge" />
         <MainNav user={""} />
       </header>
       {children}

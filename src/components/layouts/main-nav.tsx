@@ -34,7 +34,7 @@ export function MainNav({ user }: MainNavProps) {
   };
 
   return (
-    <section className="flex justify-center items-center gap-2">
+    <section className="flex justify-center items-center gap-2 ">
       <Avatar>
         <AvatarImage src="https://github.com/shadcn.png" alt={user ?? ""} />
         <AvatarFallback>{user ?? ""}</AvatarFallback>
