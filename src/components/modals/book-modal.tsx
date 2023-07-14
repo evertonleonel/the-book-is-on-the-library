@@ -14,8 +14,8 @@ export const BookModal = ({ children }: { children: React.ReactNode }) => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>{children}</DialogTrigger>
       <DialogContent className="max-w-[1400px] max-h-screen w-full overflow-auto">
-        <div className=" h-full w-full  flex flex-col lg:flex-row overflow-auto m-4">
-          <section className="w-full flex flex-col sm:flex-row gap-4 m-auto mt-4">
+        <div className=" h-full w-full  flex flex-col lg:flex-row overflow-auto m-4 divide-y-2 md:divide-none divide-dashed">
+          <section className="w-full flex flex-col sm:flex-row gap-4 m-auto mt-4 divide-y-2 md:divide-none divide-dashed">
             <div className="grid gap-4 mx-auto w-4/5">
               <AspectRatio ratio={4 / 5}>
                 <Image
@@ -30,7 +30,7 @@ export const BookModal = ({ children }: { children: React.ReactNode }) => {
               <Button className="font-bold">Emprestar</Button>
             </div>
             <article className="w-full flex flex-col  justify-between ">
-              <h1 className="font-bold text-center  text-lg md:text-xl lg:text-2xl">
+              <h1 className="font-bold text-center  text-lg md:text-xl lg:text-2xl mt-2">
                 Título
               </h1>
               <div className="flex flex-col flex-1 justify-between mb-6">
@@ -55,7 +55,7 @@ export const BookModal = ({ children }: { children: React.ReactNode }) => {
                   <p className="font-normal text-sm">01/02/2022</p>
                 </div>
               </div>
-              <nav className="flex  justify-around lg:justify-around gap-1">
+              <nav className="flex  max-[315px]:flex-col justify-around lg:justify-around gap-1">
                 <Button className="font-bold" variant={"default"}>
                   Editar
                 </Button>
@@ -68,13 +68,13 @@ export const BookModal = ({ children }: { children: React.ReactNode }) => {
               </nav>
             </article>
           </section>
-          <section className="grid place-content-around w-full space-y-4">
+          <section className="grid mt-4 w-full">
             <StudentTableData />
             <div>
               <h2 className="text-lg  lg:text-xl font-bold">
                 Motivo da inativação
               </h2>
-              <p className="text-xs md:text-sm max-h-40 overflow-auto">
+              <p className="text-xs md:text-sm h-40 overflow-auto">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua.
               </p>
