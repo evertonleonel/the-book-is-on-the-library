@@ -11,6 +11,17 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
+
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
 import { Textarea } from "../ui/textarea";
 
 import * as z from "zod";
@@ -19,6 +30,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { createNewBookSchema } from "@/lib/validations/modals";
+import { toast } from "sonner";
 
 type Inputs = z.infer<typeof createNewBookSchema>;
 
@@ -39,7 +51,8 @@ export const CreateBookForm = () => {
 
   function onSubmit(data: Inputs) {
     console.log(data);
-    router.push("/library");
+    toast("My first toast");
+    // router.push("/library");
   }
   return (
     <Form {...form}>
@@ -52,13 +65,15 @@ export const CreateBookForm = () => {
         </div>
         <div className="flex-1 flex flex-col w-full sm:w-3/4 gap-4">
           <div className="flex flex-col sm:flex-row gap-4">
-            <div className="w-full grid flex-wrap max-w-[414px]:gap-4">
+            <div className="w-full h-full grid flex-wrap max-w-[414px]:gap-4  space-y-4">
               <FormField
                 control={form.control}
                 name="title"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Título</FormLabel>
+                    <FormLabel className="font-bold text-base">
+                      Título
+                    </FormLabel>
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
@@ -71,7 +86,7 @@ export const CreateBookForm = () => {
                 name="author"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Autor</FormLabel>
+                    <FormLabel className="font-bold text-base">Autor</FormLabel>
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
@@ -80,16 +95,30 @@ export const CreateBookForm = () => {
                 )}
               />
             </div>
-            <div className="w-full">
+            <div className="w-full h-full space-y-4">
               <FormField
                 control={form.control}
                 name="genre"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Gênero</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
+                    <FormLabel className="font-bold text-base">
+                      Gênero
+                    </FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="bg-background">
+                          <SelectValue placeholder="Gênero" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="light">Light</SelectItem>
+                        <SelectItem value="dark">Dark</SelectItem>
+                        <SelectItem value="system">System</SelectItem>
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -99,7 +128,7 @@ export const CreateBookForm = () => {
                 name="date"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Data</FormLabel>
+                    <FormLabel className="font-bold text-base">Data</FormLabel>
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
@@ -114,9 +143,9 @@ export const CreateBookForm = () => {
             name="sinopse"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Sinopse</FormLabel>
+                <FormLabel className="font-bold text-base">Sinopse</FormLabel>
                 <FormControl>
-                  <Textarea {...field} className="h-64 " />
+                  <Textarea {...field} className="h-60 " />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -124,7 +153,7 @@ export const CreateBookForm = () => {
           />
           <div className="self-end max-w-[280px]:self-center flex  space-x-2 sm:space-x-10">
             <Button variant={"destructive"}>Cancelar</Button>
-            <Button>Salvar</Button>
+            <Button onClick={() => toast("Meu primeiro toast")}>Salvar</Button>
           </div>
         </div>
       </form>

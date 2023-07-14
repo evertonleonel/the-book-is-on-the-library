@@ -1,8 +1,11 @@
 import "../styles/globals.css";
+
 import type { Metadata } from "next";
+
 import { cn } from "@/lib/utils";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -10,7 +13,7 @@ export const metadata: Metadata = {
   title: "Library",
   description: "App Library",
   icons: {
-    icon: "/favicon.ico",
+    icon: "/images/favicon.ico",
   },
 };
 
@@ -21,7 +24,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
-      <body className={cn(inter.className, "min-h-screen ")}>
+      <head />
+      <body
+        className={cn(inter.className, "min-h-screen font-sans antialiased")}
+      >
+        <Toaster />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {children}
         </ThemeProvider>

@@ -1,7 +1,13 @@
 import React from "react";
 
+import { Metadata } from "next";
+
 import LinkBackHome from "@/components/link-back-home";
 import TableLoan from "../../../../components/tables/table-loan";
+
+export const metadata: Metadata = {
+  title: "Library - Loan",
+};
 
 const LoanPage = () => {
   return (
