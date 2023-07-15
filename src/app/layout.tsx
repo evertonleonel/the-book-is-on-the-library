@@ -11,7 +11,20 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Library",
-  description: "App Library",
+  description:
+    "Uma biblioteca de código aberto construída com a nova versão do Next.js 13.",
+  keywords: ["Next.js", "React", "Tailwind CSS"],
+  authors: [
+    {
+      name: "evertonleonel",
+      url: "https://github.com/evertonleonel",
+    },
+  ],
+  creator: "evertonleonel",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "white" },
+    { media: "(prefers-color-scheme: dark)", color: "black" },
+  ],
   icons: {
     icon: "/images/favicon.ico",
   },
