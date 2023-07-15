@@ -1,10 +1,17 @@
 "use client";
 
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import React from "react";
-import { AspectRatio } from "../ui/aspect-ratio";
 import Image from "next/image";
+
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Button } from "../ui/button";
+import { AspectRatio } from "../ui/aspect-ratio";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import StudentTableData from "../tables/table-studant-data";
 
 export const BookModal = ({ children }: { children: React.ReactNode }) => {
@@ -14,9 +21,9 @@ export const BookModal = ({ children }: { children: React.ReactNode }) => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>{children}</DialogTrigger>
       <DialogContent className="max-w-[1400px] max-h-screen w-full overflow-auto">
-        <div className=" h-full w-full  flex flex-col lg:flex-row overflow-auto m-4 divide-y-2 md:divide-none divide-dashed">
+        <div className=" h-full w-full  flex flex-col lg:flex-row md:gap-4 overflow-auto m-4 divide-y-2 md:divide-none divide-dashed">
           <section className="w-full flex flex-col sm:flex-row gap-4 m-auto mt-4 divide-y-2 md:divide-none divide-dashed">
-            <div className="grid gap-4 mx-auto w-4/5">
+            <div className="flex flex-col justify-between gap-4 mx-auto w-4/5">
               <AspectRatio ratio={4 / 5}>
                 <Image
                   src="/images/girl-book.webp"
@@ -34,26 +41,51 @@ export const BookModal = ({ children }: { children: React.ReactNode }) => {
                 Título
               </h1>
               <div className="flex flex-col flex-1 justify-between mb-6">
-                <div className="text-accent-foreground font-semibold">
-                  <h3 className="text-secondary-foreground">Sinopse</h3>
-                  <p className="font-normal text-sm max-h-40 text-ellipsis overflow-hidden">
-                    Napoleon Hill revela que quebrou o código mental do diabo e
-                    o forçou a confessar os seus segredos. O manuscrito que
-                    resultou deste feito...
-                  </p>
-                </div>
-                <div className="text-accent-foreground font-semibold">
-                  <h3>Autor</h3>
-                  <p className="font-normal text-sm">Napoleon Hill</p>
-                </div>
-                <div className="text-accent-foreground font-semibold">
-                  <h3>Gênero</h3>
-                  <p className="font-normal text-sm">Autoajuda</p>
-                </div>
-                <div className="text-accent-foreground font-semibold">
-                  <h3>Gênero</h3>
-                  <p className="font-normal text-sm">01/02/2022</p>
-                </div>
+                <Accordion
+                  className="text-accent-foreground font-semibold"
+                  type="single"
+                  collapsible
+                >
+                  <AccordionItem value="Sinopse">
+                    <AccordionTrigger>Sinopse</AccordionTrigger>
+                    <AccordionContent className="font-normal text-sm max-h-40 text-ellipsis overflow-hidden">
+                      Napoleon Hill revela que quebrou o código mental do diabo
+                      e o forçou a confessar os seus segredos. O manuscrito que
+                      resultou deste feito...
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+
+                <Accordion
+                  className="text-accent-foreground font-semibold"
+                  type="single"
+                  collapsible
+                >
+                  <AccordionItem value="Autor">
+                    <AccordionTrigger>Autor</AccordionTrigger>
+                    <AccordionContent className="font-normal text-sm">
+                      Napoleon Hill
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+
+                <Accordion type="single" collapsible>
+                  <AccordionItem value="Gênero">
+                    <AccordionTrigger>Gênero</AccordionTrigger>
+                    <AccordionContent className="font-normal text-sm">
+                      Autoajuda
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+
+                <Accordion type="single" collapsible>
+                  <AccordionItem value="Data">
+                    <AccordionTrigger>Data</AccordionTrigger>
+                    <AccordionContent className="font-normal text-sm">
+                      01/02/2022
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
               </div>
               <nav className="flex  max-[315px]:flex-col justify-around lg:justify-around gap-1">
                 <Button className="font-bold" variant={"default"}>
@@ -68,7 +100,7 @@ export const BookModal = ({ children }: { children: React.ReactNode }) => {
               </nav>
             </article>
           </section>
-          <section className="grid mt-4 w-full">
+          <section className="grid mt-[21px] w-full">
             <StudentTableData />
             <div>
               <h2 className="text-lg  lg:text-xl font-bold">
