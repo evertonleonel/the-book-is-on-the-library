@@ -22,10 +22,7 @@ export const LockModal = ({ children }: { children: React.ReactNode }) => {
           <DialogTitle className="text-base sm:text-lg md:text-xl text-left mt-2">
             Inativar Livro
           </DialogTitle>
-          <DialogDescription>
-            <LockBookModalForm onClick={() => setOpen(false)} />
-          </DialogDescription>
-          <DialogFooter></DialogFooter>
+          <LockBookModalForm onClick={() => setOpen(false)} />
         </DialogHeader>
       </DialogContent>
     </Dialog>

@@ -23,10 +23,7 @@ export const LoanModal = ({ children }: { children: React.ReactNode }) => {
           <DialogTitle className="text-base sm:text-lg md:text-xl text-left mt-2">
             Informe os dados do aluno
           </DialogTitle>
-          <DialogDescription>
-            <LoanModalForm onClick={() => setOpen(false)} />
-          </DialogDescription>
-          <DialogFooter></DialogFooter>
+          <LoanModalForm onClick={() => setOpen(false)} />
         </DialogHeader>
       </DialogContent>
     </Dialog>
