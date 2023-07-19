@@ -20,11 +20,10 @@ import { IconInput } from "../icon-input";
 import { Icons } from "../icons";
 import { useTransition } from "react";
 import { toast } from "sonner";
-import Link from "next/link";
 
 type Inputs = z.infer<typeof authSchema>;
 
-export const SignInForm = () => {
+export const SignUpForm = () => {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
@@ -41,15 +40,17 @@ export const SignInForm = () => {
     console.log(data, "data Input");
 
     startTransition(async () => {
-      const request = await fetch("/api/users", {
-        method: "GET",
+      const request = await fetch("/api/register", {
+        method: "POST",
+        headers: { "Contet-type": "applicaition/json" },
+        body: JSON.stringify(data),
       });
       const response = await request.json();
 
       if (!request.ok) {
         toast.error(`Ops... ${response.error}`);
       } else {
-        toast.success("Logando");
+        toast.success("Usuário criado com sucesso");
       }
     });
 

@@ -18,6 +18,7 @@ import {
   Plus,
   SunIcon,
   Search,
+  Loader2,
   UserCircle2,
   X,
 } from "lucide-react";
@@ -44,4 +45,5 @@ export const Icons = {
   userCircle: UserCircle2,
   close: X,
   home: Home,
+  spinner: Loader2,
 };
