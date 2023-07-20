@@ -12,11 +12,11 @@ import {
   MenubarShortcut,
   MenubarTrigger,
 } from "@/components/ui/menubar";
-import Link from "next/link";
-import { ModeToggle } from "../ui/toggle-button";
 import { Icons } from "../icons";
-import { IconComponentMain } from "@/types";
 import { mainNav } from "@/config/site";
+import { IconComponentMain } from "@/types";
+import { ModeToggle } from "../ui/toggle-button";
+import Link from "next/link";
 
 interface MainNavProps {
   user: User | null;

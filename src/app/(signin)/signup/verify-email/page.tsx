@@ -21,9 +21,9 @@ export default function VerifyEmailPage() {
       <div className="max-w-lg ">
         <Card>
           <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl">Verify email</CardTitle>
+            <CardTitle className="text-2xl">Verificar E-mail</CardTitle>
             <CardDescription>
-              Verify your email address to complete your account creation
+              Verifique seu endereço de e-mail para concluir a criação da conta
             </CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4">
