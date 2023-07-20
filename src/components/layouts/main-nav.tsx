@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -16,12 +14,13 @@ import { ModeToggle } from "../ui/toggle-button";
 import { Icons } from "../icons";
 import { IconComponentMain } from "@/types";
 import { mainNav } from "@/config/site";
+import { auth, UserButton, UserProfile } from "@clerk/nextjs";
 
-interface MainNavProps {
-  user: string | "";
-}
+export function MainNav() {
+  const { userId } = auth();
 
-export function MainNav({ user }: MainNavProps) {
+  console.log(UserProfile.name);
+
   const IconComponent = (icon: IconComponentMain) => {
     const iconComponent = {
       home: <Icons.home className="h-4" />,
@@ -36,14 +35,19 @@ export function MainNav({ user }: MainNavProps) {
   return (
     <section className="flex justify-center items-center gap-2 ">
       <Avatar>
-        <AvatarImage src="https://github.com/shadcn.png" alt={user ?? ""} />
-        <AvatarFallback>{user ?? ""}</AvatarFallback>
+        {userId ? (
+          <UserButton afterSignOutUrl="/" />
+        ) : (
+          <AvatarImage src="https://github.com/shadcn.png" alt={userId ?? ""} />
+        )}
+
+        <AvatarFallback>{userId ?? ""}</AvatarFallback>
       </Avatar>
       <p className="text-muted-foreground text-sm md:text-base lg:text-lg font-semibold">
         Olá
       </p>
       <p className="text-indigo-700 text-sm md:text-base lg:text-lg font-semibold">
-        {user ? user : ""}
+        {UserProfile.name ? UserProfile?.name : ""}
       </p>
 
       <Menubar>

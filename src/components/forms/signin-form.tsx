@@ -11,6 +11,7 @@ import {
   FormMessage,
 } from "../ui/form";
 
+import { useSignIn } from "@clerk/nextjs";
 import { authSchema } from "@/lib/validations/auth";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,12 +21,13 @@ import { IconInput } from "../icon-input";
 import { Icons } from "../icons";
 import { useTransition } from "react";
 import { toast } from "sonner";
-import Link from "next/link";
+import { catchClerkError } from "@/lib/utils";
 
 type Inputs = z.infer<typeof authSchema>;
 
 export const SignInForm = () => {
   const router = useRouter();
+  const { isLoaded, signIn, setActive } = useSignIn();
   const [isPending, startTransition] = useTransition();
 
   // react-hook-form
@@ -39,25 +41,38 @@ export const SignInForm = () => {
 
   function onSubmit(data: Inputs) {
     console.log(data, "data Input");
+    if (!isLoaded) return;
 
     startTransition(async () => {
-      const request = await fetch("/api/users", {
-        method: "GET",
-      });
-      const response = await request.json();
+      try {
+        const result = await signIn?.create({
+          identifier: data.email,
+          password: data.password,
+        });
 
-      if (!request.ok) {
-        toast.error(`Ops... ${response.error}`);
-      } else {
-        toast.success("Logando");
+        console.log(result);
+
+        if (result?.status === "complete") {
+          await setActive({ session: result.createdSessionId });
+
+          router.push(`${window.location.origin}/`);
+        } else {
+          /* Verificar por que o login nao foi concluído  */
+          console.log(result);
+        }
+      } catch (err) {
+        catchClerkError(err);
       }
     });
 
-    router.push("/");
+    router.push("/home");
   }
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
+      <form
+        onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
+        className="grid gap-4"
+      >
         <FormField
           control={form.control}
           name="email"

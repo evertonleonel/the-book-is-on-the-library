@@ -20,11 +20,14 @@ import { IconInput } from "../icon-input";
 import { Icons } from "../icons";
 import { useTransition } from "react";
 import { toast } from "sonner";
+import { useSignUp } from "@clerk/nextjs";
+import { catchClerkError } from "@/lib/utils";
 
 type Inputs = z.infer<typeof authSchema>;
 
 export const SignUpForm = () => {
   const router = useRouter();
+  const { isLoaded, signUp } = useSignUp();
   const [isPending, startTransition] = useTransition();
 
   // react-hook-form
@@ -38,19 +41,27 @@ export const SignUpForm = () => {
 
   function onSubmit(data: Inputs) {
     console.log(data, "data Input");
+    if (!isLoaded) return;
 
     startTransition(async () => {
-      const request = await fetch("/api/register", {
-        method: "POST",
-        headers: { "Contet-type": "applicaition/json" },
-        body: JSON.stringify(data),
-      });
-      const response = await request.json();
+      try {
+        await signUp.create({
+          emailAddress: data.email,
+          password: data.password,
+        });
 
-      if (!request.ok) {
-        toast.error(`Ops... ${response.error}`);
-      } else {
-        toast.success("Usuário criado com sucesso");
+        // Send email verification code
+        await signUp.prepareEmailAddressVerification({
+          strategy: "email_code",
+        });
+
+        router.push("/signup/verify-email");
+        toast.message("Verifique seu email", {
+          description:
+            "Enviamos um código de verificação de 6 dígitos para o seu e-mail.",
+        });
+      } catch (err) {
+        catchClerkError(err);
       }
     });
 
@@ -58,7 +69,10 @@ export const SignUpForm = () => {
   }
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
+      <form
+        onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
+        className="grid gap-4"
+      >
         <FormField
           control={form.control}
           name="email"
