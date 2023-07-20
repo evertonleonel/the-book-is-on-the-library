@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import type { User } from "@clerk/nextjs/dist/types/server";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Menubar,
@@ -17,7 +18,19 @@ import { Icons } from "../icons";
 import { IconComponentMain } from "@/types";
 import { mainNav } from "@/config/site";
 
-export function MainNav() {
+interface MainNavProps {
+  user: User | null;
+}
+
+export function MainNav({ user }: MainNavProps) {
+  const initials = `${user?.firstName?.charAt(0) ?? ""} ${
+    user?.lastName?.charAt(0) ?? ""
+  }`;
+
+  const email =
+    user?.emailAddresses?.find((e) => e.id === user.primaryEmailAddressId)
+      ?.emailAddress ?? "";
+
   const IconComponent = (icon: IconComponentMain) => {
     const iconComponent = {
       home: <Icons.home className="h-4" />,
@@ -32,14 +45,14 @@ export function MainNav() {
   return (
     <section className="flex justify-center items-center gap-2 ">
       <Avatar>
-        <AvatarImage src="https://github.com/shadcn.png" alt={""} />
-        <AvatarFallback>{""}</AvatarFallback>
+        <AvatarImage src={user?.imageUrl} alt={user?.username ?? ""} />
+        <AvatarFallback>{initials}</AvatarFallback>
       </Avatar>
       <p className="text-muted-foreground text-sm md:text-base lg:text-lg font-semibold">
         Olá
       </p>
       <p className="text-indigo-700 text-sm md:text-base lg:text-lg font-semibold">
-        {""}
+        {user?.username ?? ""}
       </p>
 
       <Menubar>
