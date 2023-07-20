@@ -99,7 +99,7 @@ export const SignUpForm = () => {
               <FormControl>
                 <PasswordInput placeholder="senha" {...field} />
               </FormControl>
-              <FormMessage />
+              <FormMessage className="max-w-sm" />
             </FormItem>
           )}
         />

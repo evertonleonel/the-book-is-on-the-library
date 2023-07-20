@@ -8,13 +8,6 @@ export default function SignupPage() {
     <main className="flex-1">
       <div className="grid min-h-screen grid-cols-1 overflow-hidden md:grid-cols-2 ">
         <div className="absolute top-4 right-6 z-10 flex gap-4 justify-center items-center">
-          <Link
-            aria-label="Sign up"
-            href="/"
-            className="text-primary text-base font-semibold underline-offset-4 transition-colors  hover:underline"
-          >
-            Voltar
-          </Link>
           <ModeToggle />
         </div>
         <ImageLogin />
@@ -28,6 +21,15 @@ export default function SignupPage() {
             </div>
 
             <SignUpForm />
+            <div>
+              <Link
+                aria-label="Sign up"
+                href="/"
+                className="text-primary text-base font-semibold underline-offset-4 transition-colors  hover:underline"
+              >
+                Voltar
+              </Link>
+            </div>
           </div>
         </div>
       </div>

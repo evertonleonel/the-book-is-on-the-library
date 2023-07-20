@@ -18,7 +18,7 @@ export default async function HomeLayout({
 }) {
   const user = await currentUser();
   if (!user) {
-    redirect("/signin");
+    redirect("/");
   }
   return (
     <div className="min-h-screen flex flex-col">
