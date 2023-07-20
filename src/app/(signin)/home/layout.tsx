@@ -16,7 +16,7 @@ export default function HomeLayout({
     <div className="min-h-screen flex flex-col">
       <header className="h-20 bg-secondary flex justify-between items-center p-6  shadow-xl">
         <Logo className="mix-blend-multiply dark:mix-blend-color-dodge" />
-        <MainNav user={""} />
+        <MainNav />
       </header>
       <Container>{children}</Container>
     </div>

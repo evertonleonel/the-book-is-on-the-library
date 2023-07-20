@@ -17,11 +17,7 @@ import { Icons } from "../icons";
 import { IconComponentMain } from "@/types";
 import { mainNav } from "@/config/site";
 
-interface MainNavProps {
-  user: string | "";
-}
-
-export function MainNav({ user }: MainNavProps) {
+export function MainNav() {
   const IconComponent = (icon: IconComponentMain) => {
     const iconComponent = {
       home: <Icons.home className="h-4" />,
@@ -36,14 +32,14 @@ export function MainNav({ user }: MainNavProps) {
   return (
     <section className="flex justify-center items-center gap-2 ">
       <Avatar>
-        <AvatarImage src="https://github.com/shadcn.png" alt={user ?? ""} />
-        <AvatarFallback>{user ?? ""}</AvatarFallback>
+        <AvatarImage src="https://github.com/shadcn.png" alt={""} />
+        <AvatarFallback>{""}</AvatarFallback>
       </Avatar>
       <p className="text-muted-foreground text-sm md:text-base lg:text-lg font-semibold">
         Olá
       </p>
       <p className="text-indigo-700 text-sm md:text-base lg:text-lg font-semibold">
-        {user ? user : ""}
+        {""}
       </p>
 
       <Menubar>

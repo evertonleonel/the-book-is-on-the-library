@@ -11,7 +11,6 @@ import {
   FormMessage,
 } from "../ui/form";
 
-import { useSignIn } from "@clerk/nextjs";
 import { authSchema } from "@/lib/validations/auth";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -21,13 +20,14 @@ import { IconInput } from "../icon-input";
 import { Icons } from "../icons";
 import { useTransition } from "react";
 import { toast } from "sonner";
+import { useSignUp } from "@clerk/nextjs";
 import { catchClerkError } from "@/lib/utils";
 
 type Inputs = z.infer<typeof authSchema>;
 
-export const SignInForm = () => {
+export const SignUpForm = () => {
   const router = useRouter();
-  const { isLoaded, signIn, setActive } = useSignIn();
+  const { isLoaded, signUp } = useSignUp();
   const [isPending, startTransition] = useTransition();
 
   // react-hook-form
@@ -45,25 +45,27 @@ export const SignInForm = () => {
 
     startTransition(async () => {
       try {
-        const result = await signIn?.create({
-          identifier: data.email,
+        await signUp.create({
+          emailAddress: data.email,
           password: data.password,
         });
 
-        console.log(result);
+        // Send email verification code
+        await signUp.prepareEmailAddressVerification({
+          strategy: "email_code",
+        });
 
-        if (result?.status === "complete") {
-          await setActive({ session: result.createdSessionId });
-
-          router.push(`${window.location.origin}/home`);
-        } else {
-          /* Verificar por que o login nao foi concluído  */
-          console.log(result);
-        }
+        router.push("/signup/verify-email");
+        toast.message("Verifique seu email", {
+          description:
+            "Enviamos um código de verificação de 6 dígitos para o seu e-mail.",
+        });
       } catch (err) {
         catchClerkError(err);
       }
     });
+
+    router.push("/");
   }
   return (
     <Form {...form}>

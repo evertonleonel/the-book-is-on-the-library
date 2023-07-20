@@ -11,54 +11,49 @@ import {
   FormMessage,
 } from "../ui/form";
 
-import { useSignIn } from "@clerk/nextjs";
-import { authSchema } from "@/lib/validations/auth";
+import { useSignUp } from "@clerk/nextjs";
+import { verfifyEmailSchema } from "@/lib/validations/auth";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { PasswordInput } from "../password-input";
-import { IconInput } from "../icon-input";
 import { Icons } from "../icons";
 import { useTransition } from "react";
-import { toast } from "sonner";
 import { catchClerkError } from "@/lib/utils";
+import { Input } from "../ui/input";
 
-type Inputs = z.infer<typeof authSchema>;
+type Inputs = z.infer<typeof verfifyEmailSchema>;
 
-export const SignInForm = () => {
+export const VerifyEmailForm = () => {
   const router = useRouter();
-  const { isLoaded, signIn, setActive } = useSignIn();
+  const { isLoaded, signUp, setActive } = useSignUp();
+
   const [isPending, startTransition] = useTransition();
 
   // react-hook-form
   const form = useForm<Inputs>({
-    resolver: zodResolver(authSchema),
+    resolver: zodResolver(verfifyEmailSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      code: "",
     },
   });
 
   function onSubmit(data: Inputs) {
-    console.log(data, "data Input");
     if (!isLoaded) return;
 
     startTransition(async () => {
       try {
-        const result = await signIn?.create({
-          identifier: data.email,
-          password: data.password,
+        const completeSignUp = await signUp?.attemptEmailAddressVerification({
+          code: data.code,
         });
+        if (completeSignUp.status !== "complete") {
+          /*   investiga a resposta, para ver se houve algum erro
+             ou se o usuário precisar concluir mais etapas.*/
+          console.log(JSON.stringify(completeSignUp, null, 2));
+        }
+        if (completeSignUp.status === "complete") {
+          await setActive({ session: completeSignUp.createdSessionId });
 
-        console.log(result);
-
-        if (result?.status === "complete") {
-          await setActive({ session: result.createdSessionId });
-
-          router.push(`${window.location.origin}/home`);
-        } else {
-          /* Verificar por que o login nao foi concluído  */
-          console.log(result);
+          router.push(`${window.location.origin}/`);
         }
       } catch (err) {
         catchClerkError(err);
@@ -73,29 +68,19 @@ export const SignInForm = () => {
       >
         <FormField
           control={form.control}
-          name="email"
+          name="code"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>E-mail</FormLabel>
+              <FormLabel>Código</FormLabel>
               <FormControl>
-                <IconInput
-                  placeholder="exemplo@email.com"
-                  icon={Icons.mail}
+                <Input
+                  placeholder="112358"
                   {...field}
+                  onChange={(e) => {
+                    e.target.value = e.target.value.trim();
+                    field.onChange(e);
+                  }}
                 />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Senha</FormLabel>
-              <FormControl>
-                <PasswordInput placeholder="senha" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -109,7 +94,7 @@ export const SignInForm = () => {
               aria-hidden="true"
             />
           )}
-          Enviar
+          Criar conta
         </Button>
       </form>
     </Form>
