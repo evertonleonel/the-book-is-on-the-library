@@ -60,6 +60,7 @@ export function MainNav({ user }: MainNavProps) {
           <MenubarTrigger>Menu</MenubarTrigger>
           <MenubarContent>
             <ul>
+              <li className="list-none"></li>
               {mainNav.map(({ href, title, icon }) => {
                 if (title === "Home") {
                   return (

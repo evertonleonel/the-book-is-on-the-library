@@ -5,10 +5,10 @@ import { useRouter } from "next/navigation";
 import { SignOutButton } from "@clerk/nextjs";
 
 import { cn } from "@/lib/utils";
-import { useMounted } from "@/hooks/use-mounted";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Icons } from "@/components/icons";
+import { useMounted } from "@/hooks/use-mounted";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Button, buttonVariants } from "@/components/ui/button";
 
 export function LogOutButtons() {
   const router = useRouter();
@@ -26,7 +26,7 @@ export function LogOutButtons() {
           }
         >
           <Button
-            aria-label="Log out"
+            aria-label="Sair"
             size="sm"
             className="w-full"
             disabled={isPending}
@@ -34,7 +34,7 @@ export function LogOutButtons() {
             {isPending && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             )}
-            Log out
+            Sair
           </Button>
         </SignOutButton>
       ) : (
@@ -44,11 +44,11 @@ export function LogOutButtons() {
             "w-full bg-muted text-muted-foreground"
           )}
         >
-          Log out
+          Sair
         </Skeleton>
       )}
       <Button
-        aria-label="Go back to the previous page"
+        aria-label="Voltar para a página anterior"
         variant="outline"
         size="sm"
         className="w-full"

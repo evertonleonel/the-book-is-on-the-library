@@ -41,7 +41,7 @@ export const mainNav = [
   },
   {
     title: "Sair",
-    href: "/",
+    href: "/signout",
     icon: "close",
   },
 ] satisfies MainNavProps[];

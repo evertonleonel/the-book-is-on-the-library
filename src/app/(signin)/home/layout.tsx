@@ -5,6 +5,7 @@ import Container from "@/components/container/container";
 import { MainNav } from "@/components/layouts/main-nav";
 import { Logo } from "@/components/logo";
 import { Metadata } from "next";
+import { UserProfile } from "@/components/user-profile";
 
 export const metadata: Metadata = {
   title: "Home Library",
