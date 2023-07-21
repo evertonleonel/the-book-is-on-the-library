@@ -1,4 +1,4 @@
-import { Book } from "@/types";
+import { Book, CreateBook } from "@/types";
 import { api } from "./api";
 
 export const getAllBooks = async () => {
@@ -6,7 +6,7 @@ export const getAllBooks = async () => {
   return data;
 };
 
-export const createBook = async (book: Book) => {
+export const createBook = async (book: CreateBook) => {
   await api.post("/", book);
   return true;
 };

@@ -29,12 +29,14 @@ export interface RentHistoryBook {
 
 export interface Book {
   id: string;
-  tittle: string;
+  title: string;
   author: string;
   genre: string;
   status: StatusBook;
-  image: string;
+  image: string | unknown;
   systemEntryDate: string;
   synopsis: string;
   rentHistory: RentHistoryBook[];
 }
+
+export type CreateBook = Omit<Book, "id" | "status" | "rentHistory">;

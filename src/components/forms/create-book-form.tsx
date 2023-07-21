@@ -1,14 +1,14 @@
 "use client";
-import React, {
-  ChangeEvent,
-  useEffect,
-  useRef,
-  useState,
-  useTransition,
-} from "react";
 
+import React, { useEffect, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+
+import * as z from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 import FileInputImage from "../file-input";
+import { Textarea } from "../ui/textarea";
 import {
   Form,
   FormControl,
@@ -26,24 +26,23 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { Textarea } from "../ui/textarea";
-
-import * as z from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { createNewBookSchema } from "@/lib/validations/modals";
 import { toast } from "sonner";
 import { Icons } from "../icons";
 import { parseBase64 } from "@/lib/utils";
+import { defaultGenres } from "@/config/site";
+import { createBook, getAllBooks } from "@/lib/services";
+import { Book, CreateBook } from "@/types";
+import { createNewBookSchema } from "@/lib/validations/modals";
 
 type Inputs = z.infer<typeof createNewBookSchema>;
 
 export const CreateBookForm = () => {
+  const [genre, setGenre] = useState<String[]>([]);
   const [isPending, startTransition] = useTransition();
-  const inputRef = useRef<HTMLInputElement>(null);
   const [selectedImage, setSelectedImage] = useState<string>();
+  const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
   // react-hook-form
@@ -66,30 +65,40 @@ export const CreateBookForm = () => {
     }
   }
 
+  useEffect(() => {
+    getAllBooks().then((data: Book[]) => {
+      const genres = data.map((el) => {
+        return el.genre;
+      });
+
+      const updatedGenresSet = new Set([...genres, ...defaultGenres]);
+
+      // Converter o Set em  array
+      const updatedGenres = Array.from(updatedGenresSet).sort();
+
+      setGenre(updatedGenres);
+    });
+  }, []);
+
   function onSubmit(data: Inputs) {
     startTransition(async () => {
-      const parseData = data;
-      console.log(parseData, "parseData");
-      parseData.image = selectedImage;
-      console.log(parseData, "com select");
+      try {
+        const parseData = data;
+        parseData.image = selectedImage;
+        parseData.systemEntryDate = new Date(
+          parseData.systemEntryDate.replaceAll("-", "/")
+        ).toISOString();
 
-      const request = await fetch(`api/book`, {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify(parseData),
-      });
-      const response = await request.json();
+        createBook(parseData as CreateBook);
 
-      if (!response.ok) {
-        toast.error(`Falha no envio das informações, ${response}`);
-      } else {
+        form.reset();
+        setSelectedImage(undefined);
         toast.success("Livro criado com sucesso!");
+        // router.push("/library");
+      } catch (err) {
+        toast.error(`Falha no envio das informações`);
       }
     });
-
-    // router.push("/library");
   }
   return (
     <Form {...form}>
@@ -162,9 +171,21 @@ export const CreateBookForm = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="light">Light</SelectItem>
-                        <SelectItem value="dark">Dark</SelectItem>
-                        <SelectItem value="system">System</SelectItem>
+                        {genre.length == 0
+                          ? defaultGenres.map((el, index) => {
+                              return (
+                                <SelectItem key={index} value={String(el)}>
+                                  {el}
+                                </SelectItem>
+                              );
+                            })
+                          : genre.map((el, index) => {
+                              return (
+                                <SelectItem key={index} value={String(el)}>
+                                  {el}
+                                </SelectItem>
+                              );
+                            })}
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -178,7 +199,7 @@ export const CreateBookForm = () => {
                   <FormItem>
                     <FormLabel className="font-bold text-base">Data</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input {...field} type="date" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

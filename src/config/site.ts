@@ -45,3 +45,12 @@ export const mainNav = [
     icon: "close",
   },
 ] satisfies MainNavProps[];
+
+export const defaultGenres = [
+  "AutoAjuda",
+  "Ação e Aventura",
+  "Fantasia",
+  "Horror",
+  "Finanças",
+  "Romance",
+];
