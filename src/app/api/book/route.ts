@@ -22,10 +22,7 @@ export async function POST(request: NextRequest) {
   // }
 
   const data = await request.json();
-  console.log(
-    data,
-    "----------------------------------------------------------------------------------------- DATA ---------------------------------------------"
-  );
+
   const { title, author, genre, synopsis, image, systemEntryDate } = data;
 
   if (!title || !author || !genre || !synopsis || !systemEntryDate || !image) {

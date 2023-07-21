@@ -35,6 +35,8 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { createNewBookSchema } from "@/lib/validations/modals";
 import { toast } from "sonner";
+import { Icons } from "../icons";
+import { parseBase64 } from "@/lib/utils";
 
 type Inputs = z.infer<typeof createNewBookSchema>;
 
@@ -42,7 +44,6 @@ export const CreateBookForm = () => {
   const [isPending, startTransition] = useTransition();
   const inputRef = useRef<HTMLInputElement>(null);
   const [selectedImage, setSelectedImage] = useState<string>();
-  const [selectedFile, setSelectedFile] = useState<File>();
   const router = useRouter();
 
   // react-hook-form
@@ -54,59 +55,33 @@ export const CreateBookForm = () => {
       genre: "",
       synopsis: "",
       systemEntryDate: "",
-      image: "",
     },
   });
 
-  // async function handleImageChange(e: { target: HTMLInputElement }) {
-  //   const files = e.target.files;
-  //   if (files && files.length > 0) {
-  //     const file = files[0];
-  //     setSelectedImage(URL.createObjectURL(file));
-  //     setSelectedFile(file);
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   form.register("image", {
-  //     validate: (value) => {
-  //       if (!value) {
-  //         return "Selecione uma imagem.";
-  //       }
-  //       return true;
-  //     },
-  //   });
-  // }, [form]);
-
-  const handleFileChange = () => {
-    if (inputRef.current && inputRef.current.files) {
-      const selectedFile = inputRef.current.files[0];
-      handleFileSelect(selectedFile);
+  async function handleImageChange(e: { target: HTMLInputElement }) {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      const file = await parseBase64(files[0]);
+      setSelectedImage(file);
     }
-  };
-
-  const handleFileSelect = async (fileInput: File) => {
-    const reader = new FileReader();
-
-    reader.readAsDataURL(fileInput);
-    reader.onload = async (event) => {
-      const base64String = event?.target?.result?.toString();
-      setSelectedImage(base64String);
-    };
-  };
+  }
 
   function onSubmit(data: Inputs) {
-    event?.preventDefault();
-
     startTransition(async () => {
+      const parseData = data;
+      console.log(parseData, "parseData");
+      parseData.image = selectedImage;
+      console.log(parseData, "com select");
+
       const request = await fetch(`api/book`, {
         method: "POST",
         headers: {
           "Content-type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(parseData),
       });
       const response = await request.json();
+
       if (!response.ok) {
         toast.error(`Falha no envio das informações, ${response}`);
       } else {
@@ -124,33 +99,17 @@ export const CreateBookForm = () => {
       >
         <div className="flex justify-center items-center w-full sm:w-1/4 ">
           <FileInputImage selectedImage={selectedImage}>
-            {/* <Input
+            <Input
               id="dropzone-file"
               type="file"
               ref={inputRef}
               onChange={handleImageChange}
               className="hidden w-full"
-            /> */}
-
-            <input
-              id="dropzone-file"
-              type="file"
-              className="hidden w-full"
-              {...(form.register("image"),
-              {
-                onInput: (file: ChangeEvent<HTMLInputElement>) => {
-                  if (file.target.files)
-                    form.setValue("image", String(file.target.files[0]));
-                },
-              })}
-              ref={inputRef}
-              onChange={handleFileChange}
             />
-
-            {form.formState.errors.image && (
-              <p>{form.formState.errors.image.message}</p>
-            )}
           </FileInputImage>
+          {form.formState.errors.image && (
+            <p>{form.formState.errors.image.message}</p>
+          )}
         </div>
         <div className="flex-1 flex flex-col w-full sm:w-3/4 gap-4">
           <div className="flex flex-col sm:flex-row gap-4">
@@ -242,7 +201,15 @@ export const CreateBookForm = () => {
           />
           <div className="self-end max-w-[280px]:self-center flex  space-x-2 sm:space-x-10">
             <Button variant={"destructive"}>Cancelar</Button>
-            <Button type="submit">Salvar</Button>
+            <Button disabled={isPending} type="submit">
+              {isPending && (
+                <Icons.spinner
+                  className="mr-2 h-4 w-4 animate-spin"
+                  aria-hidden="true"
+                />
+              )}
+              Salvar
+            </Button>
           </div>
         </div>
       </form>

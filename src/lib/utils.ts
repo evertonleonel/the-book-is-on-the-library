@@ -22,3 +22,18 @@ export function catchClerkError(err: unknown) {
     return toast.error(unknownErr);
   }
 }
+
+export const parseBase64 = (raw: Blob): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const fileReader = new FileReader();
+
+    fileReader.readAsDataURL(raw);
+    fileReader.onload = () => {
+      resolve(fileReader.result as string);
+    };
+
+    fileReader.onerror = (error: Event) => {
+      reject(error);
+    };
+  });
+};

@@ -16,10 +16,17 @@ export const createNewBookSchema = z.object({
   systemEntryDate: z.string().min(3, {
     message: "O campo author deve ter pelo menos 3 caracteres",
   }),
-  image: z.string().nonempty({ message: "Selecione uma imagem." }),
-  // image: z.string().refine((value) => value && value.length > 0, {
-  //   message: "Selecione uma imagem.",
-  // }),
+  // image: z.string().nonempty({ message: "Selecione uma imagem." }),
+  image: z
+    .unknown()
+    .refine((val) => {
+      if (!Array.isArray(val)) return false;
+      if (val.some((file) => !(file instanceof File))) return false;
+      return true;
+    }, "Deve ser um array de arquivos")
+    .optional()
+    .nullable()
+    .default(null),
 });
 
 export const lockBookModalSchema = z.object({

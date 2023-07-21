@@ -27,7 +27,7 @@ export interface RentHistoryBook {
   deliveryDate: string;
 }
 
-export interface IBook {
+export interface Book {
   id: string;
   tittle: string;
   author: string;
