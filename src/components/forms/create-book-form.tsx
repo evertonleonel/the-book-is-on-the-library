@@ -132,7 +132,7 @@ export const CreateBookForm = () => {
                       Título
                     </FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input placeholder="Nome do livro" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -145,7 +145,7 @@ export const CreateBookForm = () => {
                   <FormItem>
                     <FormLabel className="font-bold text-base">Autor</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input placeholder="Nome do autor" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -214,14 +214,27 @@ export const CreateBookForm = () => {
               <FormItem>
                 <FormLabel className="font-bold text-base">Sinopse</FormLabel>
                 <FormControl>
-                  <Textarea {...field} className="h-60 " />
+                  <Textarea
+                    placeholder="Sinopse do livro..."
+                    {...field}
+                    className="h-60 "
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
           <div className="self-end max-w-[280px]:self-center flex  space-x-2 sm:space-x-10">
-            <Button variant={"destructive"}>Cancelar</Button>
+            <Button
+              type="reset"
+              variant={"destructive"}
+              onClick={() => {
+                form.reset();
+                setSelectedImage(undefined);
+              }}
+            >
+              Cancelar
+            </Button>
             <Button disabled={isPending} type="submit">
               {isPending && (
                 <Icons.spinner

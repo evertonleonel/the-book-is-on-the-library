@@ -13,15 +13,25 @@ import { Button } from "../ui/button";
 import { AspectRatio } from "../ui/aspect-ratio";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import StudentTableData from "../tables/table-studant-data";
+import { GetBook } from "@/types";
+import { HistoryModal } from "./history-modal";
+import { LockModal } from "./lock-modal";
 
-export const BookModal = ({ children }: { children: React.ReactNode }) => {
+interface BookModalProps {
+  book: GetBook;
+  children: React.ReactNode;
+}
+
+export const BookModal = ({ book, children }: BookModalProps) => {
   const [open, setOpen] = React.useState(false);
+
+  const tableAndStatus = book.rentHistory || book.description;
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>{children}</DialogTrigger>
       <DialogContent className="max-w-[1400px] max-h-screen w-full overflow-auto">
-        <div className=" h-full w-full  flex flex-col lg:flex-row md:gap-4 overflow-auto m-4 divide-y-2 md:divide-none divide-dashed">
+        <div className=" h-full w-full  flex flex-col lg:flex-row md:gap-4  m-4 divide-y-2 md:divide-none divide-dashed">
           <section className="w-full flex flex-col sm:flex-row gap-4 m-auto mt-4 divide-y-2 md:divide-none divide-dashed">
             <div className="flex flex-col justify-between gap-4 mx-auto w-4/5">
               <AspectRatio ratio={4 / 5}>
@@ -38,7 +48,7 @@ export const BookModal = ({ children }: { children: React.ReactNode }) => {
             </div>
             <article className="w-full flex flex-col  justify-between ">
               <h1 className="font-bold text-center  text-lg md:text-xl lg:text-2xl mt-2">
-                Título
+                {book.title}
               </h1>
               <div className="flex flex-col flex-1 justify-between mb-6">
                 <Accordion
@@ -49,9 +59,7 @@ export const BookModal = ({ children }: { children: React.ReactNode }) => {
                   <AccordionItem value="Sinopse">
                     <AccordionTrigger>Sinopse</AccordionTrigger>
                     <AccordionContent className="font-normal text-sm max-h-40 text-ellipsis overflow-hidden">
-                      Napoleon Hill revela que quebrou o código mental do diabo
-                      e o forçou a confessar os seus segredos. O manuscrito que
-                      resultou deste feito...
+                      {book.synopsis}
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion>
@@ -64,7 +72,7 @@ export const BookModal = ({ children }: { children: React.ReactNode }) => {
                   <AccordionItem value="Autor">
                     <AccordionTrigger>Autor</AccordionTrigger>
                     <AccordionContent className="font-normal text-sm">
-                      Napoleon Hill
+                      {book.author}
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion>
@@ -73,7 +81,7 @@ export const BookModal = ({ children }: { children: React.ReactNode }) => {
                   <AccordionItem value="Gênero">
                     <AccordionTrigger>Gênero</AccordionTrigger>
                     <AccordionContent className="font-normal text-sm">
-                      Autoajuda
+                      {book.genre}
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion>
@@ -82,7 +90,7 @@ export const BookModal = ({ children }: { children: React.ReactNode }) => {
                   <AccordionItem value="Data">
                     <AccordionTrigger>Data</AccordionTrigger>
                     <AccordionContent className="font-normal text-sm">
-                      01/02/2022
+                      {new Date(book.createdAt).toLocaleDateString("pt-BR")}
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion>
@@ -91,27 +99,51 @@ export const BookModal = ({ children }: { children: React.ReactNode }) => {
                 <Button className="font-bold" variant={"default"}>
                   Editar
                 </Button>
-                <Button className="font-bold" variant={"destructive"}>
-                  Ativar
-                </Button>
-                <Button className="font-bold" variant={"secondary"}>
-                  Histórico
-                </Button>
+
+                {book.status && (
+                  <LockModal statusBook={book.status}>
+                    <Button className="`font-bold" variant={"destructive"}>
+                      Inativar
+                    </Button>
+                  </LockModal>
+                )}
+
+                {!book.status && (
+                  <Button
+                    variant={"default"}
+                    className="font-bold  bg-indigo-700 hover:bg-indigo-900"
+                  >
+                    Ativar
+                  </Button>
+                )}
+
+                <HistoryModal history={book.rentHistory}>
+                  <Button className="font-bold" variant={"secondary"}>
+                    Histórico
+                  </Button>
+                </HistoryModal>
               </nav>
             </article>
           </section>
-          <section className="grid mt-[21px] w-full">
-            <StudentTableData />
-            <div>
-              <h2 className="text-lg  lg:text-xl font-bold">
-                Motivo da inativação
-              </h2>
-              <p className="text-xs md:text-sm h-40 overflow-auto">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              </p>
-            </div>
-          </section>
+
+          {tableAndStatus && (
+            <>
+              <section className="grid mt-[21px] w-full">
+                {book.rentHistory && <StudentTableData />}
+
+                {book.description && (
+                  <div>
+                    <h2 className="text-lg  lg:text-xl font-bold">
+                      Motivo da inativação
+                    </h2>
+                    <p className="text-xs md:text-sm h-40 overflow-auto">
+                      {book.description}
+                    </p>
+                  </div>
+                )}
+              </section>
+            </>
+          )}
         </div>
       </DialogContent>
     </Dialog>

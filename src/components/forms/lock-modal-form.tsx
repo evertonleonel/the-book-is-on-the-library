@@ -19,10 +19,14 @@ import { lockBookModalSchema } from "@/lib/validations/modals";
 type Inputs = z.infer<typeof lockBookModalSchema>;
 
 type lockBookModalProps = {
+  statusBook: boolean;
   onClick: () => void;
 };
 
-export const LockBookModalForm = ({ onClick }: lockBookModalProps) => {
+export const LockBookModalForm = ({
+  onClick,
+  statusBook,
+}: lockBookModalProps) => {
   // react-hook-form
   const form = useForm<Inputs>({
     resolver: zodResolver(lockBookModalSchema),
@@ -35,6 +39,7 @@ export const LockBookModalForm = ({ onClick }: lockBookModalProps) => {
     console.log(data);
     onClick();
   }
+
   return (
     <Form {...form}>
       <form
@@ -57,9 +62,26 @@ export const LockBookModalForm = ({ onClick }: lockBookModalProps) => {
             </FormItem>
           )}
         />
-        <Button variant={"destructive"} className="w-36 place-self-end">
-          Inativar
-        </Button>
+
+        {!statusBook && (
+          <Button
+            type="submit"
+            variant={"default"}
+            className="font-bold  bg-indigo-700 hover:bg-indigo-900"
+          >
+            Ativar
+          </Button>
+        )}
+
+        {statusBook && (
+          <Button
+            type="submit"
+            variant={"destructive"}
+            className="w-36 place-self-end"
+          >
+            Inativar
+          </Button>
+        )}
       </form>
     </Form>
   );

@@ -4,15 +4,21 @@ import React from "react";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 
 import TableLoanModal from "../tables/table-loan-modal";
+import { RentHistoryBook } from "@/types";
 
-export const HistoryModal = ({ children }: { children: React.ReactNode }) => {
+export const HistoryModal = ({
+  history,
+  children,
+}: {
+  history: RentHistoryBook[];
+  children: React.ReactNode;
+}) => {
   const [open, setOpen] = React.useState(false);
 
   return (
@@ -23,7 +29,7 @@ export const HistoryModal = ({ children }: { children: React.ReactNode }) => {
           <DialogTitle className="text-base sm:text-lg md:text-xl text-left mt-2">
             Histórico de empréstimos do livro
           </DialogTitle>
-          <TableLoanModal />
+          <TableLoanModal history={history} />
         </DialogHeader>
       </DialogContent>
     </Dialog>

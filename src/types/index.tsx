@@ -15,11 +15,6 @@ export type MainNavProps = MainNav & {
 };
 
 //book
-export type StatusBook = {
-  isActive: boolean;
-  description: string;
-};
-
 export interface RentHistoryBook {
   studentName: string;
   class: string;
@@ -32,11 +27,19 @@ export interface Book {
   title: string;
   author: string;
   genre: string;
-  status: StatusBook;
+  status: boolean;
   image: string | unknown;
   systemEntryDate: string;
   synopsis: string;
+  description?: string;
   rentHistory: RentHistoryBook[];
 }
 
 export type CreateBook = Omit<Book, "id" | "status" | "rentHistory">;
+
+type GetTypesBook = Omit<Book, "systemEntryDate">;
+
+export type GetBook = GetTypesBook & {
+  createdAt: string;
+  description: string;
+};

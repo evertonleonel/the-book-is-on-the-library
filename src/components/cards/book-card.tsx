@@ -15,7 +15,7 @@ const BookCard = ({ className, title, image, ...props }: CardProps) => {
       <figure className={cn("w-20 sm:w-24 md:w-36  h-fit", className)}>
         <Image
           className={"w-full h-fit"}
-          src="/images/books/livro01.png"
+          src={"/images/books/livro01.png"}
           height="0"
           width="0"
           sizes="100vw"
