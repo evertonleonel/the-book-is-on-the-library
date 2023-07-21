@@ -16,12 +16,16 @@ export async function GET() {
 
 // Create New Book
 export async function POST(request: NextRequest) {
-  const { userId } = auth();
-  if (!userId) {
-    return new Response("Unauthorized", { status: 401 });
-  }
+  // const { userId } = auth();
+  // if (!userId) {
+  //   return new Response("Unauthorized", { status: 401 });
+  // }
 
   const data = await request.json();
+  console.log(
+    data,
+    "----------------------------------------------------------------------------------------- DATA ---------------------------------------------"
+  );
   const { title, author, genre, synopsis, image, systemEntryDate } = data;
 
   if (!title || !author || !genre || !synopsis || !systemEntryDate || !image) {

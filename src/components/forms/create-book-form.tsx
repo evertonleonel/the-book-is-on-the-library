@@ -1,5 +1,11 @@
 "use client";
-import React from "react";
+import React, {
+  ChangeEvent,
+  useEffect,
+  useRef,
+  useState,
+  useTransition,
+} from "react";
 
 import { useRouter } from "next/navigation";
 import FileInputImage from "../file-input";
@@ -33,6 +39,10 @@ import { toast } from "sonner";
 type Inputs = z.infer<typeof createNewBookSchema>;
 
 export const CreateBookForm = () => {
+  const [isPending, startTransition] = useTransition();
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [selectedImage, setSelectedImage] = useState<string>();
+  const [selectedFile, setSelectedFile] = useState<File>();
   const router = useRouter();
 
   // react-hook-form
@@ -42,14 +52,68 @@ export const CreateBookForm = () => {
       title: "",
       author: "",
       genre: "",
-      sinopse: "",
-      date: "",
+      synopsis: "",
+      systemEntryDate: "",
+      image: "",
     },
   });
 
+  // async function handleImageChange(e: { target: HTMLInputElement }) {
+  //   const files = e.target.files;
+  //   if (files && files.length > 0) {
+  //     const file = files[0];
+  //     setSelectedImage(URL.createObjectURL(file));
+  //     setSelectedFile(file);
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   form.register("image", {
+  //     validate: (value) => {
+  //       if (!value) {
+  //         return "Selecione uma imagem.";
+  //       }
+  //       return true;
+  //     },
+  //   });
+  // }, [form]);
+
+  const handleFileChange = () => {
+    if (inputRef.current && inputRef.current.files) {
+      const selectedFile = inputRef.current.files[0];
+      handleFileSelect(selectedFile);
+    }
+  };
+
+  const handleFileSelect = async (fileInput: File) => {
+    const reader = new FileReader();
+
+    reader.readAsDataURL(fileInput);
+    reader.onload = async (event) => {
+      const base64String = event?.target?.result?.toString();
+      setSelectedImage(base64String);
+    };
+  };
+
   function onSubmit(data: Inputs) {
-    console.log(data);
-    toast("My first toast");
+    event?.preventDefault();
+
+    startTransition(async () => {
+      const request = await fetch(`api/book`, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      const response = await request.json();
+      if (!response.ok) {
+        toast.error(`Falha no envio das informações, ${response}`);
+      } else {
+        toast.success("Livro criado com sucesso!");
+      }
+    });
+
     // router.push("/library");
   }
   return (
@@ -59,7 +123,34 @@ export const CreateBookForm = () => {
         className="flex flex-col md:flex-row  max-w-[1400px] w-full justify-center items-center gap-4 m-auto"
       >
         <div className="flex justify-center items-center w-full sm:w-1/4 ">
-          <FileInputImage />
+          <FileInputImage selectedImage={selectedImage}>
+            {/* <Input
+              id="dropzone-file"
+              type="file"
+              ref={inputRef}
+              onChange={handleImageChange}
+              className="hidden w-full"
+            /> */}
+
+            <input
+              id="dropzone-file"
+              type="file"
+              className="hidden w-full"
+              {...(form.register("image"),
+              {
+                onInput: (file: ChangeEvent<HTMLInputElement>) => {
+                  if (file.target.files)
+                    form.setValue("image", String(file.target.files[0]));
+                },
+              })}
+              ref={inputRef}
+              onChange={handleFileChange}
+            />
+
+            {form.formState.errors.image && (
+              <p>{form.formState.errors.image.message}</p>
+            )}
+          </FileInputImage>
         </div>
         <div className="flex-1 flex flex-col w-full sm:w-3/4 gap-4">
           <div className="flex flex-col sm:flex-row gap-4">
@@ -123,7 +214,7 @@ export const CreateBookForm = () => {
               />
               <FormField
                 control={form.control}
-                name="date"
+                name="systemEntryDate"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-bold text-base">Data</FormLabel>
@@ -138,7 +229,7 @@ export const CreateBookForm = () => {
           </div>
           <FormField
             control={form.control}
-            name="sinopse"
+            name="synopsis"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="font-bold text-base">Sinopse</FormLabel>
@@ -151,7 +242,7 @@ export const CreateBookForm = () => {
           />
           <div className="self-end max-w-[280px]:self-center flex  space-x-2 sm:space-x-10">
             <Button variant={"destructive"}>Cancelar</Button>
-            <Button onClick={() => toast("Meu primeiro toast")}>Salvar</Button>
+            <Button type="submit">Salvar</Button>
           </div>
         </div>
       </form>

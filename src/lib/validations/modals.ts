@@ -10,12 +10,16 @@ export const createNewBookSchema = z.object({
   genre: z.string().min(3, {
     message: "O campo genêro deve ter pelo menos 3 caracteres",
   }),
-  sinopse: z.string().min(3, {
+  synopsis: z.string().min(3, {
     message: "O campo genêro deve ter pelo menos 3 caracteres",
   }),
-  date: z.string().min(3, {
+  systemEntryDate: z.string().min(3, {
     message: "O campo author deve ter pelo menos 3 caracteres",
   }),
+  image: z.string().nonempty({ message: "Selecione uma imagem." }),
+  // image: z.string().refine((value) => value && value.length > 0, {
+  //   message: "Selecione uma imagem.",
+  // }),
 });
 
 export const lockBookModalSchema = z.object({
