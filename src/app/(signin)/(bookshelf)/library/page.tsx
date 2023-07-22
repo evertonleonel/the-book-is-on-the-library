@@ -48,7 +48,11 @@ const LibraryPage = () => {
               return (
                 <>
                   <BookModal book={book}>
-                    <BookCard key={book.id} title={book.title} />
+                    <BookCard
+                      key={book.id}
+                      image={String(book.image)}
+                      title={book.title}
+                    />
                   </BookModal>
                 </>
               );

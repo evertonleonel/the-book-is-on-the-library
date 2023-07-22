@@ -21,7 +21,12 @@ export const inactiveBook = async (book: any) => {
   return true;
 };
 
-export const activeBook = async (book: any) => {
-  await api.patch(`/${book}/active`);
+export const activeBook = async (bookID: string) => {
+  await api.patch(`/${bookID}/active`);
+  return true;
+};
+
+export const loanedBook = async (bookID: string) => {
+  await api.patch(`/${bookID}/loaned`);
   return true;
 };

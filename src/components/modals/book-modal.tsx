@@ -16,6 +16,7 @@ import StudentTableData from "../tables/table-studant-data";
 import { GetBook } from "@/types";
 import { HistoryModal } from "./history-modal";
 import { LockModal } from "./lock-modal";
+import { loanedBook } from "@/lib/services";
 
 interface BookModalProps {
   book: GetBook;
@@ -26,17 +27,27 @@ export const BookModal = ({ book, children }: BookModalProps) => {
   const [open, setOpen] = React.useState(false);
 
   const tableAndStatus = book.rentHistory || book.description;
+  const container =
+    !book.rentHistory && !book.description ? "max-w-[896px]" : "max-w-[1400px]";
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>{children}</DialogTrigger>
-      <DialogContent className="max-w-[1400px] max-h-screen w-full overflow-auto">
-        <div className=" h-full w-full  flex flex-col lg:flex-row md:gap-4  m-4 divide-y-2 md:divide-none divide-dashed">
+      <DialogContent
+        className={`${container} ${
+          !book.rentHistory && "max-w-[896px]"
+        }  max-h-screen w-full overflow-auto`}
+      >
+        <div
+          className={`h-full w-full  flex flex-col ${
+            book.rentHistory && "lg:flex-row"
+          } md:gap-4  m-4 divide-y-2 md:divide-none divide-dashed`}
+        >
           <section className="w-full flex flex-col sm:flex-row gap-4 m-auto mt-4 divide-y-2 md:divide-none divide-dashed">
             <div className="flex flex-col justify-between gap-4 mx-auto w-4/5">
               <AspectRatio ratio={4 / 5}>
                 <Image
-                  src="/images/girl-book.webp"
+                  src={String(book.image)}
                   alt="Ilustração de uma jovem lendo livros"
                   fill
                   className="absolute inset-0 object-cover -hue-rotate-30 dark:-hue-rotate-180"
@@ -44,7 +55,21 @@ export const BookModal = ({ book, children }: BookModalProps) => {
                   sizes="(max-width: 320px) 100vw, (max-width: 160px) 50vw, 33vw"
                 />
               </AspectRatio>
-              <Button className="font-bold">Emprestar</Button>
+
+              {!book.loaned ? (
+                <Button disabled={!book.status} className="font-bold">
+                  Emprestar
+                </Button>
+              ) : (
+                <Button
+                  disabled={!book.status}
+                  variant={"secondary"}
+                  className="font-bold"
+                  onClick={() => loanedBook(book.id)}
+                >
+                  Devolver
+                </Button>
+              )}
             </div>
             <article className="w-full flex flex-col  justify-between ">
               <h1 className="font-bold text-center  text-lg md:text-xl lg:text-2xl mt-2">
@@ -58,7 +83,7 @@ export const BookModal = ({ book, children }: BookModalProps) => {
                 >
                   <AccordionItem value="Sinopse">
                     <AccordionTrigger>Sinopse</AccordionTrigger>
-                    <AccordionContent className="font-normal text-sm max-h-40 text-ellipsis overflow-hidden">
+                    <AccordionContent className="font-normal text-sm max-h-40 max-w-xs md:max-w-md  lg:max-w-lg w-full break-words text-ellipsis overflow-hidden">
                       {book.synopsis}
                     </AccordionContent>
                   </AccordionItem>
@@ -102,7 +127,10 @@ export const BookModal = ({ book, children }: BookModalProps) => {
 
                 {book.status && (
                   <LockModal idBook={book.id} statusBook={book.status}>
-                    <Button className="`font-bold" variant={"destructive"}>
+                    <Button
+                      className="font-bold w-full"
+                      variant={"destructive"}
+                    >
                       Inativar
                     </Button>
                   </LockModal>
@@ -112,7 +140,7 @@ export const BookModal = ({ book, children }: BookModalProps) => {
                   <LockModal idBook={book.id} statusBook={book.status}>
                     <Button
                       variant={"default"}
-                      className="font-bold  bg-indigo-700 hover:bg-indigo-900"
+                      className="font-bold w-full bg-indigo-700 hover:bg-indigo-900"
                     >
                       Ativar
                     </Button>
@@ -120,7 +148,7 @@ export const BookModal = ({ book, children }: BookModalProps) => {
                 )}
 
                 <HistoryModal history={book.rentHistory}>
-                  <Button className="font-bold" variant={"secondary"}>
+                  <Button className="font-bold w-full" variant={"secondary"}>
                     Histórico
                   </Button>
                 </HistoryModal>

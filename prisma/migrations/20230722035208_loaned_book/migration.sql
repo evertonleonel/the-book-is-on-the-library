@@ -8,6 +8,7 @@ CREATE TABLE "books" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
     "status" BOOLEAN NOT NULL DEFAULT true,
+    "loaned" BOOLEAN NOT NULL DEFAULT false,
     "description" TEXT NOT NULL,
     "image" TEXT,
 

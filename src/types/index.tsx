@@ -1,6 +1,10 @@
 export type IconComponent = "bookPlus" | "library" | "fileStack";
 export type IconComponentMain = IconComponent | "close" | "home";
 
+export type Prettify<T> = {
+  [K in keyof T]: T[K];
+} & {};
+
 export type HomeNavProps = {
   title: string;
   path: string;
@@ -39,7 +43,10 @@ export type CreateBook = Omit<Book, "id" | "status" | "rentHistory">;
 
 type GetTypesBook = Omit<Book, "systemEntryDate">;
 
-export type GetBook = GetTypesBook & {
-  createdAt: string;
-  description: string;
-};
+export type GetBook = Prettify<
+  GetTypesBook & {
+    createdAt: string;
+    description: string;
+    loaned: boolean;
+  }
+>;
