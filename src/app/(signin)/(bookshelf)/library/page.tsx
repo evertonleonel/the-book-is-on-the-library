@@ -43,18 +43,11 @@ const LibraryPage = () => {
         </div>
         <ul className="container grid sm:grid-auto-fit-xs  place-items-center gap-8">
           {books &&
-            books.length !== 0 &&
             books.map((book) => {
               return (
-                <>
-                  <BookModal book={book}>
-                    <BookCard
-                      key={book.id}
-                      image={String(book.image)}
-                      title={book.title}
-                    />
-                  </BookModal>
-                </>
+                <BookModal key={book.id} book={book}>
+                  <BookCard image={String(book.image)} title={book.title} />
+                </BookModal>
               );
             })}
         </ul>

@@ -17,6 +17,7 @@ import { GetBook } from "@/types";
 import { HistoryModal } from "./history-modal";
 import { LockModal } from "./lock-modal";
 import { loanedBook } from "@/lib/services";
+import { LoanModal } from "./loan-modal";
 
 interface BookModalProps {
   book: GetBook;
@@ -36,7 +37,7 @@ export const BookModal = ({ book, children }: BookModalProps) => {
       <DialogContent
         className={`${container} ${
           !book.rentHistory && "max-w-[896px]"
-        }  max-h-screen w-full overflow-auto`}
+        }  max-h-screen w-full  overflow-auto`}
       >
         <div
           className={`h-full w-full  flex flex-col ${
@@ -57,9 +58,11 @@ export const BookModal = ({ book, children }: BookModalProps) => {
               </AspectRatio>
 
               {!book.loaned ? (
-                <Button disabled={!book.status} className="font-bold">
-                  Emprestar
-                </Button>
+                <LoanModal>
+                  <Button disabled={!book.status} className="font-bold w-full">
+                    Emprestar
+                  </Button>
+                </LoanModal>
               ) : (
                 <Button
                   disabled={!book.status}

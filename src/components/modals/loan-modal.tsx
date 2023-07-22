@@ -18,7 +18,7 @@ export const LoanModal = ({ children }: { children: React.ReactNode }) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-2xl">
+      <DialogContent className="sm:max-w-2xl ">
         <DialogHeader className="flex flex-col gap-4">
           <DialogTitle className="text-base sm:text-lg md:text-xl text-left mt-2">
             Informe os dados do aluno
