@@ -15,3 +15,13 @@ export const updateBook = async (book: Book) => {
   const { data } = await api.put(`/${book.id}`, book);
   return data;
 };
+
+export const inactiveBook = async (book: any) => {
+  await api.patch(`/${book.id}/inactive`, book);
+  return true;
+};
+
+export const activeBook = async (book: any) => {
+  await api.patch(`/${book}/active`);
+  return true;
+};

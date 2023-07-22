@@ -14,22 +14,35 @@ import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../ui/button";
-import { lockBookModalSchema } from "@/lib/validations/modals";
+import {
+  lockBookModalSchema,
+  unlockBookModalSchema,
+} from "@/lib/validations/modals";
+import { activeBook, inactiveBook } from "@/lib/services";
+import { toast } from "sonner";
 
-type Inputs = z.infer<typeof lockBookModalSchema>;
+type InputLock = z.infer<typeof lockBookModalSchema>;
+type InputUnlock = z.infer<typeof unlockBookModalSchema>;
+
+type Inputs = InputLock | InputUnlock;
 
 type lockBookModalProps = {
-  statusBook: boolean;
+  statusBook?: boolean;
+  idBook: string;
   onClick: () => void;
 };
 
 export const LockBookModalForm = ({
-  onClick,
+  onClick: closeModal,
   statusBook,
+  idBook,
 }: lockBookModalProps) => {
   // react-hook-form
+
   const form = useForm<Inputs>({
-    resolver: zodResolver(lockBookModalSchema),
+    resolver: zodResolver(
+      statusBook ? lockBookModalSchema : unlockBookModalSchema
+    ),
     defaultValues: {
       description: "",
     },
@@ -37,7 +50,23 @@ export const LockBookModalForm = ({
 
   function onSubmit(data: Inputs) {
     console.log(data);
-    onClick();
+    try {
+      if (statusBook) {
+        const parseData = {
+          id: idBook,
+          description: data.description,
+        };
+        inactiveBook(parseData);
+        toast.success("Livro desativado com sucesso!");
+      } else {
+        activeBook(idBook);
+        toast.success("Livro ativado com sucesso!");
+      }
+
+      closeModal();
+    } catch (err) {
+      toast.error("Error no envio");
+    }
   }
 
   return (
@@ -67,7 +96,7 @@ export const LockBookModalForm = ({
           <Button
             type="submit"
             variant={"default"}
-            className="font-bold  bg-indigo-700 hover:bg-indigo-900"
+            className="font-bold  w-36 place-self-end bg-indigo-700 hover:bg-indigo-900"
           >
             Ativar
           </Button>
@@ -77,7 +106,7 @@ export const LockBookModalForm = ({
           <Button
             type="submit"
             variant={"destructive"}
-            className="w-36 place-self-end"
+            className="w-36 place-self-end font-bold"
           >
             Inativar
           </Button>

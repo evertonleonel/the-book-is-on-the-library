@@ -101,7 +101,7 @@ export const BookModal = ({ book, children }: BookModalProps) => {
                 </Button>
 
                 {book.status && (
-                  <LockModal statusBook={book.status}>
+                  <LockModal idBook={book.id} statusBook={book.status}>
                     <Button className="`font-bold" variant={"destructive"}>
                       Inativar
                     </Button>
@@ -109,12 +109,14 @@ export const BookModal = ({ book, children }: BookModalProps) => {
                 )}
 
                 {!book.status && (
-                  <Button
-                    variant={"default"}
-                    className="font-bold  bg-indigo-700 hover:bg-indigo-900"
-                  >
-                    Ativar
-                  </Button>
+                  <LockModal idBook={book.id} statusBook={book.status}>
+                    <Button
+                      variant={"default"}
+                      className="font-bold  bg-indigo-700 hover:bg-indigo-900"
+                    >
+                      Ativar
+                    </Button>
+                  </LockModal>
                 )}
 
                 <HistoryModal history={book.rentHistory}>

@@ -53,4 +53,4 @@ export const defaultGenres = [
   "Horror",
   "Finanças",
   "Romance",
-];
+] as const;

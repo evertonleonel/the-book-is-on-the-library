@@ -35,6 +35,10 @@ export const lockBookModalSchema = z.object({
   }),
 });
 
+export const unlockBookModalSchema = z.object({
+  description: z.string(),
+});
+
 export const loanModalSchema = z.object({
   studentName: z.string().min(5, {
     message: "O nome deve ter pelo menos 5 caracteres",

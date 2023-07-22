@@ -15,9 +15,11 @@ import { LockBookModalForm } from "../forms/lock-modal-form";
 export const LockModal = ({
   children,
   statusBook,
+  idBook,
 }: {
   children: React.ReactNode;
-  statusBook: boolean;
+  statusBook?: boolean;
+  idBook: string;
 }) => {
   const [open, setOpen] = React.useState(false);
   return (
@@ -26,9 +28,10 @@ export const LockModal = ({
       <DialogContent className="sm:max-w-2xl">
         <DialogHeader className="flex flex-col gap-4">
           <DialogTitle className="text-base sm:text-lg md:text-xl text-left mt-2">
-            Inativar Livro
+            {statusBook ? " Inativar Livro" : "Ativar livro"}
           </DialogTitle>
           <LockBookModalForm
+            idBook={idBook}
             statusBook={statusBook}
             onClick={() => setOpen(false)}
           />

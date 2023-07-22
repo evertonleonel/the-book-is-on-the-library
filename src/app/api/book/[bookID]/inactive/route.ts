@@ -2,7 +2,7 @@ import prisma from "@/db";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function PATCH(request: NextRequest, { params }: { params: any }) {
-  const bookID = params.ID;
+  const bookID = params.bookID;
   const data = await request.json();
   const { description } = data;
 
