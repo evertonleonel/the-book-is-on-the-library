@@ -6,7 +6,7 @@ import { Metadata } from "next";
 
 import { getAllBooks } from "@/lib/services";
 
-import { Book, GetBook } from "@/types";
+import { GetBook } from "@/types";
 import { toast } from "sonner";
 import { Icons } from "@/components/icons";
 import { Input } from "@/components/ui/input";
@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import BookCard from "@/components/cards/book-card";
 import LinkBackHome from "@/components/link-back-home";
 import { BookModal } from "@/components/modals/book-modal";
+import FilterComponent from "./filter-component";
 
 export const metadata: Metadata = {
   title: "Library - Archive",
@@ -21,10 +22,56 @@ export const metadata: Metadata = {
 
 const LibraryPage = () => {
   const [books, setBooks] = useState<GetBook[]>([]);
+  const [filteredBooks, setFilteredBooks] = useState<GetBook[]>();
+
+  const [filterBooks, setFilterBooks] = useState<{
+    genre: string;
+    createdAt: string;
+    searchText: string;
+  }>({
+    genre: "0",
+    createdAt: "",
+    searchText: "",
+  });
 
   useEffect(() => {
     getAllBooks().then((data) => setBooks(data));
-  }, [books]);
+  }, []);
+
+  console.log(books);
+
+  const handleClickFilter = () => {
+    const filteredBooks = books.filter((book) => {
+      const genre = filterBooks.genre == "0" || book.genre == filterBooks.genre;
+      const searchText =
+        !filterBooks.searchText ||
+        book.author
+          .toLocaleLowerCase()
+          .includes(filterBooks.searchText.toLocaleLowerCase()) ||
+        book.title
+          .toLocaleLowerCase()
+          .includes(filterBooks.searchText.toLocaleLowerCase());
+
+      const createdAt =
+        !filterBooks.createdAt ||
+        book.createdAt
+          .toLowerCase()
+          .includes(filterBooks.createdAt.toLowerCase());
+
+      console.log(createdAt, filterBooks.createdAt, "falso?");
+      return genre && createdAt && searchText;
+    });
+
+    setFilteredBooks(filteredBooks);
+  };
+
+  const handleFilterData = (value: string, name: string) => {
+    setFilterBooks({ ...filterBooks, [name]: value });
+  };
+
+  const searchDateOrGenre = () => {
+    handleClickFilter();
+  };
 
   return (
     <>
@@ -34,22 +81,34 @@ const LibraryPage = () => {
           <div className="w-full flex justify-center items-center rounded-md border border-input bg-background  p-2 focus-within:ring-2 ring-offset-background ring-slate-400 dark:ring-slate-950">
             <Icons.search />
             <Input
+              name="searchText"
+              onChange={(e) => handleFilterData(e.target.value, "searchText")}
               className=" bg-transparent border-none ring-0  ring-transparent  focus-visible:outline-none focus-visible:ring-none focus-visible:ring-none focus-visible:ring-offset-0"
               placeholder="Pesquisar livro..."
             />
-            <Button onClick={() => toast("My first toast")}>Buscar</Button>
+            <Button onClick={() => handleClickFilter}>Buscar</Button>
           </div>
-          <Input className="w-2/5 h-full" placeholder="filtrar" />
+          <FilterComponent
+            handleFilterData={handleFilterData}
+            searchDateOrGenre={searchDateOrGenre}
+          />
         </div>
         <ul className="container grid sm:grid-auto-fit-xs  place-items-center gap-8">
-          {books &&
-            books.map((book) => {
-              return (
-                <BookModal key={book.id} book={book}>
-                  <BookCard image={String(book.image)} title={book.title} />
-                </BookModal>
-              );
-            })}
+          {books && filteredBooks
+            ? filteredBooks.map((book) => {
+                return (
+                  <BookModal key={book.id} book={book}>
+                    <BookCard image={String(book.image)} title={book.title} />
+                  </BookModal>
+                );
+              })
+            : books.map((book) => {
+                return (
+                  <BookModal key={book.id} book={book}>
+                    <BookCard image={String(book.image)} title={book.title} />
+                  </BookModal>
+                );
+              })}
         </ul>
       </section>
     </>
