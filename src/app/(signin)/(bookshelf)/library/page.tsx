@@ -38,8 +38,6 @@ const LibraryPage = () => {
     getAllBooks().then((data) => setBooks(data));
   }, []);
 
-  console.log(books);
-
   const handleClickFilter = () => {
     const filteredBooks = books.filter((book) => {
       const genre = filterBooks.genre == "0" || book.genre == filterBooks.genre;
@@ -52,14 +50,22 @@ const LibraryPage = () => {
           .toLocaleLowerCase()
           .includes(filterBooks.searchText.toLocaleLowerCase());
 
+      console.log(book.author);
+
       const createdAt =
         !filterBooks.createdAt ||
-        book.createdAt
+        new Date(book.createdAt)
+          .toLocaleDateString()
           .toLowerCase()
-          .includes(filterBooks.createdAt.toLowerCase());
+          .includes(
+            filterBooks.createdAt.split("-").reverse().join("/").toLowerCase()
+          );
 
-      console.log(createdAt, filterBooks.createdAt, "falso?");
-      return genre && createdAt && searchText;
+      console.log(new Date(book.createdAt).toLocaleDateString(), " VEM DA API");
+
+      console.log(filterBooks.createdAt, "ESTOU MANDANDO DO INPUT");
+
+      return genre && searchText && createdAt;
     });
 
     setFilteredBooks(filteredBooks);
@@ -73,6 +79,16 @@ const LibraryPage = () => {
     handleClickFilter();
   };
 
+  console.log(filterBooks);
+
+  const clearFields = () => {
+    setFilterBooks({
+      genre: "0",
+      createdAt: "",
+      searchText: "",
+    });
+  };
+
   return (
     <>
       <LinkBackHome>Biblioteca</LinkBackHome>
@@ -82,15 +98,18 @@ const LibraryPage = () => {
             <Icons.search />
             <Input
               name="searchText"
+              value={filterBooks.searchText}
               onChange={(e) => handleFilterData(e.target.value, "searchText")}
               className=" bg-transparent border-none ring-0  ring-transparent  focus-visible:outline-none focus-visible:ring-none focus-visible:ring-none focus-visible:ring-offset-0"
               placeholder="Pesquisar livro..."
             />
-            <Button onClick={() => handleClickFilter}>Buscar</Button>
+            <Button onClick={handleClickFilter}>Buscar</Button>
           </div>
           <FilterComponent
             handleFilterData={handleFilterData}
             searchDateOrGenre={searchDateOrGenre}
+            clearFields={clearFields}
+            filterBooks={filterBooks}
           />
         </div>
         <ul className="container grid sm:grid-auto-fit-xs  place-items-center gap-8">

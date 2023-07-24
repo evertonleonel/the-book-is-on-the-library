@@ -19,11 +19,15 @@ import { Select } from "@radix-ui/react-select";
 interface FilterSearch {
   handleFilterData: (value: string, name: string) => void;
   searchDateOrGenre: () => void;
+  clearFields: () => void;
+  filterBooks: { genre: string; createdAt: string; searchText: string };
 }
 
 const FilterComponent = ({
   handleFilterData,
   searchDateOrGenre,
+  clearFields,
+  filterBooks,
 }: FilterSearch) => {
   const { genre, defaultGenres } = useGenres();
 
@@ -66,19 +70,17 @@ const FilterComponent = ({
           <Input
             name="createdAt"
             type="date"
-            onChange={(e) =>
-              handleFilterData(
-                new Date(e.target.value).toISOString(),
-                "createdAt"
-              )
-            }
+            value={filterBooks.createdAt}
+            onChange={(e) => handleFilterData(e.target.value, "createdAt")}
             className="w-full my-4"
             placeholder="filtrar"
           />
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <div className="flex justify-between w-full">
-          <Button variant={"secondary"}>Limpar</Button>
+          <Button onClick={clearFields} variant={"secondary"}>
+            Limpar
+          </Button>
           <Button onClick={searchDateOrGenre}>Buscar</Button>
         </div>
       </DropdownMenuContent>
