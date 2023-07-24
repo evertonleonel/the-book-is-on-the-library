@@ -36,7 +36,6 @@ export const LoanModalForm = ({ onClick }: LoanModalProps) => {
   });
 
   function onSubmit(data: Inputs) {
-    console.log(data);
     onClick();
   }
   return (

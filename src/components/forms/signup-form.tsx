@@ -40,7 +40,6 @@ export const SignUpForm = () => {
   });
 
   function onSubmit(data: Inputs) {
-    console.log(data, "data Input");
     if (!isLoaded) return;
 
     startTransition(async () => {

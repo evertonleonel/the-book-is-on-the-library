@@ -36,7 +36,7 @@ const LibraryPage = () => {
 
   useEffect(() => {
     getAllBooks().then((data) => setBooks(data));
-  }, []);
+  }, [books]);
 
   const handleClickFilter = () => {
     const filteredBooks = books.filter((book) => {
@@ -50,8 +50,6 @@ const LibraryPage = () => {
           .toLocaleLowerCase()
           .includes(filterBooks.searchText.toLocaleLowerCase());
 
-      console.log(book.author);
-
       const createdAt =
         !filterBooks.createdAt ||
         new Date(book.createdAt)
@@ -60,10 +58,6 @@ const LibraryPage = () => {
           .includes(
             filterBooks.createdAt.split("-").reverse().join("/").toLowerCase()
           );
-
-      console.log(new Date(book.createdAt).toLocaleDateString(), " VEM DA API");
-
-      console.log(filterBooks.createdAt, "ESTOU MANDANDO DO INPUT");
 
       return genre && searchText && createdAt;
     });
@@ -78,8 +72,6 @@ const LibraryPage = () => {
   const searchDateOrGenre = () => {
     handleClickFilter();
   };
-
-  console.log(filterBooks);
 
   const clearFields = () => {
     setFilterBooks({

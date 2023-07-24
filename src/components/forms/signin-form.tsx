@@ -40,7 +40,6 @@ export const SignInForm = () => {
   });
 
   function onSubmit(data: Inputs) {
-    console.log(data, "data Input");
     if (!isLoaded) return;
 
     startTransition(async () => {
@@ -49,8 +48,6 @@ export const SignInForm = () => {
           identifier: data.email,
           password: data.password,
         });
-
-        console.log(result);
 
         if (result?.status === "complete") {
           await setActive({ session: result.createdSessionId });
