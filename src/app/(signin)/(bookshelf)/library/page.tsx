@@ -1,13 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import { Metadata } from "next";
 
-import { getAllBooks } from "@/lib/services";
-
 import { GetBook } from "@/types";
-import { toast } from "sonner";
 import { Icons } from "@/components/icons";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -15,13 +12,14 @@ import BookCard from "@/components/cards/book-card";
 import LinkBackHome from "@/components/link-back-home";
 import { BookModal } from "@/components/modals/book-modal";
 import FilterComponent from "./filter-component";
+import { useGetBooks } from "@/hooks/use-get-books";
 
 export const metadata: Metadata = {
   title: "Library - Archive",
 };
 
 const LibraryPage = () => {
-  const [books, setBooks] = useState<GetBook[]>([]);
+  const { books } = useGetBooks();
   const [filteredBooks, setFilteredBooks] = useState<GetBook[]>();
 
   const [filterBooks, setFilterBooks] = useState<{
@@ -33,10 +31,6 @@ const LibraryPage = () => {
     createdAt: "",
     searchText: "",
   });
-
-  useEffect(() => {
-    getAllBooks().then((data) => setBooks(data));
-  }, [books]);
 
   const handleClickFilter = () => {
     const filteredBooks = books.filter((book) => {
@@ -81,6 +75,8 @@ const LibraryPage = () => {
     });
   };
 
+  const renderBooks = filteredBooks ? filteredBooks : books;
+
   return (
     <>
       <LinkBackHome>Biblioteca</LinkBackHome>
@@ -105,21 +101,14 @@ const LibraryPage = () => {
           />
         </div>
         <ul className="container grid sm:grid-auto-fit-xs  place-items-center gap-8">
-          {books && filteredBooks
-            ? filteredBooks.map((book) => {
-                return (
-                  <BookModal key={book.id} book={book}>
-                    <BookCard image={String(book.image)} title={book.title} />
-                  </BookModal>
-                );
-              })
-            : books.map((book) => {
-                return (
-                  <BookModal key={book.id} book={book}>
-                    <BookCard image={String(book.image)} title={book.title} />
-                  </BookModal>
-                );
-              })}
+          {renderBooks &&
+            renderBooks.map((book) => {
+              return (
+                <BookModal key={book.id} book={book}>
+                  <BookCard image={String(book.image)} title={book.title} />
+                </BookModal>
+              );
+            })}
         </ul>
       </section>
     </>

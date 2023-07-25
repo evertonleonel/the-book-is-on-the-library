@@ -32,7 +32,7 @@ export interface Book {
   author: string;
   genre: string;
   status: boolean;
-  image: string | unknown;
+  image: string | null;
   systemEntryDate: string;
   synopsis: string;
   description?: string;

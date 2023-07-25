@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useRef, useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
 
 import * as z from "zod";
 import { useForm } from "react-hook-form";
@@ -32,18 +31,17 @@ import { toast } from "sonner";
 import { Icons } from "../icons";
 import { parseBase64 } from "@/lib/utils";
 import { defaultGenres } from "@/config/site";
-import { createBook, getAllBooks } from "@/lib/services";
-import { Book, CreateBook } from "@/types";
+import { createBook, getAllBooks, getBook } from "@/lib/services";
+import { CreateBook, GetBook } from "@/types";
 import { createNewBookSchema } from "@/lib/validations/modals";
 
 type Inputs = z.infer<typeof createNewBookSchema>;
 
-export const CreateBookForm = () => {
+export const CreateBookForm = ({ params }: { params?: string }) => {
   const [genre, setGenre] = useState<String[]>([]);
   const [isPending, startTransition] = useTransition();
-  const [selectedImage, setSelectedImage] = useState<string>();
+  const [selectedImage, setSelectedImage] = useState<string | null>();
   const inputRef = useRef<HTMLInputElement>(null);
-  const router = useRouter();
 
   // react-hook-form
   const form = useForm<Inputs>({
@@ -66,7 +64,7 @@ export const CreateBookForm = () => {
   }
 
   useEffect(() => {
-    getAllBooks().then((data: Book[]) => {
+    getAllBooks().then((data: GetBook[]) => {
       const genres = data.map((el) => {
         return el.genre;
       });
@@ -92,7 +90,7 @@ export const CreateBookForm = () => {
         createBook(parseData as CreateBook);
 
         form.reset();
-        setSelectedImage(undefined);
+        setSelectedImage(null);
         toast.success("Livro criado com sucesso!");
         // router.push("/library");
       } catch (err) {
@@ -230,7 +228,7 @@ export const CreateBookForm = () => {
               variant={"destructive"}
               onClick={() => {
                 form.reset();
-                setSelectedImage(undefined);
+                setSelectedImage(null);
               }}
             >
               Cancelar

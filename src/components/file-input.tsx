@@ -5,7 +5,7 @@ import { Input } from "./ui/input";
 import { Icons } from "./icons";
 
 type FileInputProps = {
-  selectedImage?: string;
+  selectedImage?: string | null;
   children: ReactNode;
 };
 

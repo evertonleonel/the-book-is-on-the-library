@@ -12,12 +12,14 @@ import {
 import { Button } from "../ui/button";
 import { AspectRatio } from "../ui/aspect-ratio";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import StudentTableData from "../tables/table-studant-data";
-import { GetBook } from "@/types";
-import { HistoryModal } from "./history-modal";
+
 import { LockModal } from "./lock-modal";
-import { loanedBook } from "@/lib/services";
 import { LoanModal } from "./loan-modal";
+import { HistoryModal } from "./history-modal";
+import StudentTableData from "../tables/table-studant-data";
+import { loanedBook } from "@/lib/services";
+import { GetBook } from "@/types";
+import { useRouter } from "next/navigation";
 
 interface BookModalProps {
   book: GetBook;
@@ -26,6 +28,7 @@ interface BookModalProps {
 
 export const BookModal = ({ book, children }: BookModalProps) => {
   const [open, setOpen] = React.useState(false);
+  const router = useRouter();
 
   const tableAndStatus = book.rentHistory || book.description;
   const container =
@@ -124,7 +127,11 @@ export const BookModal = ({ book, children }: BookModalProps) => {
                 </Accordion>
               </div>
               <nav className="flex  max-[315px]:flex-col justify-around lg:justify-around gap-1">
-                <Button className="font-bold" variant={"default"}>
+                <Button
+                  onClick={() => router.push(`/edit-book/${book.id}`)}
+                  className="font-bold"
+                  variant={"default"}
+                >
                   Editar
                 </Button>
 

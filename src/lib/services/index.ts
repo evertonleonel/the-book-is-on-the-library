@@ -6,6 +6,11 @@ export const getAllBooks = async () => {
   return data;
 };
 
+export const getBook = async (id: string) => {
+  const { data } = await api.get(`/${id}`);
+  return data;
+};
+
 export const createBook = async (book: CreateBook) => {
   await api.post("/", book);
   return true;

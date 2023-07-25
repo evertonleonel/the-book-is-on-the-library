@@ -16,13 +16,14 @@ model Book {
   title       String
   author      String
   synopsis    String
-  genre       String  
+  genre       String
   createdAt   DateTime      @default(now()) @map("created_at")
   updatedAt   DateTime      @updatedAt      @map("updated_at")
   status      Boolean       @default(true)
   loaned      Boolean       @default(false)
   description String        
   image       String?
+  systemEntryDate DateTime  @map("system_Entry_Date")
   rentHistory RentHistory[]
 
    @@map("books")
