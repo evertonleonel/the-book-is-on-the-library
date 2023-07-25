@@ -75,22 +75,24 @@ export const LockBookModalForm = ({
         onSubmit={form.handleSubmit(onSubmit)}
         className="w-full grid gap-4"
       >
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Textarea
-                  placeholder="Informe o motivo da desativação."
-                  className="h-56"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {statusBook && (
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Textarea
+                    placeholder="Informe o motivo da desativação."
+                    className="h-56"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
 
         {!statusBook && (
           <Button

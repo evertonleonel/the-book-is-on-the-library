@@ -12,11 +12,17 @@ import {
 import React from "react";
 import { LoanModalForm } from "../forms/loan-modal-form";
 
-export const LoanModal = ({ children }: { children: React.ReactNode }) => {
+export const LoanModal = ({
+  children,
+  disabled,
+}: {
+  children: React.ReactNode;
+  disabled: boolean;
+}) => {
   const [open, setOpen] = React.useState(false);
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={disabled ? !disabled : open} onOpenChange={setOpen}>
       <DialogTrigger>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-2xl ">
         <DialogHeader className="flex flex-col gap-4">

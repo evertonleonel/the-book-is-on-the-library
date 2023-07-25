@@ -61,8 +61,11 @@ export const BookModal = ({ book, children }: BookModalProps) => {
               </AspectRatio>
 
               {!book.loaned ? (
-                <LoanModal>
-                  <Button disabled={!book.status} className="font-bold w-full">
+                <LoanModal disabled={!book.status || book.loaned}>
+                  <Button
+                    disabled={!book.status || book.loaned}
+                    className="font-bold w-full"
+                  >
                     Emprestar
                   </Button>
                 </LoanModal>
@@ -130,6 +133,7 @@ export const BookModal = ({ book, children }: BookModalProps) => {
               </div>
               <nav className="flex  max-[315px]:flex-col justify-around lg:justify-around gap-1">
                 <Button
+                  disabled={!book.status || book.loaned}
                   onClick={() => router.push(`/edit-book/${book.id}`)}
                   className="font-bold"
                   variant={"default"}
