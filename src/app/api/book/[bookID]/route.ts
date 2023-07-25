@@ -23,7 +23,8 @@ export async function GET(request: NextRequest, { params }: { params: any }) {
 export async function PUT(request: NextRequest, { params }: { params: any }) {
   const bookID = params.bookID;
   const data = await request.json();
-  const { title, author, genre, synopsis, image, description, status } = data;
+
+  const { title, author, genre, synopsis, image, systemEntryDate } = data;
 
   const findBook = await prisma.book.findFirst({
     where: {
@@ -35,17 +36,9 @@ export async function PUT(request: NextRequest, { params }: { params: any }) {
     return NextResponse.json("Livro não encontrado", { status: 404 });
   }
 
-  if (
-    !title ||
-    !author ||
-    !genre ||
-    !synopsis ||
-    !image ||
-    !description ||
-    status
-  ) {
+  if (!title || !author || !genre || !synopsis || !image || !systemEntryDate) {
     return NextResponse.json(
-      "Possíveis informações ausentes: título, autor, gênero, imagem, motivo da inativação, sinopse, status",
+      "Possíveis informações ausentes: título, autor, gênero, imagem, motivo da inativação, sinopse, status, data de entrada",
       { status: 400 }
     );
   }
@@ -60,8 +53,7 @@ export async function PUT(request: NextRequest, { params }: { params: any }) {
       genre,
       synopsis,
       image,
-      description,
-      status,
+      systemEntryDate,
     },
   });
 

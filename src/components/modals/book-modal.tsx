@@ -54,7 +54,7 @@ export const BookModal = ({ book, children }: BookModalProps) => {
                   src={String(book.image)}
                   alt="Ilustração de uma jovem lendo livros"
                   fill
-                  className="absolute inset-0 object-cover -hue-rotate-30 dark:-hue-rotate-180"
+                  className="absolute inset-0 object-cover"
                   priority
                   sizes="(max-width: 320px) 100vw, (max-width: 160px) 50vw, 33vw"
                 />
@@ -78,7 +78,7 @@ export const BookModal = ({ book, children }: BookModalProps) => {
               )}
             </div>
             <article className="w-full flex flex-col  justify-between ">
-              <h1 className="font-bold text-center  text-lg md:text-xl lg:text-2xl mt-2">
+              <h1 className="font-bold text-center  text-lg md:text-xl lg:text-2xl">
                 {book.title}
               </h1>
               <div className="flex flex-col flex-1 justify-between mb-6">
@@ -121,7 +121,9 @@ export const BookModal = ({ book, children }: BookModalProps) => {
                   <AccordionItem value="Data">
                     <AccordionTrigger>Data</AccordionTrigger>
                     <AccordionContent className="font-normal text-sm">
-                      {new Date(book.createdAt).toLocaleDateString("pt-BR")}
+                      {new Date(book.systemEntryDate).toLocaleDateString(
+                        "pt-BR"
+                      )}
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion>

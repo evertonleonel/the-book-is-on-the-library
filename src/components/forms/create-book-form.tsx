@@ -29,9 +29,9 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { toast } from "sonner";
 import { Icons } from "../icons";
-import { parseBase64 } from "@/lib/utils";
+import { catchError, parseBase64 } from "@/lib/utils";
 import { defaultGenres } from "@/config/site";
-import { createBook, getAllBooks, getBook } from "@/lib/services";
+import { createBook, getAllBooks, getBook, updateBook } from "@/lib/services";
 import { CreateBook, GetBook } from "@/types";
 import { createNewBookSchema } from "@/lib/validations/modals";
 
@@ -42,6 +42,11 @@ export const CreateBookForm = ({ params }: { params?: string }) => {
   const [isPending, startTransition] = useTransition();
   const [selectedImage, setSelectedImage] = useState<string | null>();
   const inputRef = useRef<HTMLInputElement>(null);
+  const [editBook, setEditBook] = useState<GetBook | null>(null);
+
+  const editBooks = {
+    ...editBook,
+  };
 
   // react-hook-form
   const form = useForm<Inputs>({
@@ -49,7 +54,7 @@ export const CreateBookForm = ({ params }: { params?: string }) => {
     defaultValues: {
       title: "",
       author: "",
-      genre: "",
+      genre: editBooks ? editBooks.genre : "",
       synopsis: "",
       systemEntryDate: "",
     },
@@ -78,23 +83,77 @@ export const CreateBookForm = ({ params }: { params?: string }) => {
     });
   }, []);
 
+  useEffect(() => {
+    if (params) {
+      getBook(params).then((bookData: GetBook | null) => {
+        if (bookData) {
+          form.setValue("title", bookData.title);
+          form.setValue("genre", bookData.genre);
+          form.setValue("author", bookData.author);
+          form.setValue("synopsis", bookData.synopsis);
+          form.setValue(
+            "systemEntryDate",
+            new Date(bookData.systemEntryDate).toISOString().substring(0, 10)
+          );
+
+          setSelectedImage(bookData.image);
+
+          setEditBook(bookData);
+        }
+      });
+    }
+  }, [params]);
+
   function onSubmit(data: Inputs) {
     startTransition(async () => {
       try {
-        const parseData = data;
-        parseData.image = selectedImage;
-        parseData.systemEntryDate = new Date(
-          parseData.systemEntryDate.replaceAll("-", "/")
-        ).toISOString();
+        if (!params) {
+          const parseData = data;
+          parseData.image = selectedImage;
+          parseData.systemEntryDate = new Date(
+            parseData.systemEntryDate.replaceAll("-", "/")
+          ).toISOString();
 
-        createBook(parseData as CreateBook);
+          createBook(parseData as CreateBook);
 
-        form.reset();
-        setSelectedImage(null);
-        toast.success("Livro criado com sucesso!");
+          form.reset();
+          setSelectedImage("");
+          toast.success("Livro criado com sucesso!");
+        }
+
+        if (params && editBooks) {
+          const parseDate = new Date(
+            data.systemEntryDate.replaceAll("-", "/")
+          ).toISOString();
+
+          updateBook({
+            ...editBooks,
+            image: selectedImage,
+            title: data.title,
+            author: data.author,
+            genre: data.genre,
+            systemEntryDate: parseDate,
+            synopsis: data.synopsis,
+          } as GetBook);
+
+          // console.log({
+          //   ...editBooks,
+          //   image: selectedImage,
+          //   title: data.title,
+          //   author: data.author,
+          //   genre: data.genre,
+          //   systemEntryDate: parseDate,
+          //   synopsis: data.synopsis,
+          // });
+
+          toast.success("Livro editado com sucesso!");
+          form.reset();
+          setSelectedImage("");
+        }
+
         // router.push("/library");
       } catch (err) {
-        toast.error(`Falha no envio das informações`);
+        catchError(err);
       }
     });
   }
@@ -165,21 +224,21 @@ export const CreateBookForm = ({ params }: { params?: string }) => {
                     >
                       <FormControl>
                         <SelectTrigger className="bg-background">
-                          <SelectValue placeholder="Gênero" />
+                          <SelectValue placeholder={field.value} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
                         {genre.length == 0
                           ? defaultGenres.map((el, index) => {
                               return (
-                                <SelectItem key={index} value={String(el)}>
+                                <SelectItem key={el} value={String(el)}>
                                   {el}
                                 </SelectItem>
                               );
                             })
                           : genre.map((el, index) => {
                               return (
-                                <SelectItem key={index} value={String(el)}>
+                                <SelectItem key={String(el)} value={String(el)}>
                                   {el}
                                 </SelectItem>
                               );

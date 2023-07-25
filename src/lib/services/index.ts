@@ -1,4 +1,4 @@
-import { Book, CreateBook } from "@/types";
+import { Book, CreateBook, GetBook } from "@/types";
 import { api } from "./api";
 
 export const getAllBooks = async () => {
@@ -16,7 +16,7 @@ export const createBook = async (book: CreateBook) => {
   return true;
 };
 
-export const updateBook = async (book: Book) => {
+export const updateBook = async (book: GetBook) => {
   const { data } = await api.put(`/${book.id}`, book);
   return data;
 };

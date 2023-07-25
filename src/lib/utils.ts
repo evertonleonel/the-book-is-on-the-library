@@ -9,7 +9,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function catchClerkError(err: unknown) {
-  const unknownErr = "Something went wrong, please try again later.";
+  const unknownErr = "Algo deu errado, tente novamente mais tarde.";
 
   if (err instanceof z.ZodError) {
     const errors = err.issues.map((issue) => {
@@ -20,6 +20,19 @@ export function catchClerkError(err: unknown) {
     return toast.error(err.errors[0]?.longMessage ?? unknownErr);
   } else {
     return toast.error(unknownErr);
+  }
+}
+
+export function catchError(err: unknown) {
+  if (err instanceof z.ZodError) {
+    const errors = err.issues.map((issue) => {
+      return issue.message;
+    });
+    return toast(errors.join("\n"));
+  } else if (err instanceof Error) {
+    return toast(err.message);
+  } else {
+    return toast("Algo deu errado, tente novamente mais tarde.");
   }
 }
 

@@ -41,7 +41,7 @@ export interface Book {
 
 export type CreateBook = Omit<Book, "id" | "status" | "rentHistory">;
 
-type GetTypesBook = Omit<Book, "systemEntryDate">;
+type GetTypesBook = Book;
 
 export type GetBook = Prettify<
   GetTypesBook & {

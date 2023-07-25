@@ -5,13 +5,13 @@ CREATE TABLE "books" (
     "author" TEXT NOT NULL,
     "synopsis" TEXT NOT NULL,
     "genre" TEXT NOT NULL,
-    "system_Entry_Date" TIMESTAMP(3) NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
     "status" BOOLEAN NOT NULL DEFAULT true,
     "loaned" BOOLEAN NOT NULL DEFAULT false,
     "description" TEXT NOT NULL,
     "image" TEXT,
+    "system_Entry_Date" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "books_pkey" PRIMARY KEY ("id")
 );
