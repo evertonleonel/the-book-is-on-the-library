@@ -7,7 +7,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { defaultGenres } from "@/config/site";
-import { getAllBooks } from "@/lib/services";
+import { getAllBooks, getBook } from "@/lib/services";
 import { GetBook } from "@/types";
 import {
   DropdownMenu,
@@ -24,6 +24,8 @@ type FilterProps = {
   setFilterDate: React.Dispatch<React.SetStateAction<string>>;
   filterGenre: string;
   filterDate: string;
+  applyFilter: VoidFunction;
+  clearFilters: VoidFunction;
 };
 
 const FilterComponent = ({
@@ -31,6 +33,8 @@ const FilterComponent = ({
   setFilterGenre,
   filterDate,
   filterGenre,
+  applyFilter,
+  clearFilters,
 }: FilterProps) => {
   const [genre, setGenre] = useState<String[]>([]);
 
@@ -61,7 +65,8 @@ const FilterComponent = ({
         <DropdownMenuGroup>
           <Select
             name="genre"
-            defaultValue={filterGenre ? filterGenre : undefined}
+            key={"genre"}
+            value={filterGenre}
             onValueChange={(e) => setFilterGenre(e)}
           >
             <SelectTrigger className="my-4 bg-background">
@@ -97,16 +102,10 @@ const FilterComponent = ({
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <div className="flex justify-between w-full">
-          <Button
-            onClick={() => {
-              setFilterDate("");
-              setFilterGenre("");
-            }}
-            variant={"secondary"}
-          >
+          <Button onClick={clearFilters} variant={"secondary"}>
             Limpar
           </Button>
-          <Button onClick={() => console.log("oi")}>Buscar</Button>
+          <Button onClick={applyFilter}>Buscar</Button>
         </div>
       </DropdownMenuContent>
     </DropdownMenu>

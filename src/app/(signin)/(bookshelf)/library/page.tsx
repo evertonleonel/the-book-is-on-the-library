@@ -23,11 +23,10 @@ const LibraryPage = () => {
   const [books, setBooks] = useState<GetBook[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const [filterGenre, setFilterGenre] = useState("");
+  const [filterGenre, setFilterGenre] = useState<string>("");
   const [filterDate, setFilterDate] = useState("");
 
   const debounced = useDebounce(search);
-  console.log(books);
 
   const getBooks = async (params: {
     search?: string;
@@ -76,7 +75,20 @@ const LibraryPage = () => {
       date: filterDate,
       genre: filterGenre,
     });
-  }, [debounced, filterDate, filterGenre]);
+  }, [debounced]);
+
+  const applyFilter = () => {
+    getBooks({
+      date: filterDate,
+      genre: filterGenre,
+    });
+  };
+
+  const clearFilters = () => {
+    setFilterGenre("");
+    setFilterDate("");
+    getBooks({});
+  };
 
   return (
     <>
@@ -98,6 +110,8 @@ const LibraryPage = () => {
             setFilterDate={setFilterDate}
             filterGenre={filterGenre}
             filterDate={filterDate}
+            applyFilter={applyFilter}
+            clearFilters={clearFilters}
           />
         </div>
         <ul className="container grid sm:grid-auto-fit-xs  place-items-center gap-8">
