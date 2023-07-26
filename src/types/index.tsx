@@ -21,7 +21,7 @@ export type MainNavProps = MainNav & {
 //book
 export interface RentHistoryBook {
   studentName: string;
-  class: string;
+  className: string;
   withdrawalDate: string;
   deliveryDate: string;
   id: string;

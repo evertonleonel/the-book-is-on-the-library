@@ -20,10 +20,6 @@ export async function GET(request: NextRequest, { params }: { params: any }) {
 export async function POST(request: NextRequest, { params }: { params: any }) {
   const bookID = params.bookID;
   const data = await request.json();
-  console.log(
-    data,
-    "---------------------------------------------------------------------"
-  );
 
   const { studentName, className, withdrawalDate, deliveryDate } = data;
 
@@ -34,16 +30,25 @@ export async function POST(request: NextRequest, { params }: { params: any }) {
     );
   }
 
-  const newRentHistory = prisma.rentHistory.create({
-    data: {
-      studentName,
-      className,
-      withdrawalDate,
-      deliveryDate,
-      bookId: bookID,
-      id: bookID,
-    },
-  });
+  try {
+    const newRentHistory = await prisma.rentHistory.create({
+      data: {
+        studentName,
+        className,
+        withdrawalDate,
+        deliveryDate,
+        bookId: bookID,
+        id: bookID,
+      },
+    });
 
-  return NextResponse.json(newRentHistory);
+    return NextResponse.json(newRentHistory);
+  } catch (error) {
+    return NextResponse.json(
+      "Ocorreu um erro ao criar o histórico de aluguel.",
+      {
+        status: 500,
+      }
+    );
+  }
 }

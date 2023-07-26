@@ -13,6 +13,7 @@ import { BookModal } from "@/components/modals/book-modal";
 import FilterComponent from "./filter-component";
 import { useRequest } from "@/hooks/useRequest";
 import useDebounce from "@/hooks/useDebounce";
+import { catchError } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Library - Archive",
@@ -44,7 +45,7 @@ const LibraryPage = () => {
         setBooks(data);
       })
       .catch((error) => {
-        console.log("error", error);
+        catchError(error);
       })
       .finally(() => setLoading(false));
   };
@@ -61,7 +62,7 @@ const LibraryPage = () => {
           setBooks(data);
         })
         .catch((error) => {
-          console.log("error", error);
+          catchError(error);
         })
         .finally(() => setLoading(false));
     })();

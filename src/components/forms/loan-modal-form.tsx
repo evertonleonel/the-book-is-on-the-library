@@ -39,13 +39,11 @@ export const LoanModalForm = ({
     resolver: zodResolver(loanModalSchema),
     defaultValues: {
       studentName: "",
-      class: "",
+      className: "",
       withdrawalDate: "",
       deliveryDate: "",
     },
   });
-
-  console.log(bookId);
 
   function onSubmit(data: Inputs) {
     startTransition(() => {
@@ -61,12 +59,10 @@ export const LoanModalForm = ({
           data.deliveryDate.replaceAll("-", "/")
         ).toISOString();
 
-        console.log(parseData, "sou o parse");
-        createRentHistory(parseData);
-
-        toast.success("Livro emprestado com sucesso!");
-
-        CloseModal();
+        createRentHistory(parseData).then(() => {
+          toast.success("Livro emprestado com sucesso!");
+          CloseModal();
+        });
       } catch (err) {
         catchError(err);
       }
@@ -94,7 +90,7 @@ export const LoanModalForm = ({
           />
           <FormField
             control={form.control}
-            name="class"
+            name="className"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-foreground">Classe</FormLabel>

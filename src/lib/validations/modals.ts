@@ -43,7 +43,7 @@ export const loanModalSchema = z.object({
   studentName: z.string().min(5, {
     message: "O nome deve ter pelo menos 5 caracteres",
   }),
-  class: z.string().min(3, {
+  className: z.string().min(3, {
     message: "O campo deve ter pelo menos 3 caracteres",
   }),
   withdrawalDate: z.string().min(5, {

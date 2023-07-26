@@ -72,8 +72,6 @@ export async function GET(request: NextRequest) {
     ...pagination,
   });
 
-  console.log(allBooks);
-
   return NextResponse.json(allBooks);
 }
 

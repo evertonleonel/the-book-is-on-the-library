@@ -20,6 +20,7 @@ import {
 } from "@/lib/validations/modals";
 import { activeBook, inactiveBook } from "@/lib/services";
 import { toast } from "sonner";
+import { catchError } from "@/lib/utils";
 
 type InputLock = z.infer<typeof lockBookModalSchema>;
 type InputUnlock = z.infer<typeof unlockBookModalSchema>;
@@ -49,7 +50,6 @@ export const LockBookModalForm = ({
   });
 
   function onSubmit(data: Inputs) {
-    console.log(data);
     try {
       if (statusBook) {
         const parseData = {
@@ -65,7 +65,7 @@ export const LockBookModalForm = ({
 
       closeModal();
     } catch (err) {
-      toast.error("Error no envio");
+      catchError(err);
     }
   }
 
