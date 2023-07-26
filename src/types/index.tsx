@@ -24,6 +24,7 @@ export interface RentHistoryBook {
   class: string;
   withdrawalDate: string;
   deliveryDate: string;
+  id: string;
 }
 
 export interface Book {

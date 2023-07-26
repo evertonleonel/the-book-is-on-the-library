@@ -6,7 +6,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useGenres } from "@/hooks/use-genres";
+import { defaultGenres } from "@/config/site";
+import { getAllBooks } from "@/lib/services";
+import { GetBook } from "@/types";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,21 +17,37 @@ import {
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
 import { Select } from "@radix-ui/react-select";
+import { useEffect, useState } from "react";
 
-interface FilterSearch {
-  handleFilterData: (value: string, name: string) => void;
-  searchDateOrGenre: () => void;
-  clearFields: () => void;
-  filterBooks: { genre: string; createdAt: string; searchText: string };
-}
+type FilterProps = {
+  setFilterGenre: React.Dispatch<React.SetStateAction<string>>;
+  setFilterDate: React.Dispatch<React.SetStateAction<string>>;
+  filterGenre: string;
+  filterDate: string;
+};
 
 const FilterComponent = ({
-  handleFilterData,
-  searchDateOrGenre,
-  clearFields,
-  filterBooks,
-}: FilterSearch) => {
-  const { genre, defaultGenres } = useGenres();
+  setFilterDate,
+  setFilterGenre,
+  filterDate,
+  filterGenre,
+}: FilterProps) => {
+  const [genre, setGenre] = useState<String[]>([]);
+
+  useEffect(() => {
+    getAllBooks().then((data: GetBook[]) => {
+      const genres = data.map((el) => {
+        return el.genre;
+      });
+
+      const updatedGenresSet = new Set([...genres, ...defaultGenres]);
+
+      // Converter o Set em  array
+      const updatedGenres = Array.from(updatedGenresSet).sort();
+
+      setGenre(updatedGenres);
+    });
+  }, []);
 
   return (
     <DropdownMenu>
@@ -43,7 +61,8 @@ const FilterComponent = ({
         <DropdownMenuGroup>
           <Select
             name="genre"
-            onValueChange={(e) => handleFilterData(e, "genre")}
+            defaultValue={filterGenre ? filterGenre : undefined}
+            onValueChange={(e) => setFilterGenre(e)}
           >
             <SelectTrigger className="my-4 bg-background">
               <SelectValue placeholder="Gênero" />
@@ -68,20 +87,26 @@ const FilterComponent = ({
           </Select>
 
           <Input
-            name="createdAt"
+            name="systemEntryDate"
             type="date"
-            value={filterBooks.createdAt}
-            onChange={(e) => handleFilterData(e.target.value, "createdAt")}
+            value={filterDate}
+            onChange={(e) => setFilterDate(e.target.value)}
             className="w-full my-4"
             placeholder="filtrar"
           />
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <div className="flex justify-between w-full">
-          <Button onClick={clearFields} variant={"secondary"}>
+          <Button
+            onClick={() => {
+              setFilterDate("");
+              setFilterGenre("");
+            }}
+            variant={"secondary"}
+          >
             Limpar
           </Button>
-          <Button onClick={searchDateOrGenre}>Buscar</Button>
+          <Button onClick={() => console.log("oi")}>Buscar</Button>
         </div>
       </DropdownMenuContent>
     </DropdownMenu>

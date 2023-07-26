@@ -61,7 +61,10 @@ export const BookModal = ({ book, children }: BookModalProps) => {
               </AspectRatio>
 
               {!book.loaned ? (
-                <LoanModal disabled={!book.status || book.loaned}>
+                <LoanModal
+                  bookId={book.id}
+                  disabled={!book.status || book.loaned}
+                >
                   <Button
                     disabled={!book.status || book.loaned}
                     className="font-bold w-full"

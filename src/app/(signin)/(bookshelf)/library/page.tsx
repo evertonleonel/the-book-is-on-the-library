@@ -1,81 +1,82 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Metadata } from "next";
 
 import { GetBook } from "@/types";
 import { Icons } from "@/components/icons";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import BookCard from "@/components/cards/book-card";
 import LinkBackHome from "@/components/link-back-home";
 import { BookModal } from "@/components/modals/book-modal";
 import FilterComponent from "./filter-component";
-import { useGetBooks } from "@/hooks/use-get-books";
+import { useRequest } from "@/hooks/useRequest";
+import useDebounce from "@/hooks/useDebounce";
 
 export const metadata: Metadata = {
   title: "Library - Archive",
 };
 
 const LibraryPage = () => {
-  const { books } = useGetBooks();
-  const [filteredBooks, setFilteredBooks] = useState<GetBook[]>();
+  const { apiRequest } = useRequest();
+  const [books, setBooks] = useState<GetBook[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  const [filterGenre, setFilterGenre] = useState("");
+  const [filterDate, setFilterDate] = useState("");
 
-  const [filterBooks, setFilterBooks] = useState<{
-    genre: string;
-    createdAt: string;
-    searchText: string;
-  }>({
-    genre: "0",
-    createdAt: "",
-    searchText: "",
-  });
+  const debounced = useDebounce(search);
+  console.log(books);
 
-  const handleClickFilter = () => {
-    const filteredBooks = books.filter((book) => {
-      const genre = filterBooks.genre == "0" || book.genre == filterBooks.genre;
-      const searchText =
-        !filterBooks.searchText ||
-        book.author
-          .toLocaleLowerCase()
-          .includes(filterBooks.searchText.toLocaleLowerCase()) ||
-        book.title
-          .toLocaleLowerCase()
-          .includes(filterBooks.searchText.toLocaleLowerCase());
+  const getBooks = async (params: {
+    search?: string;
+    take?: number;
+    skip?: number;
+    date?: string;
+    genre?: string;
+  }) => {
+    await apiRequest("get", "/book", {
+      params: {
+        ...params,
+      },
+    })
+      .then(({ data }) => {
+        setBooks(data);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      })
+      .finally(() => setLoading(false));
+  };
 
-      const createdAt =
-        !filterBooks.createdAt ||
-        new Date(book.createdAt)
-          .toLocaleDateString()
-          .toLowerCase()
-          .includes(
-            filterBooks.createdAt.split("-").reverse().join("/").toLowerCase()
-          );
+  useEffect(() => {
+    (async () => {
+      await apiRequest("get", "/book", {
+        params: {
+          take: 10,
+          skip: 0,
+        },
+      })
+        .then(({ data }) => {
+          setBooks(data);
+        })
+        .catch((error) => {
+          console.log("error", error);
+        })
+        .finally(() => setLoading(false));
+    })();
+  }, []);
 
-      return genre && searchText && createdAt;
+  useEffect(() => {
+    getBooks({
+      search: debounced,
+      take: 10,
+      skip: 0,
+      date: filterDate,
+      genre: filterGenre,
     });
-
-    setFilteredBooks(filteredBooks);
-  };
-
-  const handleFilterData = (value: string, name: string) => {
-    setFilterBooks({ ...filterBooks, [name]: value });
-  };
-
-  const searchDateOrGenre = () => {
-    handleClickFilter();
-  };
-
-  const clearFields = () => {
-    setFilterBooks({
-      genre: "0",
-      createdAt: "",
-      searchText: "",
-    });
-  };
-
-  const renderBooks = filteredBooks ? filteredBooks : books;
+  }, [debounced, filterDate, filterGenre]);
 
   return (
     <>
@@ -86,23 +87,22 @@ const LibraryPage = () => {
             <Icons.search />
             <Input
               name="searchText"
-              value={filterBooks.searchText}
-              onChange={(e) => handleFilterData(e.target.value, "searchText")}
+              value={search}
+              onChange={({ target: { value } }) => setSearch(value)}
               className=" bg-transparent border-none ring-0  ring-transparent  focus-visible:outline-none focus-visible:ring-none focus-visible:ring-none focus-visible:ring-offset-0"
               placeholder="Pesquisar livro..."
             />
-            <Button onClick={handleClickFilter}>Buscar</Button>
           </div>
           <FilterComponent
-            handleFilterData={handleFilterData}
-            searchDateOrGenre={searchDateOrGenre}
-            clearFields={clearFields}
-            filterBooks={filterBooks}
+            setFilterGenre={setFilterGenre}
+            setFilterDate={setFilterDate}
+            filterGenre={filterGenre}
+            filterDate={filterDate}
           />
         </div>
         <ul className="container grid sm:grid-auto-fit-xs  place-items-center gap-8">
-          {renderBooks &&
-            renderBooks.map((book) => {
+          {books &&
+            books.map((book) => {
               return (
                 <BookModal key={book.id} book={book}>
                   <BookCard image={String(book.image)} title={book.title} />

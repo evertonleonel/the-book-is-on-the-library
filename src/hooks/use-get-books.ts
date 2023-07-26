@@ -7,7 +7,7 @@ export function useGetBooks() {
 
   useEffect(() => {
     getAllBooks().then((data) => setBooks(data));
-  }, [books]);
+  }, []);
 
   return { books };
 }

@@ -15,9 +15,11 @@ import { LoanModalForm } from "../forms/loan-modal-form";
 export const LoanModal = ({
   children,
   disabled,
+  bookId,
 }: {
   children: React.ReactNode;
   disabled: boolean;
+  bookId: string;
 }) => {
   const [open, setOpen] = React.useState(false);
 
@@ -29,7 +31,7 @@ export const LoanModal = ({
           <DialogTitle className="text-base sm:text-lg md:text-xl text-left mt-2">
             Informe os dados do aluno
           </DialogTitle>
-          <LoanModalForm onClick={() => setOpen(false)} />
+          <LoanModalForm bookId={bookId} onClick={() => setOpen(false)} />
         </DialogHeader>
       </DialogContent>
     </Dialog>

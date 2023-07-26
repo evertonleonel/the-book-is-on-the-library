@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useTransition } from "react";
 import {
   Form,
   FormControl,
@@ -16,14 +16,24 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../ui/button";
 import { loanModalSchema } from "@/lib/validations/modals";
 import { Input } from "../ui/input";
+import { createRentHistory } from "@/lib/services";
+import { Icons } from "../icons";
+import { catchError } from "@/lib/utils";
+import { toast } from "sonner";
 
 type Inputs = z.infer<typeof loanModalSchema>;
 
 type LoanModalProps = {
   onClick: () => void;
+  bookId: string;
 };
 
-export const LoanModalForm = ({ onClick }: LoanModalProps) => {
+export const LoanModalForm = ({
+  onClick: CloseModal,
+  bookId,
+}: LoanModalProps) => {
+  const [isPending, startTransition] = useTransition();
+
   // react-hook-form
   const form = useForm<Inputs>({
     resolver: zodResolver(loanModalSchema),
@@ -35,8 +45,32 @@ export const LoanModalForm = ({ onClick }: LoanModalProps) => {
     },
   });
 
+  console.log(bookId);
+
   function onSubmit(data: Inputs) {
-    onClick();
+    startTransition(() => {
+      try {
+        const id = bookId;
+        const parseData = { ...data, id: id };
+
+        parseData.withdrawalDate = new Date(
+          data.withdrawalDate.replaceAll("-", "/")
+        ).toISOString();
+
+        parseData.deliveryDate = new Date(
+          data.deliveryDate.replaceAll("-", "/")
+        ).toISOString();
+
+        console.log(parseData, "sou o parse");
+        createRentHistory(parseData);
+
+        toast.success("Livro emprestado com sucesso!");
+
+        CloseModal();
+      } catch (err) {
+        catchError(err);
+      }
+    });
   }
   return (
     <Form {...form}>
@@ -102,7 +136,18 @@ export const LoanModalForm = ({ onClick }: LoanModalProps) => {
             )}
           />
         </div>
-        <Button variant={"default"} className="w-36 place-self-end">
+        <Button
+          disabled={isPending}
+          type="submit"
+          variant={"default"}
+          className="w-36 place-self-end"
+        >
+          {isPending && (
+            <Icons.spinner
+              className="mr-2 h-4 w-4 animate-spin"
+              aria-hidden="true"
+            />
+          )}
           Emprestar
         </Button>
       </form>

@@ -17,32 +17,24 @@ import {
   FormMessage,
 } from "../ui/form";
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { toast } from "sonner";
 import { Icons } from "../icons";
 import { catchError, parseBase64 } from "@/lib/utils";
-import { defaultGenres } from "@/config/site";
-import { createBook, getAllBooks, getBook, updateBook } from "@/lib/services";
+import { createBook, getBook, updateBook } from "@/lib/services";
 import { CreateBook, GetBook } from "@/types";
 import { createNewBookSchema } from "@/lib/validations/modals";
+import { useRouter } from "next/navigation";
 
 type Inputs = z.infer<typeof createNewBookSchema>;
 
 export const CreateBookForm = ({ params }: { params?: string }) => {
-  const [genre, setGenre] = useState<String[]>([]);
   const [isPending, startTransition] = useTransition();
   const [selectedImage, setSelectedImage] = useState<string | null>();
   const inputRef = useRef<HTMLInputElement>(null);
   const [editBook, setEditBook] = useState<GetBook | null>(null);
+  const router = useRouter();
 
   const editBooks = {
     ...editBook,
@@ -54,7 +46,7 @@ export const CreateBookForm = ({ params }: { params?: string }) => {
     defaultValues: {
       title: "",
       author: "",
-      genre: editBooks ? editBooks.genre : "",
+      genre: "",
       synopsis: "",
       systemEntryDate: "",
     },
@@ -68,21 +60,7 @@ export const CreateBookForm = ({ params }: { params?: string }) => {
     }
   }
 
-  useEffect(() => {
-    getAllBooks().then((data: GetBook[]) => {
-      const genres = data.map((el) => {
-        return el.genre;
-      });
-
-      const updatedGenresSet = new Set([...genres, ...defaultGenres]);
-
-      // Converter o Set em  array
-      const updatedGenres = Array.from(updatedGenresSet).sort();
-
-      setGenre(updatedGenres);
-    });
-  }, []);
-
+  //Edit
   useEffect(() => {
     if (params) {
       getBook(params).then((bookData: GetBook | null) => {
@@ -109,16 +87,17 @@ export const CreateBookForm = ({ params }: { params?: string }) => {
       try {
         if (!params) {
           const parseData = data;
+
           parseData.image = selectedImage;
           parseData.systemEntryDate = new Date(
             parseData.systemEntryDate.replaceAll("-", "/")
           ).toISOString();
 
-          createBook(parseData as CreateBook);
-
-          form.reset();
-          setSelectedImage("");
-          toast.success("Livro criado com sucesso!");
+          createBook(parseData as CreateBook).then(() => {
+            form.reset();
+            setSelectedImage("");
+            toast.success("Livro criado com sucesso!");
+          });
         }
 
         if (params && editBooks) {
@@ -134,24 +113,13 @@ export const CreateBookForm = ({ params }: { params?: string }) => {
             genre: data.genre,
             systemEntryDate: parseDate,
             synopsis: data.synopsis,
-          } as GetBook);
-
-          // console.log({
-          //   ...editBooks,
-          //   image: selectedImage,
-          //   title: data.title,
-          //   author: data.author,
-          //   genre: data.genre,
-          //   systemEntryDate: parseDate,
-          //   synopsis: data.synopsis,
-          // });
-
-          toast.success("Livro editado com sucesso!");
-          form.reset();
-          setSelectedImage("");
+          } as GetBook).then(() => {
+            toast.success("Livro editado com sucesso!");
+            form.reset();
+            setSelectedImage("");
+            router.push("/library");
+          });
         }
-
-        // router.push("/library");
       } catch (err) {
         catchError(err);
       }
@@ -218,33 +186,9 @@ export const CreateBookForm = ({ params }: { params?: string }) => {
                     <FormLabel className="font-bold text-base">
                       Gênero
                     </FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger className="bg-background">
-                          <SelectValue placeholder={field.value} />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {genre.length == 0
-                          ? defaultGenres.map((el, index) => {
-                              return (
-                                <SelectItem key={el} value={String(el)}>
-                                  {el}
-                                </SelectItem>
-                              );
-                            })
-                          : genre.map((el, index) => {
-                              return (
-                                <SelectItem key={String(el)} value={String(el)}>
-                                  {el}
-                                </SelectItem>
-                              );
-                            })}
-                      </SelectContent>
-                    </Select>
+                    <FormControl>
+                      <Input placeholder="Gênero do livro" {...field} />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}

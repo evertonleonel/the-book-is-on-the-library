@@ -10,23 +10,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model Book {
-  id          String        @id @default(cuid())
-  title       String
-  author      String
-  synopsis    String
-  genre       String
-  createdAt   DateTime      @default(now()) @map("created_at")
-  updatedAt   DateTime      @updatedAt      @map("updated_at")
-  status      Boolean       @default(true)
-  loaned      Boolean       @default(false)
-  description String        
-  image       String?
-  systemEntryDate DateTime  @map("system_Entry_Date")
-  rentHistory RentHistory[]
+  id              String        @id @default(cuid())
+  title           String
+  author          String
+  synopsis        String
+  genre           String
+  createdAt       DateTime      @default(now()) @map("created_at")
+  updatedAt       DateTime      @updatedAt @map("updated_at")
+  status          Boolean       @default(true)
+  loaned          Boolean       @default(false)
+  description     String
+  image           String?
+  systemEntryDate DateTime      @map("system_Entry_Date")
+  rentHistory     RentHistory[]
 
-   @@map("books")
+  @@map("books")
 }
 
 model RentHistory {
@@ -34,7 +33,7 @@ model RentHistory {
   studentName    String   @map("student_name")
   className      String   @map("class_name")
   withdrawalDate DateTime @default(now()) @map("withdrawal_Date")
-  deliveryDate   DateTime  @map("delivery_Date")
+  deliveryDate   DateTime @map("delivery_Date")
   Book           Book     @relation(fields: [bookId], references: [id])
   bookId         String   @map("book_id")
 
