@@ -39,7 +39,6 @@ export const LockBookModalForm = ({
   idBook,
 }: lockBookModalProps) => {
   // react-hook-form
-
   const form = useForm<Inputs>({
     resolver: zodResolver(
       statusBook ? lockBookModalSchema : unlockBookModalSchema
@@ -56,11 +55,14 @@ export const LockBookModalForm = ({
           id: idBook,
           description: data.description,
         };
-        inactiveBook(parseData);
-        toast.success("Livro desativado com sucesso!");
+
+        inactiveBook(parseData).then(() => {
+          toast.success("Livro desativado com sucesso!");
+        });
       } else {
-        activeBook(idBook);
-        toast.success("Livro ativado com sucesso!");
+        activeBook(idBook).then(() => {
+          toast.success("Livro ativado com sucesso!");
+        });
       }
 
       closeModal();

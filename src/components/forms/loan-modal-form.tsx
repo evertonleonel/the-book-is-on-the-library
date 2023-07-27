@@ -16,7 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../ui/button";
 import { loanModalSchema } from "@/lib/validations/modals";
 import { Input } from "../ui/input";
-import { createRentHistory } from "@/lib/services";
+import { createRentHistory, loanedBook } from "@/lib/services";
 import { Icons } from "../icons";
 import { catchError } from "@/lib/utils";
 import { toast } from "sonner";
@@ -59,10 +59,12 @@ export const LoanModalForm = ({
           data.deliveryDate.replaceAll("-", "/")
         ).toISOString();
 
-        createRentHistory(parseData).then(() => {
-          toast.success("Livro emprestado com sucesso!");
-          CloseModal();
-        });
+        createRentHistory(parseData)
+          .then(() => {
+            toast.success("Livro emprestado com sucesso!");
+            CloseModal();
+          })
+          .catch((erro) => catchError(erro));
       } catch (err) {
         catchError(err);
       }

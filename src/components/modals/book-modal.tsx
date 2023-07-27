@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
 import {
@@ -17,9 +17,11 @@ import { LockModal } from "./lock-modal";
 import { LoanModal } from "./loan-modal";
 import { HistoryModal } from "./history-modal";
 import StudentTableData from "../tables/table-studant-data";
-import { loanedBook } from "@/lib/services";
-import { GetBook } from "@/types";
+import { getRentHistory, loanedBook } from "@/lib/services";
+import { GetBook, RentHistoryBook } from "@/types";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { catchError } from "@/lib/utils";
 
 interface BookModalProps {
   book: GetBook;
@@ -27,24 +29,58 @@ interface BookModalProps {
 }
 
 export const BookModal = ({ book, children }: BookModalProps) => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [history, setHistory] = useState<RentHistoryBook[]>([]);
+
   const router = useRouter();
 
-  const tableAndStatus = book.rentHistory || book.description;
+  const tableAndStatus = history || book.description;
   const container =
-    !book.rentHistory && !book.description ? "max-w-[896px]" : "max-w-[1400px]";
+    !history && !book.description ? "max-w-[896px]" : "max-w-[1400px]";
+
+  const Loaned = (id: string) => {
+    loanedBook(id)
+      .then(() => {
+        toast.success("Livro devolvido com sucesso!");
+      })
+      .catch((error) => {
+        toast.error("Ops...", error);
+      });
+  };
+
+  useEffect(() => {
+    (async () => {
+      await getRentHistory(book.id)
+        .then((data) => setHistory(data))
+        .catch((error) => catchError(`Ops..., ${error}`))
+        .finally(() => setLoading(false));
+    })();
+  }, []);
+
+  const getHistoryBook = async () => {
+    await getRentHistory(book.id)
+      .then((data) => {
+        setHistory(data);
+      })
+      .catch((err) => {
+        console.log(err, "get history falhou");
+      });
+  };
+
+  console.log(history, " sou o antigo request");
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>{children}</DialogTrigger>
       <DialogContent
         className={`${container} ${
-          !book.rentHistory && "max-w-[896px]"
+          !history && "max-w-[896px]"
         }  max-h-screen w-full  overflow-auto`}
       >
         <div
           className={`h-full w-full  flex flex-col ${
-            book.rentHistory && "lg:flex-row"
+            history && "lg:flex-row"
           } md:gap-4  m-4 divide-y-2 md:divide-none divide-dashed`}
         >
           <section className="w-full flex flex-col sm:flex-row gap-4 m-auto mt-4 divide-y-2 md:divide-none divide-dashed">
@@ -77,7 +113,7 @@ export const BookModal = ({ book, children }: BookModalProps) => {
                   disabled={!book.status}
                   variant={"secondary"}
                   className="font-bold"
-                  onClick={() => loanedBook(book.id)}
+                  onClick={() => Loaned(book.id)}
                 >
                   Devolver
                 </Button>
@@ -145,8 +181,13 @@ export const BookModal = ({ book, children }: BookModalProps) => {
                 </Button>
 
                 {book.status && (
-                  <LockModal idBook={book.id} statusBook={book.status}>
+                  <LockModal
+                    idBook={book.id}
+                    disabled={book.loaned}
+                    statusBook={book.status}
+                  >
                     <Button
+                      disabled={book.loaned}
                       className="font-bold w-full"
                       variant={"destructive"}
                     >
@@ -156,8 +197,13 @@ export const BookModal = ({ book, children }: BookModalProps) => {
                 )}
 
                 {!book.status && (
-                  <LockModal idBook={book.id} statusBook={book.status}>
+                  <LockModal
+                    idBook={book.id}
+                    disabled={book.loaned}
+                    statusBook={book.status}
+                  >
                     <Button
+                      disabled={book.loaned}
                       variant={"default"}
                       className="font-bold w-full bg-indigo-700 hover:bg-indigo-900"
                     >
@@ -166,8 +212,12 @@ export const BookModal = ({ book, children }: BookModalProps) => {
                   </LockModal>
                 )}
 
-                <HistoryModal history={book.rentHistory}>
-                  <Button className="font-bold w-full" variant={"secondary"}>
+                <HistoryModal history={history} bookID={book.id}>
+                  <Button
+                    onClick={() => getHistoryBook()}
+                    className="font-bold w-full"
+                    variant={"secondary"}
+                  >
                     Histórico
                   </Button>
                 </HistoryModal>
@@ -178,7 +228,7 @@ export const BookModal = ({ book, children }: BookModalProps) => {
           {tableAndStatus && (
             <>
               <section className="grid mt-[21px] w-full">
-                {book.rentHistory && <StudentTableData />}
+                {history && <StudentTableData />}
 
                 {book.description && (
                   <div>

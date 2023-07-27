@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(request: NextRequest, { params }: { params: any }) {
   const rentID = params.rentID;
 
-  const historyBook = await prisma.rentHistory.findFirst({
+  const historyBook = await prisma.rentHistory.findMany({
     where: {
       id: rentID,
     },
@@ -31,6 +31,15 @@ export async function POST(request: NextRequest, { params }: { params: any }) {
   }
 
   try {
+    const updateLoaned = await prisma.book.update({
+      where: {
+        id: bookID,
+      },
+      data: {
+        loaned: true,
+      },
+    });
+
     const newRentHistory = await prisma.rentHistory.create({
       data: {
         studentName,
@@ -41,6 +50,8 @@ export async function POST(request: NextRequest, { params }: { params: any }) {
         id: bookID,
       },
     });
+
+    console.log(updateLoaned, "----------------------------------UPDATE");
 
     return NextResponse.json(newRentHistory);
   } catch (error) {

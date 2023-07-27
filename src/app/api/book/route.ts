@@ -2,7 +2,6 @@ import prisma from "@/db";
 import { Prisma } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs";
-import { Console } from "console";
 
 //Get All Books
 export async function GET(request: NextRequest) {

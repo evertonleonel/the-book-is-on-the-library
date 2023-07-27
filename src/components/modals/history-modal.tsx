@@ -15,9 +15,11 @@ import { RentHistoryBook } from "@/types";
 export const HistoryModal = ({
   history,
   children,
+  bookID,
 }: {
   history: RentHistoryBook[];
   children: React.ReactNode;
+  bookID: string;
 }) => {
   const [open, setOpen] = React.useState(false);
 
@@ -29,7 +31,7 @@ export const HistoryModal = ({
           <DialogTitle className="text-base sm:text-lg md:text-xl text-left mt-2">
             Histórico de empréstimos do livro
           </DialogTitle>
-          <TableLoanModal history={history} />
+          <TableLoanModal history={history} bookID={bookID} />
         </DialogHeader>
       </DialogContent>
     </Dialog>

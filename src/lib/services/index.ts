@@ -11,6 +11,11 @@ export const getBook = async (id: string) => {
   return data;
 };
 
+export const getRentHistory = async (id: string) => {
+  const { data } = await api.get(`/book/${id}/rentHistory`);
+  return data;
+};
+
 export const createBook = async (book: CreateBook) => {
   await api.post("/book/", book);
   return true;

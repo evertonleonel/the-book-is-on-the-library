@@ -14,15 +14,18 @@ export const LockModal = ({
   children,
   statusBook,
   idBook,
+  disabled,
 }: {
   children: React.ReactNode;
   statusBook?: boolean;
   idBook: string;
+  disabled: boolean;
 }) => {
   const [open, setOpen] = React.useState(false);
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>{children}</DialogTrigger>
+      <DialogTrigger disabled={disabled}>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-2xl">
         <DialogHeader className="flex flex-col gap-4">
           <DialogTitle className="text-base sm:text-lg md:text-xl text-left mt-2">

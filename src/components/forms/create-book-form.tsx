@@ -26,6 +26,7 @@ import { createBook, getBook, updateBook } from "@/lib/services";
 import { CreateBook, GetBook } from "@/types";
 import { createNewBookSchema } from "@/lib/validations/modals";
 import { useRouter } from "next/navigation";
+import { error } from "console";
 
 type Inputs = z.infer<typeof createNewBookSchema>;
 
@@ -113,12 +114,16 @@ export const CreateBookForm = ({ params }: { params?: string }) => {
             genre: data.genre,
             systemEntryDate: parseDate,
             synopsis: data.synopsis,
-          } as GetBook).then(() => {
-            toast.success("Livro editado com sucesso!");
-            form.reset();
-            setSelectedImage("");
-            router.push("/library");
-          });
+          } as GetBook)
+            .then(() => {
+              toast.success("Livro editado com sucesso!");
+              form.reset();
+              setSelectedImage("");
+              router.push("/library");
+            })
+            .catch((error) => {
+              catchError(error);
+            });
         }
       } catch (err) {
         catchError(err);

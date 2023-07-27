@@ -4,7 +4,6 @@ import React from "react";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -31,7 +30,7 @@ const StudentTableData = () => {
         <TableBody className="">
           <TableRow>
             <TableCell className="font-medium">Everton Leonel</TableCell>
-            <TableCell>Turma KLB</TableCell>
+            <TableCell>Turma XYZ</TableCell>
             <TableCell className="text-right">10/12/2022</TableCell>
             <TableCell className="text-right">03/04/2023</TableCell>
           </TableRow>

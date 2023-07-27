@@ -16,27 +16,12 @@ export async function PATCH(request: NextRequest, { params }: { params: any }) {
 
   const updateLoaned = await prisma.book.update({
     where: {
-      id: findBook.id,
+      id: bookID,
     },
     data: {
       loaned: false,
     },
   });
 
-  const lastRentHistory = await prisma.rentHistory.findFirst({
-    orderBy: { withdrawalDate: "desc" },
-  });
-
-  if (!lastRentHistory) {
-    return NextResponse.json("Histórico não encontrado", { status: 404 });
-  }
-
-  const updateLastRentHistory = await prisma.rentHistory.update({
-    where: {
-      id: lastRentHistory.id,
-    },
-    data: { withdrawalDate: new Date().toISOString() },
-  });
-
-  return NextResponse.json(updateLastRentHistory);
+  return NextResponse.json(updateLoaned);
 }
