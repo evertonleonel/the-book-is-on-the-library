@@ -36,6 +36,10 @@ const LibraryPage = () => {
     date?: string;
     genre?: string;
   }) => {
+    await new Promise((resolve) => {
+      setTimeout(resolve, 30000);
+    });
+
     await apiRequest("get", "/book", {
       params: {
         ...params,
