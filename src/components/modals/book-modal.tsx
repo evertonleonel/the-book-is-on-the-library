@@ -23,12 +23,21 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { catchError } from "@/lib/utils";
 
+export type getBooksFunction = {
+  search?: string | undefined;
+  take?: number | undefined;
+  skip?: number | undefined;
+  date?: string | undefined;
+  genre?: string | undefined;
+};
+
 interface BookModalProps {
   book: GetBook;
   children: React.ReactNode;
+  getBooks: (params: getBooksFunction) => Promise<void>;
 }
 
-export const BookModal = ({ book, children }: BookModalProps) => {
+export const BookModal = ({ book, children, getBooks }: BookModalProps) => {
   const [open, setOpen] = useState(false);
   const [lastRentHistory, setLastRentHistory] = useState<RentHistoryBook>();
   const history = book ? book?.rentHistory : [];
@@ -39,6 +48,7 @@ export const BookModal = ({ book, children }: BookModalProps) => {
     loanedBook(id)
       .then(() => {
         toast.success("Livro devolvido com sucesso!");
+        getBooks({});
       })
       .catch((error) => {
         catchError(error);
@@ -54,8 +64,6 @@ export const BookModal = ({ book, children }: BookModalProps) => {
         catchError(error);
       });
   };
-
-  console.log(lastRentHistory, "lastRentHistory");
 
   const tableAndStatus = (lastRentHistory && book.loaned) || book.description;
 
@@ -94,6 +102,7 @@ export const BookModal = ({ book, children }: BookModalProps) => {
                 <LoanModal
                   bookId={book.id}
                   disabled={!book.status || book.loaned}
+                  getBooks={getBooks}
                 >
                   <Button
                     disabled={!book.status || book.loaned}
@@ -176,6 +185,7 @@ export const BookModal = ({ book, children }: BookModalProps) => {
 
                 {book.status && (
                   <LockModal
+                    getBooks={getBooks}
                     idBook={book.id}
                     disabled={book.loaned}
                     statusBook={book.status}
@@ -192,6 +202,7 @@ export const BookModal = ({ book, children }: BookModalProps) => {
 
                 {!book.status && (
                   <LockModal
+                    getBooks={getBooks}
                     idBook={book.id}
                     disabled={book.loaned}
                     statusBook={book.status}

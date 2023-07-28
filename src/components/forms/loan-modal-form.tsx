@@ -20,17 +20,20 @@ import { createRentHistory, loanedBook } from "@/lib/services";
 import { Icons } from "../icons";
 import { catchError } from "@/lib/utils";
 import { toast } from "sonner";
+import { getBooksFunction } from "../modals/book-modal";
 
 type Inputs = z.infer<typeof loanModalSchema>;
 
 type LoanModalProps = {
   onClick: () => void;
   bookId: string;
+  getBooks: (params: getBooksFunction) => Promise<void>;
 };
 
 export const LoanModalForm = ({
   onClick: CloseModal,
   bookId,
+  getBooks,
 }: LoanModalProps) => {
   const [isPending, startTransition] = useTransition();
 
@@ -62,6 +65,7 @@ export const LoanModalForm = ({
         createRentHistory(parseData)
           .then(() => {
             toast.success("Livro emprestado com sucesso!");
+            getBooks({});
             CloseModal();
           })
           .catch((erro) => catchError(erro));

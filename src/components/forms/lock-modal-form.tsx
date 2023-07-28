@@ -21,6 +21,7 @@ import {
 import { activeBook, inactiveBook } from "@/lib/services";
 import { toast } from "sonner";
 import { catchError } from "@/lib/utils";
+import { getBooksFunction } from "../modals/book-modal";
 
 type InputLock = z.infer<typeof lockBookModalSchema>;
 type InputUnlock = z.infer<typeof unlockBookModalSchema>;
@@ -31,12 +32,14 @@ type lockBookModalProps = {
   statusBook?: boolean;
   idBook: string;
   onClick: () => void;
+  getBooks: (params: getBooksFunction) => Promise<void>;
 };
 
 export const LockBookModalForm = ({
   onClick: closeModal,
   statusBook,
   idBook,
+  getBooks,
 }: lockBookModalProps) => {
   // react-hook-form
   const form = useForm<Inputs>({
@@ -58,10 +61,12 @@ export const LockBookModalForm = ({
 
         inactiveBook(parseData).then(() => {
           toast.success("Livro desativado com sucesso!");
+          getBooks({});
         });
       } else {
         activeBook(idBook).then(() => {
           toast.success("Livro ativado com sucesso!");
+          getBooks({});
         });
       }
 

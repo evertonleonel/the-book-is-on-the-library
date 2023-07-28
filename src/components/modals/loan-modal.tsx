@@ -11,15 +11,18 @@ import {
 } from "@/components/ui/dialog";
 import React from "react";
 import { LoanModalForm } from "../forms/loan-modal-form";
+import { getBooksFunction } from "./book-modal";
 
 export const LoanModal = ({
   children,
   disabled,
   bookId,
+  getBooks,
 }: {
   children: React.ReactNode;
   disabled: boolean;
   bookId: string;
+  getBooks: (params: getBooksFunction) => Promise<void>;
 }) => {
   const [open, setOpen] = React.useState(false);
 
@@ -31,7 +34,11 @@ export const LoanModal = ({
           <DialogTitle className="text-base sm:text-lg md:text-xl text-left mt-2">
             Informe os dados do aluno
           </DialogTitle>
-          <LoanModalForm bookId={bookId} onClick={() => setOpen(false)} />
+          <LoanModalForm
+            getBooks={getBooks}
+            bookId={bookId}
+            onClick={() => setOpen(false)}
+          />
         </DialogHeader>
       </DialogContent>
     </Dialog>

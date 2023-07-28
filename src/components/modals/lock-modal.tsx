@@ -9,18 +9,23 @@ import {
 } from "@/components/ui/dialog";
 import React from "react";
 import { LockBookModalForm } from "../forms/lock-modal-form";
+import { getBooksFunction } from "./book-modal";
+
+type LockModalProps = {
+  children: React.ReactNode;
+  statusBook?: boolean;
+  idBook: string;
+  disabled: boolean;
+  getBooks: (params: getBooksFunction) => Promise<void>;
+};
 
 export const LockModal = ({
   children,
   statusBook,
   idBook,
   disabled,
-}: {
-  children: React.ReactNode;
-  statusBook?: boolean;
-  idBook: string;
-  disabled: boolean;
-}) => {
+  getBooks,
+}: LockModalProps) => {
   const [open, setOpen] = React.useState(false);
 
   return (
@@ -32,6 +37,7 @@ export const LockModal = ({
             {statusBook ? " Inativar Livro" : "Ativar livro"}
           </DialogTitle>
           <LockBookModalForm
+            getBooks={getBooks}
             idBook={idBook}
             statusBook={statusBook}
             onClick={() => setOpen(false)}

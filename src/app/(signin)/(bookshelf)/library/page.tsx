@@ -68,8 +68,6 @@ const LibraryPage = () => {
     })();
   }, []);
 
-  console.log(books);
-
   useEffect(() => {
     getBooks({
       search: debounced,
@@ -121,7 +119,7 @@ const LibraryPage = () => {
           {books &&
             books.map((book) => {
               return (
-                <BookModal key={book.id} book={book}>
+                <BookModal key={book.id} book={book} getBooks={getBooks}>
                   <BookCard image={String(book.image)} title={book.title} />
                 </BookModal>
               );
