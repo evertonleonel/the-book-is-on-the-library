@@ -1,5 +1,8 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
+import { useRequest } from "@/hooks/useRequest";
+import useDebounce from "@/hooks/useDebounce";
 
 import {
   Table,
@@ -12,8 +15,6 @@ import {
 } from "@/components/ui/table";
 import { IconInput } from "@/components/icon-input";
 import { Icons } from "@/components/icons";
-import { useRequest } from "@/hooks/useRequest";
-import useDebounce from "@/hooks/useDebounce";
 import { catchError } from "@/lib/utils";
 import { RentHistoryBook } from "@/types";
 
@@ -26,11 +27,13 @@ const TableLoan = () => {
   const [loading, setLoading] = useState(true);
   const [histories, setHistories] = useState<allRentHistory[]>([]);
 
-  const [entryDate, setEntryDate] = useState("");
-  const [deliveryDate, setDeliveryDate] = useState("");
   const [searchStudent, setSearchStudent] = useState("");
   const [searchClass, setSearchClass] = useState("");
   const [searchTitle, setSearchTitle] = useState("");
+
+  const [entryDate, setEntryDate] = useState("");
+  const [deliveryDate, setDeliveryDate] = useState("");
+
   const debouncedStudent = useDebounce(searchStudent);
   const debouncedClassName = useDebounce(searchClass);
   const debouncedBookTitle = useDebounce(searchTitle);
@@ -94,6 +97,8 @@ const TableLoan = () => {
     deliveryDate,
   ]);
 
+  const handleClear = () => {};
+
   return (
     <div className="max-w-[1400px] mx-auto w-full overflow-auto">
       <Table className=" shadow-md rounded bg-background px-4 mb-2">
@@ -118,6 +123,8 @@ const TableLoan = () => {
                 onChange={({ target: { value } }) => {
                   setSearchStudent(value);
                 }}
+                value={searchStudent}
+                onClick={() => setSearchStudent("")}
                 name="studentName"
                 className="bg-transparent"
                 icon={Icons.filter}
@@ -128,6 +135,8 @@ const TableLoan = () => {
                 onChange={({ target: { value } }) => {
                   setSearchClass(value);
                 }}
+                value={searchClass}
+                onClick={() => setSearchClass("")}
                 name="className"
                 className="bg-transparent"
                 icon={Icons.filter}
@@ -138,6 +147,8 @@ const TableLoan = () => {
                 onChange={({ target: { value } }) => {
                   setSearchTitle(value);
                 }}
+                value={searchTitle}
+                onClick={() => setSearchTitle("")}
                 name="title"
                 className="bg-transparent"
                 icon={Icons.filter}
@@ -145,10 +156,12 @@ const TableLoan = () => {
             </TableCell>
             <TableCell className="w-1/5">
               <IconInput
-                type="date"
                 onChange={(e) => {
                   setEntryDate(e.target.value);
                 }}
+                value={entryDate}
+                type="date"
+                onClick={() => setEntryDate("")}
                 name="withdrawalDate"
                 className="bg-transparent"
                 icon={Icons.filter}
@@ -160,6 +173,8 @@ const TableLoan = () => {
                 onChange={(e) => {
                   setDeliveryDate(e.target.value);
                 }}
+                value={deliveryDate}
+                onClick={() => setDeliveryDate("")}
                 name="deliveryDate"
                 className="bg-transparent"
                 icon={Icons.filter}

@@ -1,4 +1,5 @@
 "use client";
+
 import React, { ChangeEvent, ReactNode, useEffect, useState } from "react";
 
 import {
@@ -10,10 +11,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Input } from "../ui/input";
 import { IconInput } from "@/components/icon-input";
 import { Icons } from "@/components/icons";
 import { RentHistoryBook } from "@/types";
-import { Input } from "../ui/input";
 
 type TObjFilter = {
   studentName: string;
@@ -145,7 +146,7 @@ const TableLoanModal = ({
               ) => {
                 return (
                   <>
-                    <TableRow key={`${index}`}>
+                    <TableRow key={`${index}-${id}`}>
                       <TableCell className={`font-medium`}>
                         {studentName}
                       </TableCell>
