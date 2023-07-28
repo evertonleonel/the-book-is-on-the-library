@@ -68,6 +68,8 @@ const LibraryPage = () => {
     })();
   }, []);
 
+  console.log(books);
+
   useEffect(() => {
     getBooks({
       search: debounced,

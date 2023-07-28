@@ -69,6 +69,7 @@ export async function GET(request: NextRequest) {
   const allBooks = await prisma.book.findMany({
     where,
     ...pagination,
+    include: { rentHistory: true },
   });
 
   return NextResponse.json(allBooks);

@@ -9,8 +9,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { RentHistoryBook } from "@/types";
 
-const StudentTableData = () => {
+const StudentTableData = ({
+  lastRentHistory,
+}: {
+  lastRentHistory: RentHistoryBook;
+}) => {
   return (
     <div className="max-w-[1400px] mx-auto w-full overflow-auto mb-4 mt-2">
       <h2 className="mb-2 font-bold text-lg md:text-xl">Dados do Aluno</h2>
@@ -29,10 +34,16 @@ const StudentTableData = () => {
         </TableHeader>
         <TableBody className="">
           <TableRow>
-            <TableCell className="font-medium">Everton Leonel</TableCell>
-            <TableCell>Turma XYZ</TableCell>
-            <TableCell className="text-right">10/12/2022</TableCell>
-            <TableCell className="text-right">03/04/2023</TableCell>
+            <TableCell className="font-medium">
+              {lastRentHistory.studentName}
+            </TableCell>
+            <TableCell>{lastRentHistory.className}</TableCell>
+            <TableCell className="text-right">
+              {new Date(lastRentHistory.withdrawalDate).toLocaleDateString()}
+            </TableCell>
+            <TableCell className="text-right">
+              {new Date(lastRentHistory.deliveryDate).toLocaleDateString()}
+            </TableCell>
           </TableRow>
         </TableBody>
       </Table>

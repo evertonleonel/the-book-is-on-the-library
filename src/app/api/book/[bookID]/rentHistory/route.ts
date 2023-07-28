@@ -47,7 +47,6 @@ export async function POST(request: NextRequest, { params }: { params: any }) {
         withdrawalDate,
         deliveryDate,
         bookId: bookID,
-        id: bookID,
       },
     });
 
