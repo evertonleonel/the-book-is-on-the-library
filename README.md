@@ -1,4 +1,4 @@
-# [Library]
+# [BookStore]
 
 Esta é uma biblioteca/livraria de código aberto construída com o Next.js 13.
 
@@ -37,11 +37,11 @@ npm install
 3. Iniciar o servidor de desenvolvimento
 
 ```bash
-pnpm run dev
+npm run dev
 ```
 
 4. Suba o database
 
 ```bash
-pnpm run db:push
+npm run db:push
 ```
