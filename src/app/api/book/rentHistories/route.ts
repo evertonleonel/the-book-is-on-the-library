@@ -13,6 +13,16 @@ export async function GET(request: NextRequest) {
     return new Response("Unauthorized", { status: 401 });
   }
 
+  const minMaxEntryDate = await prisma.rentHistory.aggregate({
+    _min: { withdrawalDate: true },
+    _max: { withdrawalDate: true },
+  });
+
+  const minMaxDeliveryDate = await prisma.rentHistory.aggregate({
+    _min: { deliveryDate: true },
+    _max: { deliveryDate: true },
+  });
+
   if (searchParams) {
     const parseSearchparams = Object.fromEntries(searchParams);
     const {
@@ -41,18 +51,28 @@ export async function GET(request: NextRequest) {
       };
 
     if (entryDate) {
+      const maxDate = await prisma.rentHistory.findFirst({
+        orderBy: [{ withdrawalDate: "desc" }, { deliveryDate: "desc" }],
+      });
+
       const parseDate = new Date(`${entryDate}T23:59:59z`);
       where = {
         withdrawalDate: {
           gte: new Date(entryDate).toISOString(),
-          lte: new Date(parseDate).toISOString(),
+          lte: maxDate?.withdrawalDate,
         },
       };
     }
+
     if (deliveryDate) {
-      const parseDate = new Date(`${entryDate}T23:59:59z`);
+      const maxDate = await prisma.rentHistory.findFirst({
+        orderBy: [{ deliveryDate: "desc" }],
+      });
+      const parseDate = new Date(`${deliveryDate}T23:59:59z`);
+
       where = {
-        withdrawalDate: {
+        ...where,
+        deliveryDate: {
           gte: new Date(deliveryDate).toISOString(),
           lte: new Date(parseDate).toISOString(),
         },
