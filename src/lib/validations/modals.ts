@@ -16,7 +16,6 @@ export const createNewBookSchema = z.object({
   systemEntryDate: z.string().min(3, {
     message: "O campo author deve ter pelo menos 3 caracteres",
   }),
-  // image: z.string().nonempty({ message: "Selecione uma imagem." }),
   image: z
     .unknown()
     .refine((val) => {

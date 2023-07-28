@@ -27,10 +27,6 @@ export function MainNav({ user }: MainNavProps) {
     user?.lastName?.charAt(0) ?? ""
   }`;
 
-  const email =
-    user?.emailAddresses?.find((e) => e.id === user.primaryEmailAddressId)
-      ?.emailAddress ?? "";
-
   const IconComponent = (icon: IconComponentMain) => {
     const iconComponent = {
       home: <Icons.home className="h-4" />,

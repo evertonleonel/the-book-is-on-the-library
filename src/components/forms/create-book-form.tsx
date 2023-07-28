@@ -26,7 +26,6 @@ import { createBook, getBook, updateBook } from "@/lib/services";
 import { CreateBook, GetBook } from "@/types";
 import { createNewBookSchema } from "@/lib/validations/modals";
 import { useRouter } from "next/navigation";
-import { error } from "console";
 
 type Inputs = z.infer<typeof createNewBookSchema>;
 

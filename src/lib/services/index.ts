@@ -1,4 +1,4 @@
-import { Book, CreateBook, GetBook, RentHistoryBook } from "@/types";
+import { CreateBook, GetBook, RentHistoryBook } from "@/types";
 import { api } from "./api";
 
 export const getAllBooks = async () => {

@@ -108,10 +108,6 @@ const TableLoan = () => {
     console.log("re-render");
   });
 
-  // const handleChange = (value: string, name: string) => {
-  //     setSearch({ ...search, [name]: value });
-  // };
-
   return (
     <div className="max-w-[1400px] mx-auto w-full overflow-auto">
       <Table className=" shadow-md rounded bg-background px-4 mb-2">

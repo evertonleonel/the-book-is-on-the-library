@@ -8,10 +8,11 @@ import { Input, InputProps } from "./ui/input";
 
 type IconInputProps = {
   icon: ElementType;
+  onClick?: () => void;
 };
 
 const IconInput = forwardRef<HTMLInputElement, InputProps & IconInputProps>(
-  ({ className, icon: Icon, ...props }, ref) => {
+  ({ className, onClick, icon: Icon, ...props }, ref) => {
     return (
       <div className="flex rounded-md border border-input bg-[#ffffff33] backdrop-blur-[10px] px-2 focus-within:ring-2 focus:ring-slate-700">
         <Input
@@ -26,6 +27,7 @@ const IconInput = forwardRef<HTMLInputElement, InputProps & IconInputProps>(
         <Button
           type="button"
           variant={"ghost"}
+          onClick={onClick}
           disabled={props.value === "" || props.disabled}
         >
           {props.children ? (

@@ -90,7 +90,7 @@ const TableLoanModal = ({
               ) => {
                 return (
                   <>
-                    <TableRow key={`${index}`}>
+                    <TableRow key={`${index}-${id}`}>
                       <TableCell className={`font-medium`}>
                         {studentName}
                       </TableCell>
