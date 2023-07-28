@@ -18,7 +18,7 @@ Esta é uma biblioteca/livraria de código aberto construída com o Next.js 13.
 - [x] Autenticação com **Clerk**
 - [x] ORM usando **Prisma ORM**
 - [x] Database on **Railway**
-- [x] Validação com zod **Zod**
+- [x] Validação com **Zod**
 
 ## Running Locally
 
@@ -28,7 +28,7 @@ Esta é uma biblioteca/livraria de código aberto construída com o Next.js 13.
 git clone https://github.com/evertonleonel/the-book-is-on-the-library.git
 ```
 
-2. Instalar dependências usando npm
+2. Instale as dependências usando npm
 
 ```bash
 npm install
