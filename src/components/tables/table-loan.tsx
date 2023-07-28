@@ -25,16 +25,6 @@ const TableLoan = () => {
   const { apiRequest } = useRequest();
   const [loading, setLoading] = useState(true);
   const [histories, setHistories] = useState<allRentHistory[]>([]);
-  // const [search, setSearch] = useState<{
-  //   studentName: string;
-  //   className: string;
-  //   title: string;
-  // }>({
-  //   studentName: "",
-  //   className: "",
-  //   title: "",
-  // });
-  // const debounced = useDebounce(search);
 
   const [entryDate, setEntryDate] = useState("");
   const [deliveryDate, setDeliveryDate] = useState("");
@@ -103,10 +93,6 @@ const TableLoan = () => {
     entryDate,
     deliveryDate,
   ]);
-
-  useEffect(() => {
-    console.log("re-render");
-  });
 
   return (
     <div className="max-w-[1400px] mx-auto w-full overflow-auto">

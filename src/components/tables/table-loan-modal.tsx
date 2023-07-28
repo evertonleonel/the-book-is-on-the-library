@@ -1,5 +1,5 @@
 "use client";
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ChangeEvent, ReactNode, useEffect, useState } from "react";
 
 import {
   Table,
@@ -14,41 +14,76 @@ import { IconInput } from "@/components/icon-input";
 import { Icons } from "@/components/icons";
 import { RentHistoryBook } from "@/types";
 import { Input } from "../ui/input";
-import { getRentHistory } from "@/lib/services";
-import { catchError } from "@/lib/utils";
+
+type TObjFilter = {
+  studentName: string;
+  className: string;
+  withdrawalDate: string;
+  deliveryDate: string;
+};
 
 const TableLoanModal = ({
   history,
-  bookID,
 }: {
   history: RentHistoryBook[];
   bookID: string;
 }) => {
-  const [loading, setLoading] = useState(true);
   const [rentHistory, setRentHistory] = useState<RentHistoryBook[]>([]);
-  const [historyBook, setHistoryBook] = useState<RentHistoryBook[]>([]);
+
+  const [fieldFilter, setFieldFilter] = useState<TObjFilter>({
+    studentName: "",
+    className: "",
+    deliveryDate: "",
+    withdrawalDate: "",
+  });
 
   useEffect(() => {
-    (async () => {
-      await getRentHistory(bookID)
-        .then((data) => setHistoryBook(data))
-        .catch((error) => catchError(`Ops..., ${error}`))
-        .finally(() => setLoading(false));
-    })();
-  }, [bookID]);
-
-  useEffect(() => {
-    if (historyBook) {
-      const parseRentHistory = history.map((element) => {
-        return {
-          ...element,
-          deliveryDate: new Date(element.deliveryDate).toLocaleDateString(),
-          withdrawalDate: new Date(element.withdrawalDate).toLocaleDateString(),
-        };
-      });
-      setRentHistory(parseRentHistory);
+    if (history) {
+      setRentHistory(history);
     }
-  }, [historyBook]);
+  }, []);
+
+  const filterRentHistory = rentHistory.filter((history) => {
+    const studantFilter =
+      !fieldFilter.studentName ||
+      history.studentName
+        .toLowerCase()
+        .includes(fieldFilter.studentName.toLowerCase());
+
+    const classeFilter =
+      !fieldFilter.className ||
+      history.className
+        .toLowerCase()
+        .includes(fieldFilter.className.toLowerCase());
+
+    const deliveryDateFilter =
+      !fieldFilter.deliveryDate ||
+      history.deliveryDate
+        .toLowerCase()
+        .includes(fieldFilter.deliveryDate.toLowerCase());
+
+    const withdrawalDateFilter =
+      !fieldFilter.withdrawalDate ||
+      history.withdrawalDate
+        .toLowerCase()
+        .includes(fieldFilter.withdrawalDate.toLowerCase());
+
+    return (
+      studantFilter &&
+      classeFilter &&
+      deliveryDateFilter &&
+      withdrawalDateFilter
+    );
+  });
+
+  const handleFilter = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFieldFilter((prev) => {
+      return { ...prev, [name]: value };
+    });
+  };
 
   return (
     <div className="max-w-[1400px] mx-auto w-full overflow-auto">
@@ -57,7 +92,7 @@ const TableLoanModal = ({
         <TableHeader>
           <TableRow className="bg-indigo-950">
             <TableHead className="font-bold">Aluno</TableHead>
-            <TableHead className="font-bold">Livro</TableHead>
+            <TableHead className="font-bold">Classe</TableHead>
             <TableHead className="text-right  font-bold">
               Data Empréstimo
             </TableHead>
@@ -69,28 +104,48 @@ const TableLoanModal = ({
         <TableBody>
           <TableRow>
             <TableCell className="w-1/5">
-              <IconInput className="bg-transparent" icon={Icons.filter} />
+              <IconInput
+                name="studentName"
+                onChange={(e) => handleFilter(e)}
+                className="bg-transparent"
+                icon={Icons.filter}
+              />
             </TableCell>
             <TableCell className="w-1/5">
-              <IconInput className="bg-transparent" icon={Icons.filter} />
+              <IconInput
+                onChange={(e) => handleFilter(e)}
+                name="className"
+                className="bg-transparent"
+                icon={Icons.filter}
+              />
             </TableCell>
             <TableCell className="w-1/5">
-              <Input type="date" className="bg-transparent" />
+              <Input
+                onChange={(e) => handleFilter(e)}
+                name="withdrawalDate"
+                type="date"
+                className="bg-transparent"
+              />
             </TableCell>
             <TableCell className="w-1/5">
-              <Input type="date" className="bg-transparent" />
+              <Input
+                onChange={(e) => handleFilter(e)}
+                name="deliveryDate"
+                type="date"
+                className="bg-transparent"
+              />
             </TableCell>
           </TableRow>
 
           {rentHistory &&
-            rentHistory.map(
+            filterRentHistory.map(
               (
                 { id, className, deliveryDate, studentName, withdrawalDate },
                 index
               ) => {
                 return (
                   <>
-                    <TableRow key={`${index}-${id}`}>
+                    <TableRow key={`${index}`}>
                       <TableCell className={`font-medium`}>
                         {studentName}
                       </TableCell>
@@ -98,10 +153,10 @@ const TableLoanModal = ({
                         {className}
                       </TableCell>
                       <TableCell className={`font-medium text-right`}>
-                        {withdrawalDate}
+                        {new Date(withdrawalDate).toLocaleDateString()}
                       </TableCell>
                       <TableCell className={`font-medium text-right`}>
-                        {deliveryDate}
+                        {new Date(deliveryDate).toLocaleDateString()}
                       </TableCell>
                     </TableRow>
                   </>
