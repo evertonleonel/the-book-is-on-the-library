@@ -34,13 +34,19 @@ git clone https://github.com/evertonleonel/the-book-is-on-the-library.git
 npm install
 ```
 
-3. Iniciar o servidor de desenvolvimento
+3. Copie o .env.example para .env e atualize as variáveis.
+
+```bash
+cp .env.example .env
+```
+
+4. Iniciar o servidor de desenvolvimento
 
 ```bash
 npm run dev
 ```
 
-4. Suba o database
+5. Suba o database
 
 ```bash
 npm run db:push
