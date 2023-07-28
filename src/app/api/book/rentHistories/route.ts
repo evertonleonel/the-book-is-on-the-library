@@ -1,14 +1,123 @@
 import prisma from "@/db";
 import { auth } from "@clerk/nextjs";
-import { NextResponse } from "next/server";
+import { Prisma } from "@prisma/client";
+import { NextResponse, NextRequest } from "next/server";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  let pagination: { skip?: number; take?: number } = {};
+  let where: Prisma.RentHistoryWhereInput = {};
+
   const { userId } = auth();
   if (!userId) {
     return new Response("Unauthorized", { status: 401 });
   }
 
-  const allHistories = await prisma.rentHistory.findMany();
+  if (searchParams) {
+    const parseSearchparams = Object.fromEntries(searchParams);
+    const {
+      skip,
+      take,
+      searchStudent,
+      searchClass,
+      searchTitle,
+      entryDate,
+      deliveryDate,
+    } = parseSearchparams as {
+      searchStudent?: string;
+      searchClass?: string;
+      searchTitle?: string;
+      take?: string;
+      skip?: string;
+      entryDate?: string;
+      deliveryDate?: string;
+      genre?: string;
+    };
 
-  return NextResponse.json(allHistories);
+    if (skip && take)
+      pagination = {
+        take: +take,
+        skip: +skip,
+      };
+
+    if (entryDate) {
+      const parseDate = new Date(`${entryDate}T23:59:59z`);
+      where = {
+        withdrawalDate: {
+          gte: new Date(entryDate).toISOString(),
+          lte: new Date(parseDate).toISOString(),
+        },
+      };
+    }
+    if (deliveryDate) {
+      const parseDate = new Date(`${entryDate}T23:59:59z`);
+      where = {
+        withdrawalDate: {
+          gte: new Date(deliveryDate).toISOString(),
+          lte: new Date(parseDate).toISOString(),
+        },
+      };
+    }
+
+    if (searchStudent) {
+      where.OR = [
+        {
+          ...where,
+          studentName: {
+            startsWith: searchStudent,
+            mode: "insensitive",
+          },
+        },
+      ];
+    }
+
+    if (searchClass) {
+      where.OR = [
+        {
+          ...where,
+          className: {
+            startsWith: searchClass,
+            mode: "insensitive",
+          },
+        },
+      ];
+    }
+
+    if (searchTitle) {
+      where.OR = [
+        {
+          ...where,
+          Book: {
+            title: {
+              startsWith: searchTitle,
+              mode: "insensitive",
+            },
+          },
+        },
+      ];
+    }
+  }
+
+  const allHistories = await prisma.rentHistory.findMany({
+    where,
+    ...pagination,
+    include: {
+      Book: {
+        select: {
+          title: true,
+        },
+      },
+    },
+  });
+
+  const historiesWithTitles = allHistories.map((history) => ({
+    id: history.id,
+    studentName: history.studentName,
+    className: history.className,
+    withdrawalDate: history.withdrawalDate,
+    deliveryDate: history.deliveryDate,
+    title: history.Book?.title,
+  }));
+
+  return NextResponse.json(historiesWithTitles);
 }

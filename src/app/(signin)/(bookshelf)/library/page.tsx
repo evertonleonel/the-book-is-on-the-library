@@ -88,7 +88,7 @@ const LibraryPage = () => {
   const clearFilters = () => {
     setFilterGenre("");
     setFilterDate("");
-    getBooks({});
+    getBooks({ take: 10, skip: 0 });
   };
 
   return (

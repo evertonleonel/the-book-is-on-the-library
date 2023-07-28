@@ -48,7 +48,10 @@ export const BookModal = ({ book, children, getBooks }: BookModalProps) => {
     loanedBook(id)
       .then(() => {
         toast.success("Livro devolvido com sucesso!");
-        getBooks({});
+        getBooks({
+          take: 10,
+          skip: 0,
+        });
       })
       .catch((error) => {
         catchError(error);
