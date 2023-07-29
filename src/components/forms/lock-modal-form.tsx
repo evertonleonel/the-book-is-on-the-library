@@ -14,10 +14,7 @@ import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../ui/button";
-import {
-  lockBookModalSchema,
-  unlockBookModalSchema,
-} from "@/lib/validations/modals";
+import { lockBookModalSchema, unlockBookModalSchema } from "@/lib/validations";
 import { activeBook, inactiveBook } from "@/lib/services";
 import { toast } from "sonner";
 import { catchError } from "@/lib/utils";

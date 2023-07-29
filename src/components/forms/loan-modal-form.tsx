@@ -14,7 +14,7 @@ import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../ui/button";
-import { loanModalSchema } from "@/lib/validations/modals";
+import { loanModalSchema } from "@/lib/validations";
 import { Input } from "../ui/input";
 import { createRentHistory, loanedBook } from "@/lib/services";
 import { Icons } from "../icons";

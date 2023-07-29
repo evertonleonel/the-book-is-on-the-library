@@ -24,7 +24,7 @@ import { Icons } from "../icons";
 import { catchError, parseBase64 } from "@/lib/utils";
 import { createBook, getBook, updateBook } from "@/lib/services";
 import { CreateBook, GetBook } from "@/types";
-import { createNewBookSchema } from "@/lib/validations/modals";
+import { createNewBookSchema } from "@/lib/validations";
 import { useRouter } from "next/navigation";
 
 type Inputs = z.infer<typeof createNewBookSchema>;
