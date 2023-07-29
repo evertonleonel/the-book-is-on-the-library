@@ -1,6 +1,6 @@
 # [BookStore]
 
-Esta é uma biblioteca/livraria de código aberto construída com o Next.js 13.
+Esta é uma biblioteca/livraria construída com o Next.js 13.
 
 > **Atenção**
 > Este projeto é apenas um estudo de caso.
