@@ -23,12 +23,7 @@ type TObjFilter = {
   deliveryDate: string;
 };
 
-const TableLoanModal = ({
-  history,
-}: {
-  history: RentHistoryBook[];
-  bookID: string;
-}) => {
+const TableLoanModal = ({ history }: { history: RentHistoryBook[] }) => {
   const [rentHistory, setRentHistory] = useState<RentHistoryBook[]>([]);
 
   const [fieldFilter, setFieldFilter] = useState<TObjFilter>({
@@ -145,22 +140,18 @@ const TableLoanModal = ({
                 index
               ) => {
                 return (
-                  <>
-                    <TableRow key={`${index}-${id}`}>
-                      <TableCell className={`font-medium`}>
-                        {studentName}
-                      </TableCell>
-                      <TableCell className={`font-medium`}>
-                        {className}
-                      </TableCell>
-                      <TableCell className={`font-medium text-right`}>
-                        {new Date(withdrawalDate).toLocaleDateString()}
-                      </TableCell>
-                      <TableCell className={`font-medium text-right`}>
-                        {new Date(deliveryDate).toLocaleDateString()}
-                      </TableCell>
-                    </TableRow>
-                  </>
+                  <TableRow key={`${index}-${id}`}>
+                    <TableCell className={`font-medium`}>
+                      {studentName}
+                    </TableCell>
+                    <TableCell className={`font-medium`}>{className}</TableCell>
+                    <TableCell className={`font-medium text-right`}>
+                      {new Date(withdrawalDate).toLocaleDateString()}
+                    </TableCell>
+                    <TableCell className={`font-medium text-right`}>
+                      {new Date(deliveryDate).toLocaleDateString()}
+                    </TableCell>
+                  </TableRow>
                 );
               }
             )}

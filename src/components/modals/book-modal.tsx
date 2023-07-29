@@ -220,7 +220,7 @@ export const BookModal = ({ book, children, getBooks }: BookModalProps) => {
                   </LockModal>
                 )}
 
-                <HistoryModal history={history} bookID={book.id}>
+                <HistoryModal history={history}>
                   <Button className="font-bold w-full" variant={"secondary"}>
                     Histórico
                   </Button>
@@ -230,24 +230,22 @@ export const BookModal = ({ book, children, getBooks }: BookModalProps) => {
           </section>
 
           {tableAndStatus && (
-            <>
-              <section className="grid mt-[21px] w-full">
-                {book.loaned && lastRentHistory && (
-                  <StudentTableData lastRentHistory={lastRentHistory} />
-                )}
+            <section className="grid mt-[21px] w-full">
+              {book.loaned && lastRentHistory && (
+                <StudentTableData lastRentHistory={lastRentHistory} />
+              )}
 
-                {book.description && (
-                  <div>
-                    <h2 className="text-lg  lg:text-xl font-bold">
-                      Motivo da inativação
-                    </h2>
-                    <p className="text-xs md:text-sm h-40 overflow-auto">
-                      {book.description}
-                    </p>
-                  </div>
-                )}
-              </section>
-            </>
+              {book.description && (
+                <div>
+                  <h2 className="text-lg  lg:text-xl font-bold">
+                    Motivo da inativação
+                  </h2>
+                  <p className="text-xs md:text-sm h-40 overflow-auto">
+                    {book.description}
+                  </p>
+                </div>
+              )}
+            </section>
           )}
         </div>
       </DialogContent>

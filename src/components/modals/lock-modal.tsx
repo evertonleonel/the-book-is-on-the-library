@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import {
   Dialog,
   DialogContent,
@@ -7,7 +8,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import React from "react";
 import { LockBookModalForm } from "../forms/lock-modal-form";
 import { getBooksFunction } from "./book-modal";
 

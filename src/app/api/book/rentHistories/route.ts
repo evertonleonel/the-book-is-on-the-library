@@ -13,16 +13,6 @@ export async function GET(request: NextRequest) {
     return new Response("Unauthorized", { status: 401 });
   }
 
-  const minMaxEntryDate = await prisma.rentHistory.aggregate({
-    _min: { withdrawalDate: true },
-    _max: { withdrawalDate: true },
-  });
-
-  const minMaxDeliveryDate = await prisma.rentHistory.aggregate({
-    _min: { deliveryDate: true },
-    _max: { deliveryDate: true },
-  });
-
   if (searchParams) {
     const parseSearchparams = Object.fromEntries(searchParams);
     const {
