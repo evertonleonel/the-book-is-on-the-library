@@ -16,9 +16,9 @@ export default async function HomeLayout({
   children: React.ReactNode;
 }) {
   const user = await currentUser();
-  if (!user) {
-    redirect("/");
-  }
+  // if (!user) {
+  //   redirect("/");
+  // }
   return (
     <div className="min-h-screen flex flex-col">
       <header className="h-20 bg-secondary flex justify-between items-center p-6  shadow-xl">
