@@ -52,15 +52,17 @@ export async function GET(request: NextRequest) {
       where.OR = [
         {
           title: {
-            startsWith: search.toLowerCase(),
+            startsWith: search,
+            mode: "insensitive",
           },
         },
         {
           author: {
-            startsWith: search.toLowerCase(),
+            startsWith: search,
+            mode: "insensitive",
           },
         },
-      ];
+      ] as any;
     }
   }
 
@@ -104,4 +106,7 @@ export async function POST(request: NextRequest) {
   });
 
   return NextResponse.json(newBook);
+}
+
+{
 }
