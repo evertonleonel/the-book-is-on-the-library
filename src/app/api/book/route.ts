@@ -52,14 +52,12 @@ export async function GET(request: NextRequest) {
       where.OR = [
         {
           title: {
-            startsWith: search,
-            mode: "insensitive",
+            startsWith: search.toLowerCase(),
           },
         },
         {
           author: {
-            startsWith: search,
-            mode: "insensitive",
+            startsWith: search.toLowerCase(),
           },
         },
       ];
