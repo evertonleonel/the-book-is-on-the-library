@@ -78,7 +78,7 @@ export async function GET(request: NextRequest) {
             mode: "insensitive",
           },
         },
-      ];
+      ] as any;
     }
 
     if (searchClass) {
@@ -90,7 +90,7 @@ export async function GET(request: NextRequest) {
             mode: "insensitive",
           },
         },
-      ];
+      ] as any;
     }
 
     if (searchTitle) {
@@ -104,7 +104,7 @@ export async function GET(request: NextRequest) {
             },
           },
         },
-      ];
+      ] as any;
     }
   }
 
