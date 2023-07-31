@@ -15,10 +15,6 @@ import { useRequest } from "@/hooks/useRequest";
 import useDebounce from "@/hooks/useDebounce";
 import { catchError } from "@/lib/utils";
 
-const metadata: Metadata = {
-  title: "Library - Archive",
-};
-
 const LibraryPage = () => {
   const { apiRequest } = useRequest();
   const [books, setBooks] = useState<GetBook[]>([]);
