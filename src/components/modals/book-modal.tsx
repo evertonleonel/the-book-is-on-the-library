@@ -59,13 +59,9 @@ export const BookModal = ({ book, children, getBooks }: BookModalProps) => {
   };
 
   const catchLastRentHistory = (id: string) => {
-    getLastRentHistory(id)
-      .then((data) => {
-        setLastRentHistory(data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    getLastRentHistory(id).then((data) => {
+      setLastRentHistory(data);
+    });
   };
 
   const tableAndStatus = (lastRentHistory && book.loaned) || book.description;
