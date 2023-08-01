@@ -64,7 +64,7 @@ export const BookModal = ({ book, children, getBooks }: BookModalProps) => {
         setLastRentHistory(data);
       })
       .catch((error) => {
-        catchError(error);
+        console.log(error);
       });
   };
 
