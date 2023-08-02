@@ -46,17 +46,13 @@ export const BookModal = ({ book, children, getBooks }: BookModalProps) => {
   const router = useRouter();
 
   const Loaned = (id: string) => {
-    loanedBook(id)
-      .then(() => {
-        toast.success("Livro devolvido com sucesso!");
-        getBooks({
-          take: 10,
-          skip: 0,
-        });
-      })
-      .catch((error) => {
-        catchError(error);
+    loanedBook(id).then(() => {
+      toast.success("Livro devolvido com sucesso!");
+      getBooks({
+        take: 10,
+        skip: 0,
       });
+    });
   };
 
   const catchLastRentHistory = (id: string) => {

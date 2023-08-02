@@ -13,6 +13,7 @@ import { Button } from "../ui/button";
 import { deleteBook } from "@/lib/services";
 import { toast } from "sonner";
 import { getBooksFunction } from "./book-modal";
+import { Icons } from "../icons";
 
 export const DeleteModal = ({
   children,
@@ -28,16 +29,11 @@ export const DeleteModal = ({
 
   const exclude = () => {
     startTransition(async () => {
-      await deleteBook(idBook)
-        .then(() => {
-          toast.success("Livro excluido com sucesso!");
-          setOpen(false);
-          getBooks({ take: 10, skip: 0 });
-        })
-        .catch((error) => {
-          toast.error(`Ops..,${error}`);
-          console.log(error);
-        });
+      await deleteBook(idBook).then(() => {
+        toast.success("Livro excluido com sucesso!");
+        setOpen(false);
+        getBooks({ take: 10, skip: 0 });
+      });
     });
   };
 
@@ -54,7 +50,7 @@ export const DeleteModal = ({
               Cancelar
             </Button>
             <Button onClick={exclude} variant={"secondary"}>
-              Confirmar
+              {isPending ? <Icons.spinner /> : " Confirmar"}
             </Button>
           </div>
         </DialogHeader>
