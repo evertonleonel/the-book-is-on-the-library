@@ -49,3 +49,8 @@ export const loanedBook = async (bookID: string) => {
   await api.patch(`/book/${bookID}/loaned`);
   return true;
 };
+
+export const deleteBook = async (id: string) => {
+  await api.delete(`/book/${id}`);
+  return true;
+};

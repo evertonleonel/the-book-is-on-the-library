@@ -3,7 +3,7 @@ import { auth, currentUser } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
 
 //Get book
-export async function GET(request: NextRequest, { params }: { params: any }) {
+export async function GET({ params }: { params: any }) {
   const bookID = params.bookID;
 
   const book = await prisma.book.findFirst({
@@ -58,4 +58,29 @@ export async function PUT(request: NextRequest, { params }: { params: any }) {
   });
 
   return NextResponse.json(updateBook);
+}
+
+//Delete Book
+export async function DELETE({ params }: { params: any }) {
+  const bookID = params.bookID;
+
+  const book = await prisma.book.findFirst({
+    where: {
+      id: bookID,
+    },
+  });
+
+  console.log(bookID, "ID BOOK");
+
+  if (!book) {
+    return NextResponse.json("Livro não encontrado", { status: 404 });
+  }
+
+  const deleteBook = await prisma.book.delete({
+    where: {
+      id: book.id,
+    },
+  });
+
+  return NextResponse.json(deleteBook);
 }

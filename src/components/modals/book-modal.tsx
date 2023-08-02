@@ -22,6 +22,7 @@ import { GetBook, RentHistoryBook } from "@/types";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { catchError } from "@/lib/utils";
+import { DeleteModal } from "./delete-modal";
 
 export type getBooksFunction = {
   search?: string | undefined;
@@ -221,6 +222,12 @@ export const BookModal = ({ book, children, getBooks }: BookModalProps) => {
                     Histórico
                   </Button>
                 </HistoryModal>
+
+                <DeleteModal idBook={book.id}>
+                  <Button className="font-bold w-full" variant={"destructive"}>
+                    Deletar
+                  </Button>
+                </DeleteModal>
               </nav>
             </article>
           </section>
