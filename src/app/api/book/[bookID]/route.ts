@@ -3,7 +3,7 @@ import { auth, currentUser } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
 
 //Get book
-export async function GET({ params }: { params: any }) {
+export async function GET(request: NextRequest, { params }: { params: any }) {
   const bookID = params.bookID;
 
   const book = await prisma.book.findFirst({
