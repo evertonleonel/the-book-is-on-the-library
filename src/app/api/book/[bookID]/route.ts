@@ -61,7 +61,10 @@ export async function PUT(request: NextRequest, { params }: { params: any }) {
 }
 
 //Delete Book
-export async function DELETE({ params }: { params: any }) {
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { bookID: string } }
+) {
   const bookID = params.bookID;
 
   const book = await prisma.book.findFirst({
@@ -70,17 +73,26 @@ export async function DELETE({ params }: { params: any }) {
     },
   });
 
-  console.log(bookID, "ID BOOK");
-
   if (!book) {
     return NextResponse.json("Livro não encontrado", { status: 404 });
   }
 
-  const deleteBook = await prisma.book.delete({
-    where: {
-      id: book.id,
-    },
-  });
-
-  return NextResponse.json(deleteBook);
+  try {
+    const transaction = await prisma.$transaction([
+      prisma.rentHistory.deleteMany({
+        where: {
+          bookId: bookID,
+        },
+      }),
+      prisma.book.delete({
+        where: {
+          id: bookID,
+        },
+      }),
+    ]);
+    return NextResponse.json(transaction);
+  } catch (error) {
+    console.error("Error deleting book:", error);
+    return NextResponse.json("Erro ao excluir livro", { status: 500 });
+  }
 }

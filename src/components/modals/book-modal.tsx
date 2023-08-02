@@ -223,7 +223,7 @@ export const BookModal = ({ book, children, getBooks }: BookModalProps) => {
                   </Button>
                 </HistoryModal>
 
-                <DeleteModal idBook={book.id}>
+                <DeleteModal idBook={book.id} getBooks={getBooks}>
                   <Button className="font-bold w-full" variant={"destructive"}>
                     Deletar
                   </Button>

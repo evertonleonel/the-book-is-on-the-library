@@ -12,14 +12,16 @@ import {
 import { Button } from "../ui/button";
 import { deleteBook } from "@/lib/services";
 import { toast } from "sonner";
-import { useRequest } from "@/hooks/useRequest";
+import { getBooksFunction } from "./book-modal";
 
 export const DeleteModal = ({
   children,
   idBook,
+  getBooks,
 }: {
   children: React.ReactNode;
   idBook: string;
+  getBooks: (params: getBooksFunction) => Promise<void>;
 }) => {
   const [open, setOpen] = React.useState(false);
   const [isPending, startTransition] = useTransition();
@@ -30,6 +32,7 @@ export const DeleteModal = ({
         .then(() => {
           toast.success("Livro excluido com sucesso!");
           setOpen(false);
+          getBooks({ take: 10, skip: 0 });
         })
         .catch((error) => {
           toast.error(`Ops..,${error}`);
