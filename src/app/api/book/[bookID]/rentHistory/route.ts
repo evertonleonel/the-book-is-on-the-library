@@ -1,7 +1,13 @@
 import prisma from "@/db";
+import { auth } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest, { params }: { params: any }) {
+  const { userId } = auth();
+  if (!userId) {
+    return new Response("Não autorizado", { status: 401 });
+  }
+
   const rentID = params.rentID;
 
   const historyBook = await prisma.rentHistory.findMany({
@@ -18,9 +24,14 @@ export async function GET(request: NextRequest, { params }: { params: any }) {
 }
 
 export async function POST(request: NextRequest, { params }: { params: any }) {
-  const bookID = params.bookID;
-  const data = await request.json();
+  const { userId } = auth();
+  if (!userId) {
+    return new Response("Não autorizado", { status: 401 });
+  }
 
+  const bookID = params.bookID;
+
+  const data = await request.json();
   const { studentName, className, withdrawalDate, deliveryDate } = data;
 
   if (!studentName || !className || !withdrawalDate || !deliveryDate) {
@@ -49,8 +60,6 @@ export async function POST(request: NextRequest, { params }: { params: any }) {
         bookId: bookID,
       },
     });
-
-    console.log(updateLoaned, "----------------------------------UPDATE");
 
     return NextResponse.json(newRentHistory);
   } catch (error) {

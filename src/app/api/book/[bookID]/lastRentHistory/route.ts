@@ -5,7 +5,7 @@ import { auth } from "@clerk/nextjs";
 export async function GET(request: NextRequest, { params }: { params: any }) {
   const { userId } = auth();
   if (!userId) {
-    return new Response("Unauthorized", { status: 401 });
+    return new Response("Não autorizado", { status: 401 });
   }
 
   const rentID = params.ID;

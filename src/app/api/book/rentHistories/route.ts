@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
 
   const { userId } = auth();
   if (!userId) {
-    return new Response("Unauthorized", { status: 401 });
+    return new Response("Não autorizado", { status: 401 });
   }
 
   if (searchParams) {
@@ -45,7 +45,6 @@ export async function GET(request: NextRequest) {
         orderBy: [{ withdrawalDate: "desc" }, { deliveryDate: "desc" }],
       });
 
-      const parseDate = new Date(`${entryDate}T23:59:59z`);
       where = {
         withdrawalDate: {
           gte: new Date(entryDate).toISOString(),
@@ -55,9 +54,6 @@ export async function GET(request: NextRequest) {
     }
 
     if (deliveryDate) {
-      const maxDate = await prisma.rentHistory.findFirst({
-        orderBy: [{ deliveryDate: "desc" }],
-      });
       const parseDate = new Date(`${deliveryDate}T23:59:59z`);
 
       where = {

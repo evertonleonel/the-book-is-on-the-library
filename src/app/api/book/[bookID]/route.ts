@@ -22,6 +22,12 @@ export async function GET({ params }: { params: any }) {
 //Update Book
 export async function PUT(request: NextRequest, { params }: { params: any }) {
   const bookID = params.bookID;
+
+  const { userId } = auth();
+  if (!userId) {
+    return new Response("Não autorizado", { status: 401 });
+  }
+
   const data = await request.json();
 
   const { title, author, genre, synopsis, image, systemEntryDate } = data;
@@ -67,6 +73,11 @@ export async function DELETE(
 ) {
   const bookID = params.bookID;
 
+  const { userId } = auth();
+  if (!userId) {
+    return new Response("Não autorizado", { status: 401 });
+  }
+
   const book = await prisma.book.findFirst({
     where: {
       id: bookID,
@@ -92,7 +103,6 @@ export async function DELETE(
     ]);
     return NextResponse.json(transaction);
   } catch (error) {
-    console.error("Error deleting book:", error);
     return NextResponse.json("Erro ao excluir livro", { status: 500 });
   }
 }
