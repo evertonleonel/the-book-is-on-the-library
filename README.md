@@ -2,7 +2,7 @@
 
 Esta é uma biblioteca/livraria construída com o Next.js 13.
 
-[![BookStore](./public/images/screenshot/login-page-screenshot.jpg)](https://bookshelf-khaki.vercel.app/?redirect=false)
+[![BookStore](./public/images/screenshot/login-page-screenshot.jpg)](https://store-book-chi.vercel.app/?redirect=false)
 
 > **Atenção**
 > Este projeto é apenas um estudo de caso.
