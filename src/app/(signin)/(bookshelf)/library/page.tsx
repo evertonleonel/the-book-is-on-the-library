@@ -84,13 +84,13 @@ const LibraryPage = () => {
         })
         .finally(() => setLoading(false));
     })();
-  }, [skip]);
+  }, [skip, LIMIT]);
 
   useEffect(() => {
     getBooks({
       search: debounced,
       take: LIMIT,
-      skip: skip,
+      skip: debounced ? 0 : skip,
       date: filterDate,
       genre: filterGenre,
     });
@@ -100,6 +100,9 @@ const LibraryPage = () => {
     getBooks({
       date: filterDate,
       genre: filterGenre,
+      search: debounced,
+      take: LIMIT,
+      skip: 0,
     });
   };
 

@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import React, { Dispatch, SetStateAction } from "react";
 
 // máximo de botoes
-const MAX_ITENS = 9;
+const MAX_ITENS = 5;
 const MAX_LEFT = MAX_ITENS - 1 / 2;
 
 interface PaginationProps {

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 
 import {
@@ -21,7 +21,6 @@ import { getLastRentHistory, loanedBook } from "@/lib/services";
 import { GetBook, RentHistoryBook } from "@/types";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { catchError } from "@/lib/utils";
 import { DeleteModal } from "./delete-modal";
 
 export type getBooksFunction = {
@@ -55,9 +54,11 @@ export const BookModal = ({ book, children, getBooks }: BookModalProps) => {
   };
 
   const catchLastRentHistory = (id: string) => {
-    getLastRentHistory(id).then((data) => {
-      setLastRentHistory(data);
-    });
+    getLastRentHistory(id)
+      .then((data) => {
+        setLastRentHistory(data);
+      })
+      .catch((err) => console.log("Last não encontrado"));
   };
 
   const tableAndStatus = (lastRentHistory && book.loaned) || book.description;
