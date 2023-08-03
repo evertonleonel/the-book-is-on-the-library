@@ -95,7 +95,7 @@ export const CreateBookForm = ({ params }: { params?: string }) => {
 
           createBook(parseData as CreateBook).then(() => {
             form.reset();
-            setSelectedImage("");
+            setSelectedImage(null);
             toast.success("Livro criado com sucesso!");
           });
         }

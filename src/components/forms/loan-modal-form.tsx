@@ -65,7 +65,7 @@ export const LoanModalForm = ({
         createRentHistory(parseData)
           .then(() => {
             toast.success("Livro emprestado com sucesso!");
-            getBooks({ take: 10, skip: 0 });
+            getBooks({ take: 6 });
             CloseModal();
           })
           .catch((erro) => catchError(erro));

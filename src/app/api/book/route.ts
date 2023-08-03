@@ -72,7 +72,16 @@ export async function GET(request: NextRequest) {
     include: { rentHistory: true },
   });
 
-  return NextResponse.json(allBooks);
+  const countBooks = await prisma.book.count({
+    where,
+  });
+
+  const responseBooks = {
+    allBooks,
+    countBooks,
+  };
+
+  return NextResponse.json(responseBooks);
 }
 
 // Create New Book

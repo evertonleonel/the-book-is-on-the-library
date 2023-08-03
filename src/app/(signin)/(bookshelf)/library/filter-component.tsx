@@ -7,7 +7,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { defaultGenres } from "@/config/site";
-import { getAllBooks, getBook } from "@/lib/services";
+import { getAllBooks } from "@/lib/services";
 import { GetBook } from "@/types";
 import {
   DropdownMenu,
@@ -39,8 +39,8 @@ const FilterComponent = ({
   const [genre, setGenre] = useState<String[]>([]);
 
   useEffect(() => {
-    getAllBooks().then((data: GetBook[]) => {
-      const genres = data.map((el) => {
+    getAllBooks().then((data: { allBooks: GetBook[]; countBooks: number }) => {
+      const genres = data.allBooks.map((el) => {
         return el.genre;
       });
 

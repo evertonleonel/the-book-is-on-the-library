@@ -49,8 +49,7 @@ export const BookModal = ({ book, children, getBooks }: BookModalProps) => {
     loanedBook(id).then(() => {
       toast.success("Livro devolvido com sucesso!");
       getBooks({
-        take: 10,
-        skip: 0,
+        take: 6,
       });
     });
   };

@@ -2,8 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 
-import { Metadata } from "next";
-
 import { GetBook } from "@/types";
 import { Icons } from "@/components/icons";
 import { Input } from "@/components/ui/input";
@@ -14,7 +12,9 @@ import FilterComponent from "./filter-component";
 import { useRequest } from "@/hooks/useRequest";
 import useDebounce from "@/hooks/useDebounce";
 import { catchError } from "@/lib/utils";
+import Pagination from "./pagination/pagination";
 
+const LIMIT = 3;
 const LibraryPage = () => {
   const { apiRequest } = useRequest();
   const [books, setBooks] = useState<GetBook[]>([]);
@@ -22,6 +22,8 @@ const LibraryPage = () => {
   const [search, setSearch] = useState("");
   const [filterGenre, setFilterGenre] = useState<string>("");
   const [filterDate, setFilterDate] = useState("");
+  const [skip, setSkip] = useState(0);
+  const [total, setTotal] = useState(0);
 
   const debounced = useDebounce(search);
 
@@ -37,9 +39,19 @@ const LibraryPage = () => {
         ...params,
       },
     })
-      .then(({ data }) => {
-        setBooks(data);
-      })
+      .then(
+        ({
+          data,
+        }: {
+          data: {
+            allBooks: GetBook[];
+            countBooks: number;
+          };
+        }) => {
+          setBooks(data.allBooks);
+          setTotal(data.countBooks);
+        }
+      )
       .catch((error) => {
         catchError(error);
       })
@@ -50,29 +62,39 @@ const LibraryPage = () => {
     (async () => {
       await apiRequest("get", "/book", {
         params: {
-          take: 10,
-          skip: 0,
+          take: LIMIT,
+          skip: skip,
         },
       })
-        .then(({ data }) => {
-          setBooks(data);
-        })
+        .then(
+          ({
+            data,
+          }: {
+            data: {
+              allBooks: GetBook[];
+              countBooks: number;
+            };
+          }) => {
+            setTotal(data.countBooks);
+            setBooks(data.allBooks);
+          }
+        )
         .catch((error) => {
           catchError(error);
         })
         .finally(() => setLoading(false));
     })();
-  }, []);
+  }, [skip]);
 
   useEffect(() => {
     getBooks({
       search: debounced,
-      take: 10,
-      skip: 0,
+      take: LIMIT,
+      skip: skip,
       date: filterDate,
       genre: filterGenre,
     });
-  }, [debounced]);
+  }, [debounced, skip]);
 
   const applyFilter = () => {
     getBooks({
@@ -84,7 +106,7 @@ const LibraryPage = () => {
   const clearFilters = () => {
     setFilterGenre("");
     setFilterDate("");
-    getBooks({ take: 10, skip: 0 });
+    getBooks({ take: LIMIT, skip: skip });
   };
 
   return (
@@ -112,18 +134,17 @@ const LibraryPage = () => {
           />
         </div>
         <ul className="container grid sm:grid-auto-fit-xs  place-items-center gap-8">
-          {books && books.length > 0 ? (
-            books.map((book) => {
-              return (
-                <BookModal key={book.id} book={book} getBooks={getBooks}>
-                  <BookCard image={String(book.image)} title={book.title} />
-                </BookModal>
-              );
-            })
-          ) : (
-            <div>Acervo vazio</div>
-          )}
+          {books && books.length > 0
+            ? books.map((book) => {
+                return (
+                  <BookModal key={book.id} book={book} getBooks={getBooks}>
+                    <BookCard image={String(book.image)} title={book.title} />
+                  </BookModal>
+                );
+              })
+            : null}
         </ul>
+        <Pagination limit={LIMIT} total={total} skip={skip} setSkip={setSkip} />
       </section>
     </>
   );

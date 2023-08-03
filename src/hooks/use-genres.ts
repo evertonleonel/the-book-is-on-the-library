@@ -7,8 +7,8 @@ export function useGenres() {
   const [genre, setGenre] = useState<String[]>([]);
 
   useEffect(() => {
-    getAllBooks().then((data: Book[]) => {
-      const genres = data.map((el) => {
+    getAllBooks().then((data: { allBooks: Book[]; countBooks: number }) => {
+      const genres = data.allBooks.map((el) => {
         return el.genre;
       });
 

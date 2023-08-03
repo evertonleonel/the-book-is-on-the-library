@@ -22,6 +22,8 @@ import {
   UserCircle2,
   X,
   LucideProps,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 
 export const Icons = {
@@ -31,6 +33,8 @@ export const Icons = {
   arrowLeftSquare: ArrowLeftSquare,
   bookPlus: BookPlus,
   bookUp: BookUp,
+  chevronLeft: ChevronLeft,
+  chevronRight: ChevronRight,
   hide: Eye,
   view: EyeOff,
   filter: Filter,
