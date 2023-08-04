@@ -58,12 +58,12 @@ export const LockBookModalForm = ({
 
         inactiveBook(parseData).then(() => {
           toast.success("Livro desativado com sucesso!");
-          getBooks({ take: 6 });
+          getBooks({ take: 3 });
         });
       } else {
         activeBook(idBook).then(() => {
           toast.success("Livro ativado com sucesso!");
-          getBooks({ take: 6 });
+          getBooks({ take: 3 });
         });
       }
 

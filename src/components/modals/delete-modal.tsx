@@ -32,7 +32,7 @@ export const DeleteModal = ({
       await deleteBook(idBook).then(() => {
         toast.success("Livro excluido com sucesso!");
         setOpen(false);
-        getBooks({ take: 10, skip: 0 });
+        getBooks({ take: 3, skip: 0 });
       });
     });
   };
