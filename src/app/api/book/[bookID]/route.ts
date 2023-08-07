@@ -1,5 +1,5 @@
 import prisma from "@/db";
-import { auth, currentUser } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
 
 //Get book

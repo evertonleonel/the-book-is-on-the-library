@@ -1,7 +1,7 @@
 import prisma from "@/db";
 import { Prisma } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs";
+import { auth, currentUser } from "@clerk/nextjs";
 
 //Get All Books
 export async function GET(request: NextRequest) {
@@ -9,8 +9,8 @@ export async function GET(request: NextRequest) {
   let pagination: { skip?: number; take?: number } = {};
   let where: Prisma.BookWhereInput = {};
 
-  const { userId } = auth();
-  if (!userId) {
+  const user = currentUser();
+  if (!user) {
     return new Response("Unauthorized", { status: 401 });
   }
 
@@ -86,8 +86,8 @@ export async function GET(request: NextRequest) {
 
 // Create New Book
 export async function POST(request: NextRequest) {
-  const { userId } = auth();
-  if (!userId) {
+  const user = currentUser();
+  if (!user) {
     return new Response("Unauthorized", { status: 401 });
   }
 

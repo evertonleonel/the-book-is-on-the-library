@@ -24,7 +24,7 @@ const Pagination = ({ limit, total, skip, setSkip }: PaginationProps) => {
 
   return (
     <ul className="flex gap-2 justify-center items-center">
-      {total && total > 0 ? (
+      {total && total > 0 && total > limit ? (
         <li>
           <Button
             variant={"ghost"}
@@ -39,15 +39,15 @@ const Pagination = ({ limit, total, skip, setSkip }: PaginationProps) => {
       {Array.from({ length: Math.min(MAX_ITENS, totalPages) })
         .map((_, index) => index + first)
         .map((page) => {
-          if (page <= totalPages) {
+          if (page <= totalPages && total > limit) {
             return (
               <li key={page}>
                 <Button
                   size={"icon"}
                   className={`${
                     page === currentPage
-                      ? "bg-background text-foreground  hover:bg-indigo-950 border-none"
-                      : null
+                      ? "bg-muted-foreground text-foreground  hover:bg-indigo-950 border-none"
+                      : "bg-background text-foreground"
                   }`}
                   onClick={() => onPageChange(page)}
                 >
@@ -58,7 +58,7 @@ const Pagination = ({ limit, total, skip, setSkip }: PaginationProps) => {
           }
         })}
 
-      {total && total > 0 ? (
+      {total && total > 0 && total > limit ? (
         <li>
           <Button
             size={"icon"}

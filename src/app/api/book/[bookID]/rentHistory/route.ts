@@ -1,6 +1,7 @@
 import prisma from "@/db";
 import { auth } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
+import { loanModalSchema } from "@/lib/validations/index";
 
 export async function GET(request: NextRequest, { params }: { params: any }) {
   const { userId } = auth();
@@ -31,18 +32,17 @@ export async function POST(request: NextRequest, { params }: { params: any }) {
 
   const bookID = params.bookID;
 
-  const data = await request.json();
-  const { studentName, className, withdrawalDate, deliveryDate } = data;
-
-  if (!studentName || !className || !withdrawalDate || !deliveryDate) {
-    return NextResponse.json(
-      "Possíveis informações ausentes: Nome do aluno, classe, data de empréstimo, data de devolução",
-      { status: 400 }
-    );
-  }
-
   try {
-    const updateLoaned = await prisma.book.update({
+    const { studentName, className, withdrawalDate, deliveryDate } =
+      loanModalSchema.parse(await request.json());
+
+    if (!studentName || !className || !withdrawalDate || !deliveryDate) {
+      return NextResponse.json(
+        "Possíveis informações ausentes: Nome do aluno, classe, data de empréstimo, data de devolução",
+        { status: 400 }
+      );
+    }
+    await prisma.book.update({
       where: {
         id: bookID,
       },

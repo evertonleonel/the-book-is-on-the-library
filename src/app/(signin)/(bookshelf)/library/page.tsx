@@ -137,6 +137,7 @@ const LibraryPage = () => {
           />
         </div>
         <ul className="container grid sm:grid-auto-fit-xs  place-items-center gap-8">
+          {loading && <Icons.spinner className="animate-spin" />}
           {books && books.length > 0
             ? books.map((book) => {
                 return (
