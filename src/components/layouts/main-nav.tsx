@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/menubar";
 import { Icons } from "../icons";
 import { mainNav } from "@/config/site";
-import { IconComponentMain } from "@/types";
+import { IconComponentMain as TIconComponentMain } from "@/types";
 import { ModeToggle } from "../ui/toggle-button";
 import Link from "next/link";
 
@@ -27,15 +27,15 @@ export function MainNav({ user }: MainNavProps) {
     user?.lastName?.charAt(0) ?? ""
   }`;
 
-  const IconComponent = (icon: IconComponentMain) => {
+  const IconComponent = (icon: TIconComponentMain) => {
     const iconComponent = {
       home: <Icons.home className="h-4" />,
       bookPlus: <Icons.bookPlus className="h-4" />,
       library: <Icons.library className="h-4" />,
       fileStack: <Icons.fileStack className="h-4" />,
-      close: <Icons.close className="h-4" />,
+      close: <Icons.logout className="h-4" />,
     };
-    return iconComponent[icon] ?? null;
+    return iconComponent[icon];
   };
 
   return (
@@ -53,53 +53,22 @@ export function MainNav({ user }: MainNavProps) {
 
       <Menubar>
         <MenubarMenu>
-          <MenubarTrigger>Menu</MenubarTrigger>
+          <MenubarTrigger className="cursor-pointer">Menu</MenubarTrigger>
           <MenubarContent>
             <ul>
-              <li className="list-none"></li>
               {mainNav.map(({ href, title, icon }) => {
-                if (title === "Home") {
-                  return (
-                    <li key={title} className="list-none">
-                      <Link href={href}>
-                        <MenubarItem>
-                          {title}
-                          <MenubarShortcut>
-                            {IconComponent(icon)}
-                          </MenubarShortcut>
-                        </MenubarItem>
-                      </Link>
-                      <MenubarSeparator />
-                    </li>
-                  );
-                } else if (title === "Sair") {
-                  return (
-                    <li key={title} className="list-none">
-                      <MenubarSeparator />
-                      <Link href={href}>
-                        <MenubarItem>
-                          {title}
-                          <MenubarShortcut>
-                            {IconComponent(icon)}
-                          </MenubarShortcut>
-                        </MenubarItem>
-                      </Link>
-                    </li>
-                  );
-                } else {
-                  return (
-                    <li key={title} className="list-none">
-                      <Link href={href}>
-                        <MenubarItem>
-                          {title}
-                          <MenubarShortcut>
-                            {IconComponent(icon)}
-                          </MenubarShortcut>
-                        </MenubarItem>
-                      </Link>
-                    </li>
-                  );
-                }
+                return (
+                  <li key={title} className="list-none ">
+                    {title === "Sair" && <MenubarSeparator />}
+                    <Link href={href}>
+                      <MenubarItem className="cursor-pointer">
+                        {title}
+                        <MenubarShortcut>{IconComponent(icon)}</MenubarShortcut>
+                      </MenubarItem>
+                    </Link>
+                    {title === "Home" && <MenubarSeparator />}
+                  </li>
+                );
               })}
             </ul>
           </MenubarContent>
