@@ -1,5 +1,5 @@
 import prisma from "@/db";
-import { auth } from "@clerk/nextjs";
+import { getAuth } from "@clerk/nextjs/server";
 import { Prisma } from "@prisma/client";
 import { NextResponse, NextRequest } from "next/server";
 
@@ -8,7 +8,8 @@ export async function GET(request: NextRequest) {
   let pagination: { skip?: number; take?: number } = {};
   let where: Prisma.RentHistoryWhereInput = {};
 
-  const { userId } = auth();
+  const { userId } = getAuth(request);
+
   if (!userId) {
     return new Response("Não autorizado", { status: 401 });
   }

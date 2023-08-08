@@ -1,7 +1,7 @@
 import prisma from "@/db";
 import { Prisma } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
-import { auth, currentUser } from "@clerk/nextjs";
+import { getAuth } from "@clerk/nextjs/server";
 
 //Get All Books
 export async function GET(request: NextRequest) {
@@ -9,9 +9,9 @@ export async function GET(request: NextRequest) {
   let pagination: { skip?: number; take?: number } = {};
   let where: Prisma.BookWhereInput = {};
 
-  const user = currentUser();
-  if (!user) {
-    return new Response("Unauthorized", { status: 401 });
+  const { userId } = getAuth(request);
+  if (!userId) {
+    return new Response("Não autorizado", { status: 401 });
   }
 
   if (searchParams) {
@@ -86,9 +86,9 @@ export async function GET(request: NextRequest) {
 
 // Create New Book
 export async function POST(request: NextRequest) {
-  const user = currentUser();
-  if (!user) {
-    return new Response("Unauthorized", { status: 401 });
+  const { userId } = getAuth(request);
+  if (!userId) {
+    return new Response("Não autorizado", { status: 401 });
   }
 
   const data = await request.json();

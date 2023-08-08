@@ -1,9 +1,9 @@
 import prisma from "@/db";
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs";
+import { getAuth } from "@clerk/nextjs/server";
 
 export async function GET(request: NextRequest, { params }: { params: any }) {
-  const { userId } = auth();
+  const { userId } = getAuth(request);
   if (!userId) {
     return new Response("Não autorizado", { status: 401 });
   }

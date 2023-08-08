@@ -1,12 +1,12 @@
 import prisma from "@/db";
-import { currentUser } from "@clerk/nextjs";
+import { getAuth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 import { lockBookModalSchema } from "@/lib/validations/index";
 
 export async function PATCH(request: NextRequest, { params }: { params: any }) {
   const bookID = params.bookID;
-  const user = await currentUser();
-  if (!user) {
+  const { userId } = getAuth(request);
+  if (!userId) {
     return new Response("Não autorizado", { status: 401 });
   }
   try {

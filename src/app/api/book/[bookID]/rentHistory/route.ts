@@ -1,10 +1,10 @@
 import prisma from "@/db";
-import { auth } from "@clerk/nextjs";
+import { getAuth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 import { loanModalSchema } from "@/lib/validations/index";
 
 export async function GET(request: NextRequest, { params }: { params: any }) {
-  const { userId } = auth();
+  const { userId } = getAuth(request);
   if (!userId) {
     return new Response("Não autorizado", { status: 401 });
   }
@@ -25,7 +25,7 @@ export async function GET(request: NextRequest, { params }: { params: any }) {
 }
 
 export async function POST(request: NextRequest, { params }: { params: any }) {
-  const { userId } = auth();
+  const { userId } = getAuth(request);
   if (!userId) {
     return new Response("Não autorizado", { status: 401 });
   }
