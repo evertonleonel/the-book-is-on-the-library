@@ -33,11 +33,39 @@ export async function POST(request: NextRequest, { params }: { params: any }) {
       loanModalSchema.parse(await request.json());
 
     if (!studentName || !className || !withdrawalDate || !deliveryDate) {
-      return NextResponse.json(
+      return new Response(
         "Possíveis informações ausentes: Nome do aluno, classe, data de empréstimo, data de devolução",
         { status: 400 }
       );
     }
+
+    if (new Date(withdrawalDate) > new Date(deliveryDate)) {
+      return new Response(
+        "A data de entrada não pode ser maior que a data de retirada ",
+        { status: 204 }
+      );
+    }
+
+    const currentDate = new Date();
+
+    const aggregatedRentHistory = await prisma.rentHistory.aggregate({
+      where: {
+        bookId: params.bookID,
+        deliveryDate: {
+          gte: currentDate,
+        },
+      },
+      _count: {
+        deliveryDate: true,
+      },
+    });
+
+    if (aggregatedRentHistory._count.deliveryDate > 0) {
+      return new Response("O livro já está emprestado", {
+        status: 400,
+      });
+    }
+
     await prisma.book.update({
       where: {
         id: params.bookID,
