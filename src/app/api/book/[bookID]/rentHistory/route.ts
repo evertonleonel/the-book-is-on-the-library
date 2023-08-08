@@ -9,11 +9,9 @@ export async function GET(request: NextRequest, { params }: { params: any }) {
     return new Response("Não autorizado", { status: 401 });
   }
 
-  const rentID = params.rentID;
-
   const historyBook = await prisma.rentHistory.findMany({
     where: {
-      id: rentID,
+      id: params.bookID,
     },
   });
 
@@ -30,8 +28,6 @@ export async function POST(request: NextRequest, { params }: { params: any }) {
     return new Response("Não autorizado", { status: 401 });
   }
 
-  const bookID = params.bookID;
-
   try {
     const { studentName, className, withdrawalDate, deliveryDate } =
       loanModalSchema.parse(await request.json());
@@ -44,7 +40,7 @@ export async function POST(request: NextRequest, { params }: { params: any }) {
     }
     await prisma.book.update({
       where: {
-        id: bookID,
+        id: params.bookID,
       },
       data: {
         loaned: true,
@@ -57,7 +53,7 @@ export async function POST(request: NextRequest, { params }: { params: any }) {
         className,
         withdrawalDate,
         deliveryDate,
-        bookId: bookID,
+        bookId: params.bookID,
       },
     });
 

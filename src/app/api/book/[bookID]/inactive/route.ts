@@ -4,7 +4,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { lockBookModalSchema } from "@/lib/validations/index";
 
 export async function PATCH(request: NextRequest, { params }: { params: any }) {
-  const bookID = params.bookID;
   const { userId } = getAuth(request);
   if (!userId) {
     return new Response("Não autorizado", { status: 401 });
@@ -13,7 +12,7 @@ export async function PATCH(request: NextRequest, { params }: { params: any }) {
     const { description } = lockBookModalSchema.parse(await request.json());
     const findBook = await prisma.book.findFirst({
       where: {
-        id: bookID,
+        id: params.bookID,
       },
     });
 
@@ -29,7 +28,7 @@ export async function PATCH(request: NextRequest, { params }: { params: any }) {
 
     const pathBook = await prisma.book.update({
       where: {
-        id: bookID,
+        id: params.bookID,
       },
       data: {
         status: false,

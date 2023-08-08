@@ -2,9 +2,10 @@ import prisma from "@/db";
 import { getAuth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function PATCH(request: NextRequest, { params }: { params: any }) {
-  const bookID = params.bookID;
-
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: { bookID: string } }
+) {
   const { userId } = getAuth(request);
   if (!userId) {
     return new Response("Não autorizado", { status: 401 });
@@ -12,7 +13,7 @@ export async function PATCH(request: NextRequest, { params }: { params: any }) {
 
   const findBook = await prisma.book.findFirst({
     where: {
-      id: bookID,
+      id: params.bookID,
     },
   });
 
@@ -28,7 +29,7 @@ export async function PATCH(request: NextRequest, { params }: { params: any }) {
 
   const updateStatus = await prisma.book.update({
     where: {
-      id: bookID,
+      id: params.bookID,
     },
     data: {
       status: true,

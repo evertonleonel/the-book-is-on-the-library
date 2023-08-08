@@ -53,9 +53,10 @@ export const BookModal = ({ book, children, getBooks }: BookModalProps) => {
     });
   };
 
-  const catchLastRentHistory = (id: string) => {
-    getLastRentHistory(id)
+  const catchLastRentHistory = async (id: string) => {
+    await getLastRentHistory(id)
       .then((data) => {
+        console.log(data);
         setLastRentHistory(data);
       })
       .catch((err) => console.log("Last não encontrado"));
@@ -136,38 +137,21 @@ export const BookModal = ({ book, children, getBooks }: BookModalProps) => {
                   </AccordionItem>
                 </Accordion>
 
-                <Accordion
-                  className="text-accent-foreground font-semibold"
-                  type="single"
-                  collapsible
-                >
-                  <AccordionItem value="Autor">
-                    <AccordionTrigger>Autor</AccordionTrigger>
-                    <AccordionContent className="font-normal text-sm">
-                      {book.author}
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
+                <div className="text-accent-foreground font-semibold">
+                  <p>Autor</p>
+                  <span className="font-normal text-sm">{book.author}</span>
+                </div>
 
-                <Accordion type="single" collapsible>
-                  <AccordionItem value="Gênero">
-                    <AccordionTrigger>Gênero</AccordionTrigger>
-                    <AccordionContent className="font-normal text-sm">
-                      {book.genre}
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
-
-                <Accordion type="single" collapsible>
-                  <AccordionItem value="Data">
-                    <AccordionTrigger>Data</AccordionTrigger>
-                    <AccordionContent className="font-normal text-sm">
-                      {new Date(book.systemEntryDate).toLocaleDateString(
-                        "pt-BR"
-                      )}
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
+                <div className="text-accent-foreground font-semibold">
+                  <p>Gênero</p>
+                  <span className="font-normal text-sm">{book.genre}</span>
+                </div>
+                <div className="text-accent-foreground font-semibold">
+                  <p>Data</p>
+                  <span className="font-normal text-sm">
+                    {new Date(book.systemEntryDate).toLocaleDateString("pt-BR")}
+                  </span>
+                </div>
               </div>
               <nav className="flex  max-[315px]:flex-col justify-around lg:justify-around gap-1">
                 <Button

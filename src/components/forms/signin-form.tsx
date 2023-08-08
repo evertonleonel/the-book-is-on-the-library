@@ -20,7 +20,6 @@ import { PasswordInput } from "../password-input";
 import { IconInput } from "../icon-input";
 import { Icons } from "../icons";
 import { useTransition } from "react";
-import { toast } from "sonner";
 import { catchClerkError } from "@/lib/utils";
 
 type Inputs = z.infer<typeof authSchema>;

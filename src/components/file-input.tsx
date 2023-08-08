@@ -1,7 +1,6 @@
 "use client";
 
 import React, { ReactNode } from "react";
-import { Input } from "./ui/input";
 import { Icons } from "./icons";
 
 type FileInputProps = {

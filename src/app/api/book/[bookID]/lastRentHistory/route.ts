@@ -8,10 +8,9 @@ export async function GET(request: NextRequest, { params }: { params: any }) {
     return new Response("Não autorizado", { status: 401 });
   }
 
-  const rentID = params.ID;
   const historyBook = await prisma.rentHistory.findFirst({
     where: {
-      id: rentID,
+      id: params.ID,
     },
     orderBy: {
       deliveryDate: "desc",

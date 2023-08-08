@@ -4,8 +4,6 @@ import { NextRequest, NextResponse } from "next/server";
 
 //Get book
 export async function GET(request: NextRequest, { params }: { params: any }) {
-  const bookID = params.bookID;
-
   const { userId } = getAuth(request);
   if (!userId) {
     return new Response("Não autorizado", { status: 401 });
@@ -13,7 +11,7 @@ export async function GET(request: NextRequest, { params }: { params: any }) {
 
   const book = await prisma.book.findFirst({
     where: {
-      id: bookID,
+      id: params.bookID,
     },
   });
 
@@ -26,8 +24,6 @@ export async function GET(request: NextRequest, { params }: { params: any }) {
 
 //Update Book
 export async function PUT(request: NextRequest, { params }: { params: any }) {
-  const bookID = params.bookID;
-
   const { userId } = getAuth(request);
   if (!userId) {
     return new Response("Não autorizado", { status: 401 });
@@ -39,7 +35,7 @@ export async function PUT(request: NextRequest, { params }: { params: any }) {
 
   const findBook = await prisma.book.findFirst({
     where: {
-      id: bookID,
+      id: params.bookID,
     },
   });
 
@@ -56,7 +52,7 @@ export async function PUT(request: NextRequest, { params }: { params: any }) {
 
   const updateBook = await prisma.book.update({
     where: {
-      id: bookID,
+      id: params.bookID,
     },
     data: {
       title,

@@ -39,10 +39,14 @@ const StudentTableData = ({
             </TableCell>
             <TableCell>{lastRentHistory.className}</TableCell>
             <TableCell className="text-right">
-              {new Date(lastRentHistory.withdrawalDate).toLocaleDateString()}
+              {new Date(lastRentHistory.withdrawalDate).toLocaleDateString(
+                "pt-BR"
+              )}
             </TableCell>
             <TableCell className="text-right">
-              {new Date(lastRentHistory.deliveryDate).toLocaleDateString()}
+              {new Date(lastRentHistory.deliveryDate).toLocaleDateString(
+                "pt-BR"
+              )}
             </TableCell>
           </TableRow>
         </TableBody>
