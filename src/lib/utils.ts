@@ -3,6 +3,7 @@ import { twMerge } from "tailwind-merge";
 import { isClerkAPIResponseError } from "@clerk/nextjs";
 import * as z from "zod";
 import { toast } from "sonner";
+import Compressor from "compressorjs";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -36,11 +37,13 @@ export function catchError(err: unknown) {
   }
 }
 
-export const parseBase64 = (raw: Blob): Promise<string> => {
+export const parseBase64 = async (raw: Blob): Promise<string> => {
+  const optimizeImage = await optimize(raw);
+
   return new Promise((resolve, reject) => {
     const fileReader = new FileReader();
 
-    fileReader.readAsDataURL(raw);
+    fileReader.readAsDataURL(optimizeImage as Blob);
     fileReader.onload = () => {
       resolve(fileReader.result as string);
     };
@@ -50,3 +53,13 @@ export const parseBase64 = (raw: Blob): Promise<string> => {
     };
   });
 };
+
+export const optimize = (file: File | Blob) =>
+  new Promise(
+    (resolve, reject) =>
+      new Compressor(file, {
+        quality: 0.6,
+        success: (result) => resolve(result),
+        error: (err) => reject(err),
+      })
+  );
