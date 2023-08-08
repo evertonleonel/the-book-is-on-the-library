@@ -97,12 +97,10 @@ const TableLoan = () => {
     deliveryDate,
   ]);
 
-  const handleClear = () => {};
-
   return (
     <div className="max-w-[1400px] mx-auto w-full overflow-auto">
       <Table className=" shadow-md rounded bg-background px-4 mb-2">
-        <TableCaption>Lista de todos os livros no acervo.</TableCaption>
+        <TableCaption>Lista de empréstimos</TableCaption>
         <TableHeader>
           <TableRow className="bg-indigo-950  hover:bg-indigo-900  dark:hover:bg-indigo-950/80">
             <TableHead className="font-bold">Aluno</TableHead>
