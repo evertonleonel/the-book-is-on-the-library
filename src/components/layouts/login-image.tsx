@@ -11,7 +11,7 @@ export function ImageLogin() {
         src="/images/girl-book.webp"
         alt="Ilustração de uma jovem lendo livros"
         fill
-        className="absolute inset-0 object-cover -hue-rotate-30 dark:-hue-rotate-180"
+        className=" absolute inset-0 object-cover -hue-rotate-30 dark:-hue-rotate-180"
         priority
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
       />

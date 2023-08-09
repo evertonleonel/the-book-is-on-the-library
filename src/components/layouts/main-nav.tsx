@@ -40,11 +40,11 @@ export function MainNav({ user }: MainNavProps) {
 
   return (
     <section className="flex justify-center items-center gap-2 ">
-      <Avatar>
+      <Avatar className="hidden sm:block">
         <AvatarImage src={user?.imageUrl} alt={user?.username ?? ""} />
         <AvatarFallback>{initials}</AvatarFallback>
       </Avatar>
-      <p className="text-muted-foreground text-sm md:text-base lg:text-lg font-semibold">
+      <p className="hidden sm:block text-muted-foreground text-sm md:text-base lg:text-lg font-semibold">
         Olá
       </p>
       <p className="text-indigo-700 text-sm md:text-base lg:text-lg font-semibold">
