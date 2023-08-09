@@ -90,7 +90,7 @@ const LibraryPage = () => {
     getBooks({
       search: debounced,
       take: LIMIT,
-      skip: skip,
+      skip: 0,
       date: filterDate,
       genre: filterGenre,
     });
@@ -102,11 +102,11 @@ const LibraryPage = () => {
 
   const applyFilter = () => {
     getBooks({
-      date: filterDate,
-      genre: filterGenre,
       search: debounced,
       take: LIMIT,
       skip: 0,
+      date: filterDate,
+      genre: filterGenre,
     });
   };
 
