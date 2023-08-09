@@ -3,25 +3,6 @@ import { getAuth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 import { loanModalSchema } from "@/lib/validations/index";
 
-export async function GET(request: NextRequest, { params }: { params: any }) {
-  const { userId } = getAuth(request);
-  if (!userId) {
-    return new Response("Não autorizado", { status: 401 });
-  }
-
-  const historyBook = await prisma.rentHistory.findMany({
-    where: {
-      id: params.bookID,
-    },
-  });
-
-  if (!historyBook) {
-    return NextResponse.json("Histórico não encontrado", { status: 404 });
-  }
-
-  return NextResponse.json(historyBook);
-}
-
 export async function POST(request: NextRequest, { params }: { params: any }) {
   const { userId } = getAuth(request);
   if (!userId) {

@@ -34,16 +34,10 @@ export type getBooksFunction = {
 interface BookModalProps {
   book: GetBook;
   children: React.ReactNode;
-  getBooks: (params: getBooksFunction) => Promise<void>;
   updateBook: () => void;
 }
 
-export const BookModal = ({
-  book,
-  children,
-  getBooks,
-  updateBook,
-}: BookModalProps) => {
+export const BookModal = ({ book, children, updateBook }: BookModalProps) => {
   const [open, setOpen] = useState(false);
   const history = book ? book?.rentHistory : [];
   const lastRentHistory = book?.rentHistory[book.rentHistory.length - 1];
@@ -92,7 +86,6 @@ export const BookModal = ({
                 <LoanModal
                   bookId={book.id}
                   disabled={!book.status || book.loaned}
-                  getBooks={getBooks}
                   updateBook={updateBook}
                 >
                   <Button
@@ -197,7 +190,7 @@ export const BookModal = ({
                   </Button>
                 </HistoryModal>
 
-                <DeleteModal idBook={book.id} getBooks={getBooks}>
+                <DeleteModal idBook={book.id} updateBook={updateBook}>
                   <Button className="font-bold w-full" variant={"destructive"}>
                     Deletar
                   </Button>

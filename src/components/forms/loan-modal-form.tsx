@@ -27,7 +27,6 @@ type Inputs = z.infer<typeof loanModalSchema>;
 type LoanModalProps = {
   onClick: () => void;
   bookId: string;
-  getBooks: (params: getBooksFunction) => Promise<void>;
   updateBook: () => void;
 };
 

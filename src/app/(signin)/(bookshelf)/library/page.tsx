@@ -145,12 +145,7 @@ const LibraryPage = () => {
           {books && books.length > 0
             ? books.map((book) => {
                 return (
-                  <BookModal
-                    key={book.id}
-                    book={book}
-                    getBooks={getBooks}
-                    updateBook={updateBook}
-                  >
+                  <BookModal key={book.id} book={book} updateBook={updateBook}>
                     <BookCard image={String(book.image)} title={book.title} />
                   </BookModal>
                 );

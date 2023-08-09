@@ -15,13 +15,11 @@ export const LoanModal = ({
   children,
   disabled,
   bookId,
-  getBooks,
   updateBook,
 }: {
   children: React.ReactNode;
   disabled: boolean;
   bookId: string;
-  getBooks: (params: getBooksFunction) => Promise<void>;
   updateBook: () => void;
 }) => {
   const [open, setOpen] = React.useState(false);
@@ -35,7 +33,6 @@ export const LoanModal = ({
             Informe os dados do aluno
           </DialogTitle>
           <LoanModalForm
-            getBooks={getBooks}
             bookId={bookId}
             onClick={() => setOpen(false)}
             updateBook={updateBook}

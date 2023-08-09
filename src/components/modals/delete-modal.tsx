@@ -18,11 +18,11 @@ import { Icons } from "../icons";
 export const DeleteModal = ({
   children,
   idBook,
-  getBooks,
+  updateBook,
 }: {
   children: React.ReactNode;
   idBook: string;
-  getBooks: (params: getBooksFunction) => Promise<void>;
+  updateBook: () => void;
 }) => {
   const [open, setOpen] = React.useState(false);
   const [isPending, startTransition] = useTransition();
@@ -32,7 +32,7 @@ export const DeleteModal = ({
       await deleteBook(idBook).then(() => {
         toast.success("Livro excluido com sucesso!");
         setOpen(false);
-        getBooks({ take: 3, skip: 0 });
+        updateBook();
       });
     });
   };
