@@ -83,7 +83,6 @@ export const CreateBookForm = ({ params }: { params?: string }) => {
   }, [params]);
 
   function onSubmit(data: Inputs) {
-    console.log(selectedImage);
     startTransition(async () => {
       try {
         if (!params) {
