@@ -74,7 +74,9 @@ export function MainNav({ user }: MainNavProps) {
           </MenubarContent>
         </MenubarMenu>
       </Menubar>
-      <ModeToggle />
+      <div className="max-[160px]:hidden">
+        <ModeToggle />
+      </div>
     </section>
   );
 }
