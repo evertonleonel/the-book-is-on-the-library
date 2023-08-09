@@ -85,7 +85,7 @@ export async function DELETE(
   });
 
   if (!book) {
-    return NextResponse.json("Livro não encontrado", { status: 404 });
+    return new Response("Livro não encontrado", { status: 404 });
   }
 
   try {
@@ -103,6 +103,6 @@ export async function DELETE(
     ]);
     return NextResponse.json(transaction);
   } catch (error) {
-    return NextResponse.json("Erro ao excluir livro", { status: 500 });
+    return new Response("Erro ao excluir livro", { status: 500 });
   }
 }

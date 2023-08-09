@@ -17,11 +17,11 @@ export async function PATCH(request: NextRequest, { params }: { params: any }) {
     });
 
     if (!findBook) {
-      return NextResponse.json("Livro não encontrado", { status: 404 });
+      return new Response("Livro não encontrado", { status: 404 });
     }
 
     if (!description) {
-      return NextResponse.json("Informe o motivo da inativação", {
+      return new Response("Informe o motivo da inativação", {
         status: 400,
       });
     }

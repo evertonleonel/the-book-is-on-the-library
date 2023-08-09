@@ -18,13 +18,13 @@ export async function PATCH(
   });
 
   if (!findBook) {
-    return NextResponse.json("Livro não encontrado", { status: 404 });
+    return new Response("Livro não encontrado", { status: 404 });
   }
 
   const actualStatus = findBook.status;
 
   if (actualStatus) {
-    return NextResponse.json("Livro está ativado", { status: 404 });
+    return new Response("Livro está ativado", { status: 404 });
   }
 
   const updateStatus = await prisma.book.update({

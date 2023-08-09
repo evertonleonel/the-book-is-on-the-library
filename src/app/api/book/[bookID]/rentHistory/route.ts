@@ -68,11 +68,8 @@ export async function POST(request: NextRequest, { params }: { params: any }) {
 
     return NextResponse.json(newRentHistory);
   } catch (error) {
-    return NextResponse.json(
-      "Ocorreu um erro ao criar o histórico de aluguel.",
-      {
-        status: 500,
-      }
-    );
+    return new Response("Ocorreu um erro ao criar o histórico de aluguel.", {
+      status: 500,
+    });
   }
 }

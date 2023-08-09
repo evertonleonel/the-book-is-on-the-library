@@ -15,7 +15,7 @@ export async function PATCH(request: NextRequest, { params }: { params: any }) {
   });
 
   if (!findBook) {
-    return NextResponse.json("Livro não encontrado", { status: 404 });
+    return new Response("Livro não encontrado", { status: 404 });
   }
 
   const updateLoaned = await prisma.book.update({
@@ -39,7 +39,7 @@ export async function PATCH(request: NextRequest, { params }: { params: any }) {
 
   if (!latestRentHistory) {
     // Caso não haja histórico de empréstimo
-    return NextResponse.json("Histórico de empréstimo não encontrado", {
+    return new Response("Histórico de empréstimo não encontrado", {
       status: 404,
     });
   }

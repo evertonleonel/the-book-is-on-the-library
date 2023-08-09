@@ -96,7 +96,7 @@ export async function POST(request: NextRequest) {
   const { title, author, genre, synopsis, image, systemEntryDate } = data;
 
   if (!title || !author || !genre || !synopsis || !systemEntryDate || !image) {
-    return NextResponse.json(
+    return new Response(
       "Possíveis informações ausentes: título, autor, gênero, imagem, data de entrada, sinopse",
       { status: 400 }
     );
