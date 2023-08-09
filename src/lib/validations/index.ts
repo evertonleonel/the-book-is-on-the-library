@@ -14,7 +14,7 @@ export const createNewBookSchema = z.object({
     message: "O campo genêro deve ter pelo menos 3 caracteres",
   }),
   systemEntryDate: z.string().refine((val) => {
-    const currentDate = new Date();
+    const currentDate = new Date("2023-01-01");
     const userDate = new Date(val);
 
     if (isNaN(userDate.getTime())) return false;
@@ -52,7 +52,7 @@ export const loanModalSchema = z
       message: "O campo deve ter pelo menos 3 caracteres",
     }),
     withdrawalDate: z.string().refine((val) => {
-      const currentDate = new Date();
+      const currentDate = new Date("2023-01-01");
       const userDate = new Date(val);
 
       if (isNaN(userDate.getTime())) return false;
@@ -60,7 +60,7 @@ export const loanModalSchema = z
       return userDate.getFullYear() >= currentDate.getFullYear();
     }, "A data não pode ser menor que o ano atual"),
     deliveryDate: z.string().refine((val) => {
-      const currentDate = new Date();
+      const currentDate = new Date("2023-01-01");
       const userDate = new Date(val);
 
       if (isNaN(userDate.getTime())) return false;
