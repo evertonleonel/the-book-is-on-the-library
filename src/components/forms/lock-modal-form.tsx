@@ -29,14 +29,14 @@ type lockBookModalProps = {
   statusBook?: boolean;
   idBook: string;
   onClick: () => void;
-  getBooks: (params: getBooksFunction) => Promise<void>;
+  updateBook: () => void;
 };
 
 export const LockBookModalForm = ({
   onClick: closeModal,
   statusBook,
   idBook,
-  getBooks,
+  updateBook,
 }: lockBookModalProps) => {
   // react-hook-form
   const form = useForm<Inputs>({
@@ -58,12 +58,12 @@ export const LockBookModalForm = ({
 
         inactiveBook(parseData).then(() => {
           toast.success("Livro desativado com sucesso!");
-          getBooks({ take: 3 });
+          updateBook();
         });
       } else {
         activeBook(idBook).then(() => {
           toast.success("Livro ativado com sucesso!");
-          getBooks({ take: 3 });
+          updateBook();
         });
       }
 

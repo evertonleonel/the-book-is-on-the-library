@@ -86,7 +86,7 @@ const LibraryPage = () => {
     })();
   }, [skip, LIMIT]);
 
-  useEffect(() => {
+  const updateBook = () => {
     getBooks({
       search: debounced,
       take: LIMIT,
@@ -94,6 +94,10 @@ const LibraryPage = () => {
       date: filterDate,
       genre: filterGenre,
     });
+  };
+
+  useEffect(() => {
+    updateBook();
   }, [debounced, skip]);
 
   const applyFilter = () => {
@@ -141,7 +145,12 @@ const LibraryPage = () => {
           {books && books.length > 0
             ? books.map((book) => {
                 return (
-                  <BookModal key={book.id} book={book} getBooks={getBooks}>
+                  <BookModal
+                    key={book.id}
+                    book={book}
+                    getBooks={getBooks}
+                    updateBook={updateBook}
+                  >
                     <BookCard image={String(book.image)} title={book.title} />
                   </BookModal>
                 );

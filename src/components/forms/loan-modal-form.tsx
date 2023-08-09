@@ -28,12 +28,13 @@ type LoanModalProps = {
   onClick: () => void;
   bookId: string;
   getBooks: (params: getBooksFunction) => Promise<void>;
+  updateBook: () => void;
 };
 
 export const LoanModalForm = ({
   onClick: CloseModal,
   bookId,
-  getBooks,
+  updateBook,
 }: LoanModalProps) => {
   const [isPending, startTransition] = useTransition();
 
@@ -65,7 +66,7 @@ export const LoanModalForm = ({
         createRentHistory(parseData)
           .then(() => {
             toast.success("Livro emprestado com sucesso!");
-            getBooks({ take: 3 });
+            updateBook();
             CloseModal();
           })
           .catch((erro) => catchError(erro));

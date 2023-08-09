@@ -18,7 +18,7 @@ const StudentTableData = ({
 }) => {
   return (
     <div className="max-w-[1400px] mx-auto w-full overflow-auto mb-4 mt-2">
-      <h2 className="mb-2 font-bold text-lg md:text-xl">Dados do Aluno</h2>
+      <h2 className="mb-2 font-bold text-lg md:text-xl">Último empréstimo</h2>
       <Table className=" shadow-md rounded px-4 mb-2">
         <TableHeader>
           <TableRow>

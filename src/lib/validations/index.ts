@@ -43,30 +43,32 @@ export const unlockBookModalSchema = z.object({
   description: z.string(),
 });
 
-export const loanModalSchema = z.object({
-  studentName: z.string().min(5, {
-    message: "O nome deve ter pelo menos 5 caracteres",
-  }),
-  className: z
-    .string()
-    .min(3, {
+export const loanModalSchema = z
+  .object({
+    studentName: z.string().min(3, {
+      message: "O nome deve ter pelo menos 3 caracteres",
+    }),
+    className: z.string().min(3, {
       message: "O campo deve ter pelo menos 3 caracteres",
-    })
-    .max(5, { message: "No máximo 5 caracteres" }),
-  withdrawalDate: z.string().refine((val) => {
-    const currentDate = new Date();
-    const userDate = new Date(val);
+    }),
+    withdrawalDate: z.string().refine((val) => {
+      const currentDate = new Date();
+      const userDate = new Date(val);
 
-    if (isNaN(userDate.getTime())) return false;
+      if (isNaN(userDate.getTime())) return false;
 
-    return userDate.getFullYear() >= currentDate.getFullYear();
-  }, "A data não pode ser menor que o ano atual"),
-  deliveryDate: z.string().refine((val) => {
-    const currentDate = new Date();
-    const userDate = new Date(val);
+      return userDate.getFullYear() >= currentDate.getFullYear();
+    }, "A data não pode ser menor que o ano atual"),
+    deliveryDate: z.string().refine((val) => {
+      const currentDate = new Date();
+      const userDate = new Date(val);
 
-    if (isNaN(userDate.getTime())) return false;
+      if (isNaN(userDate.getTime())) return false;
 
-    return userDate.getFullYear() >= currentDate.getFullYear();
-  }, "A data não pode ser menor que o ano atual"),
-});
+      return userDate.getFullYear() >= currentDate.getFullYear();
+    }, "A data não pode ser menor que o ano atual"),
+  })
+  .refine((fields) => fields.withdrawalDate < fields.deliveryDate, {
+    path: ["deliveryDate"],
+    message: "A data de devolução deve ser maior que a data de empréstimo",
+  });

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
 import {
@@ -17,8 +17,8 @@ import { LockModal } from "./lock-modal";
 import { LoanModal } from "./loan-modal";
 import { HistoryModal } from "./history-modal";
 import StudentTableData from "../tables/table-studant-data";
-import { getLastRentHistory, loanedBook } from "@/lib/services";
-import { GetBook, RentHistoryBook } from "@/types";
+import { loanedBook } from "@/lib/services";
+import { GetBook } from "@/types";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { DeleteModal } from "./delete-modal";
@@ -35,31 +35,26 @@ interface BookModalProps {
   book: GetBook;
   children: React.ReactNode;
   getBooks: (params: getBooksFunction) => Promise<void>;
+  updateBook: () => void;
 }
 
-export const BookModal = ({ book, children, getBooks }: BookModalProps) => {
+export const BookModal = ({
+  book,
+  children,
+  getBooks,
+  updateBook,
+}: BookModalProps) => {
   const [open, setOpen] = useState(false);
-  const [lastRentHistory, setLastRentHistory] = useState<RentHistoryBook>();
   const history = book ? book?.rentHistory : [];
+  const lastRentHistory = book?.rentHistory[book.rentHistory.length - 1];
 
   const router = useRouter();
 
   const Loaned = (id: string) => {
     loanedBook(id).then(() => {
       toast.success("Livro devolvido com sucesso!");
-      getBooks({
-        take: 6,
-      });
+      updateBook();
     });
-  };
-
-  const catchLastRentHistory = async (id: string) => {
-    await getLastRentHistory(id)
-      .then((data) => {
-        console.log(data);
-        setLastRentHistory(data);
-      })
-      .catch((err) => console.log("Last não encontrado"));
   };
 
   const tableAndStatus = (lastRentHistory && book.loaned) || book.description;
@@ -69,9 +64,7 @@ export const BookModal = ({ book, children, getBooks }: BookModalProps) => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger onClick={() => catchLastRentHistory(book.id)}>
-        {children}
-      </DialogTrigger>
+      <DialogTrigger>{children}</DialogTrigger>
       <DialogContent
         className={`${container} ${
           !history && "max-w-[896px]"
@@ -100,6 +93,7 @@ export const BookModal = ({ book, children, getBooks }: BookModalProps) => {
                   bookId={book.id}
                   disabled={!book.status || book.loaned}
                   getBooks={getBooks}
+                  updateBook={updateBook}
                 >
                   <Button
                     disabled={!book.status || book.loaned}
@@ -165,7 +159,7 @@ export const BookModal = ({ book, children, getBooks }: BookModalProps) => {
 
                 {book.status && (
                   <LockModal
-                    getBooks={getBooks}
+                    updateBook={updateBook}
                     idBook={book.id}
                     disabled={book.loaned}
                     statusBook={book.status}
@@ -182,7 +176,7 @@ export const BookModal = ({ book, children, getBooks }: BookModalProps) => {
 
                 {!book.status && (
                   <LockModal
-                    getBooks={getBooks}
+                    updateBook={updateBook}
                     idBook={book.id}
                     disabled={book.loaned}
                     statusBook={book.status}
@@ -215,7 +209,9 @@ export const BookModal = ({ book, children, getBooks }: BookModalProps) => {
           {tableAndStatus && (
             <section className="grid mt-[21px] w-full">
               {book.loaned && lastRentHistory && (
-                <StudentTableData lastRentHistory={lastRentHistory} />
+                <>
+                  <StudentTableData lastRentHistory={lastRentHistory} />
+                </>
               )}
 
               {book.description && (

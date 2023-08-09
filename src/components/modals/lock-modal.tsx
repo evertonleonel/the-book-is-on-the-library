@@ -16,7 +16,7 @@ type LockModalProps = {
   statusBook?: boolean;
   idBook: string;
   disabled: boolean;
-  getBooks: (params: getBooksFunction) => Promise<void>;
+  updateBook: () => void;
 };
 
 export const LockModal = ({
@@ -24,7 +24,7 @@ export const LockModal = ({
   statusBook,
   idBook,
   disabled,
-  getBooks,
+  updateBook,
 }: LockModalProps) => {
   const [open, setOpen] = React.useState(false);
 
@@ -37,7 +37,7 @@ export const LockModal = ({
             {statusBook ? " Inativar Livro" : "Ativar livro"}
           </DialogTitle>
           <LockBookModalForm
-            getBooks={getBooks}
+            updateBook={updateBook}
             idBook={idBook}
             statusBook={statusBook}
             onClick={() => setOpen(false)}
