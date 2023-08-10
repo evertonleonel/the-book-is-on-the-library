@@ -14,13 +14,13 @@ export const createNewBookSchema = z.object({
     message: "O campo genêro deve ter pelo menos 3 caracteres",
   }),
   systemEntryDate: z.string().refine((val) => {
-    const currentYear = new Date().getFullYear();
-    const currentDate = new Date(currentYear, 0, 0);
     const userDate = new Date(val);
-
     if (isNaN(userDate.getTime())) return false;
 
-    return userDate.getFullYear() >= currentDate.getFullYear();
+    const currentYear = new Date().getFullYear();
+    const currentDate = new Date(currentYear, 0, 0);
+
+    return userDate >= currentDate;
   }, "A data de entrada não pode ser menor que o ano atual"),
   image: z
     .unknown()
@@ -53,13 +53,13 @@ export const loanModalSchema = z
       message: "O campo deve ter pelo menos 3 caracteres",
     }),
     withdrawalDate: z.string().refine((val) => {
-      const currentYear = new Date().getFullYear();
-      const currentDate = new Date(currentYear, 0, 0);
       const userDate = new Date(val);
-
       if (isNaN(userDate.getTime())) return false;
 
-      return userDate.getFullYear() >= currentDate.getFullYear();
+      const currentYear = new Date().getFullYear();
+      const currentDate = new Date(currentYear, 0, 0);
+
+      return userDate >= currentDate;
     }, "A data não pode ser menor que o ano atual"),
     deliveryDate: z.string().refine((val) => {
       const currentYear = new Date().getFullYear();
@@ -68,7 +68,7 @@ export const loanModalSchema = z
 
       if (isNaN(userDate.getTime())) return false;
 
-      return userDate.getFullYear() >= currentDate.getFullYear();
+      return userDate >= currentDate;
     }, "A data não pode ser menor que o ano atual"),
   })
   .refine((fields) => fields.withdrawalDate < fields.deliveryDate, {
