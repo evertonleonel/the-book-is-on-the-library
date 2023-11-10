@@ -2,7 +2,7 @@
 
 Esta é uma biblioteca/livraria construída com o Next.js 13.
 
-[![BookStore](./public/images/screenshot/login-page-screenshot.jpg)](https://store-book-ofclnsinp-evertonleonel.vercel.app/)
+[![BookStore](./public/images/screenshot/login-page-screenshot.jpg)](https://the-book-is-on-the-library-4xg8y9pjc-evertonleonel.vercel.app/)
 
 > **Atenção**
 > Este projeto é apenas um estudo de caso.
